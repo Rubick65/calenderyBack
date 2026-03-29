@@ -66,7 +66,7 @@ public class UserController implements UserRestApi {
 
         mediator.dispatch(userRequest);
 
-        return ResponseEntity.created(URI.create("/api/v1/users".concat(userDto.getIdUsuario().toString()))).build();
+        return ResponseEntity.created(URI.create("/api/v1/users".concat(userDto.getEmail()))).build();
     }
 
     @Override
