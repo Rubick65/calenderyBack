@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.common.exceptions;
 
+import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserAlreadyExistException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +50,17 @@ public class ApiExceptionHandler {
     @ExceptionHandler(UserAlreadyExistException.class)
     @ResponseBody
     public ErrorMessage duplicatedEmail(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(RolNotFoundException.class)
+    @ResponseBody
+    public ErrorMessage rolNotFound(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),

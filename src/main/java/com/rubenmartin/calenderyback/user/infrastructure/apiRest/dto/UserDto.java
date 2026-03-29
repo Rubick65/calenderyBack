@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto;
 
+import com.rubenmartin.calenderyback.rol.infrastrcture.database.entity.RolEntity;
 import com.rubenmartin.calenderyback.user.infrastructure.validation.email.ValidEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,6 +26,6 @@ public class UserDto {
     String clavePublica;
     int cantidadSeguidores;
     int cantidadSeguidos;
-    List<String> roles;
-
+    boolean enable;
+    List<RolEntity> roles;
 }

@@ -3,14 +3,14 @@ spring:
     name: calenderyBack
 
   datasource:
-    url: jdbc:postgresql://aws-1-eu-west-1.pooler.supabase.com:6543/postgres?prepareThreshold=0
-    username: postgres.hplwhrjrasmhwsjtawht
-    password: zUFrhGFpvmDliKST
+    url: ${DATA_BASE_URL}
+    username: ${DATA_BASE_USERNAME}
+    password: ${DATA_BASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
-    jpa:
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    properties:
       hibernate:
-        ddl-auto: update
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update

@@ -60,7 +60,7 @@ public class UserController implements UserRestApi {
     }
 
     @Override
-    @PostMapping("")
+    @PostMapping("/auth/register")
     public ResponseEntity<Void> saveUser(@RequestBody @Valid UserDto userDto) {
         CreateUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
 

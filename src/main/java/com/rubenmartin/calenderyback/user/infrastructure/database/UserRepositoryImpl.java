@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepositoryPort {
     @Override
     public void upsertUser(User user) {
         UserEntity userEntity = userEntityMapper.mapToUserEntity(user);
-
+        
         userJPARepository.save(userEntity);
     }
 

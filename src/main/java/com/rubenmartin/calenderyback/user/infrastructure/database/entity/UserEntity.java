@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.infrastructure.database.entity;
 
+import com.rubenmartin.calenderyback.rol.infrastrcture.database.entity.RolEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idUsuario;
 
     @Column(nullable = false, unique = true)
@@ -39,7 +40,16 @@ public class UserEntity {
 
     @Column(nullable = true)
     int cantidadSeguidos;
-    
-    List<String> roles;
+
+    @Column(nullable = false)
+    boolean enable;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "roles_usuario",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_rol")
+    )
+    List<RolEntity> roles;
 
 }
