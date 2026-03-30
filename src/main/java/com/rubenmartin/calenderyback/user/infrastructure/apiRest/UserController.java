@@ -1,7 +1,7 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
-import com.rubenmartin.calenderyback.user.application.command.create.CreateUserRequest;
+import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.deleteAll.DeleteAllUsersRequest;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController implements UserRestApi {
 
@@ -61,8 +61,8 @@ public class UserController implements UserRestApi {
 
     @Override
     @PostMapping("/auth/register")
-    public ResponseEntity<Void> saveUser(@RequestBody @Valid UserDto userDto) {
-        CreateUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDto userDto) {
+        RegisterUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
 
         mediator.dispatch(userRequest);
 

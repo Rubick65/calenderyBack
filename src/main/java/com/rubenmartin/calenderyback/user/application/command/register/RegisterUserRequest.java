@@ -1,4 +1,4 @@
-package com.rubenmartin.calenderyback.user.application.command.create;
+package com.rubenmartin.calenderyback.user.application.command.register;
 
 import com.rubenmartin.calenderyback.common.mediator.Request;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  *
  */
 @Data
-public class CreateUserRequest implements Request<Void> {
+public class RegisterUserRequest implements Request<Void> {
     private Long idUsuario;
     private String nombre;
     private String email;

@@ -20,7 +20,7 @@ public interface UserRestApi {
 
 
     // Guarda el usuario en la base de datos
-    ResponseEntity<Void> saveUser(@RequestBody UserDto user);
+    ResponseEntity<Void> registerUser(@RequestBody UserDto user);
 
     // Actualiza los datos de un usuarios
     ResponseEntity<UserDto> updateUser(@RequestBody UserDto user);
