@@ -5,6 +5,7 @@ import com.rubenmartin.calenderyback.user.infrastructure.validation.email.ValidE
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.Value;
 
 import java.util.List;
 

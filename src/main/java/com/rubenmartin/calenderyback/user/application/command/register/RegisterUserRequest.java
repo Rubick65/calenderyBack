@@ -8,7 +8,7 @@ import lombok.Data;
  *
  */
 @Data
-public class RegisterUserRequest implements Request<Void> {
+public class RegisterUserRequest implements Request<RegisterUserResponse> {
     private Long idUsuario;
     private String nombre;
     private String email;

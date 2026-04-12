@@ -15,20 +15,20 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RegisterUserHandler implements RequestHandler<RegisterUserRequest, Void> {
+public class RegisterUserHandler implements RequestHandler<RegisterUserRequest, RegisterUserResponse> {
 
     private static final String USER_ROL = "ROLE_USER";
     private final UserRepositoryPort userRepositoryPort;
     private final RolRepositoryPort rolRepositoryPort;
 
     @Override
-    public Void handle(RegisterUserRequest request) {
+    public RegisterUserResponse handle(RegisterUserRequest request) {
 
         // TODO mejor cambiar esto por un caso de prueba que devuelva un booleano, ahorra memoría
         if (userExist(request))
             throw new UserAlreadyExistException(request.getEmail());
         // Create an encoder with strength 16
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         String result = encoder.encode(request.getKeypass());
 
         //assertTrue(encoder.matches("myPassword", result));
@@ -46,7 +46,7 @@ public class RegisterUserHandler implements RequestHandler<RegisterUserRequest, 
 
         userRepositoryPort.upsertUser(newUser);
 
-        return null;
+        return new RegisterUserResponse(newUser);
     }
 
     private boolean userExist(RegisterUserRequest request) {

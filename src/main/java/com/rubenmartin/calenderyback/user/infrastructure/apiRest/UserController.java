@@ -4,6 +4,7 @@ import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.deleteAll.DeleteAllUsersRequest;
+import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserResponse;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
 import com.rubenmartin.calenderyback.user.application.query.getAll.GetAllUsersRequest;
 import com.rubenmartin.calenderyback.user.application.query.getAll.GetAllUsersResponse;
@@ -11,10 +12,16 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
+import com.rubenmartin.calenderyback.user.domain.entity.User;
+import com.rubenmartin.calenderyback.user.application.command.registrationComplete.OnRegistrationCompleteEvent;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper.UserMapper;
+import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
+import com.rubenmartin.calenderyback.user.infrastructure.database.mapper.UserEntityMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +36,10 @@ public class UserController implements UserRestApi {
     private final Mediator mediator;
 
     private final UserMapper userMapper;
+    private final UserEntityMapper userEntityMapper;
+
+    ApplicationEventPublisher eventPublisher;
+
 
     @Override
     @GetMapping("")
@@ -61,10 +72,16 @@ public class UserController implements UserRestApi {
 
     @Override
     @PostMapping("/auth/register")
-    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
         RegisterUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
+        RegisterUserResponse userResponse = mediator.dispatch(userRequest);
 
-        mediator.dispatch(userRequest);
+        UserEntity registeredUser = userEntityMapper.mapToUserEntity(userResponse.getUser());
+
+        String appUrl = request.getContextPath();
+
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registeredUser,
+                request.getLocale(), appUrl));
 
         return ResponseEntity.created(URI.create("/api/v1/users".concat(userDto.getEmail()))).build();
     }

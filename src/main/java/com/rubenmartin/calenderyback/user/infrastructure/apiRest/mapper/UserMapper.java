@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper;
 
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
+import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserResponse;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;

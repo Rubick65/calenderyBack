@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.user.domain.port;
 
 import com.rubenmartin.calenderyback.user.domain.entity.User;
+import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;

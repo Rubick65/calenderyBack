@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ public interface UserRestApi {
 
 
     // Guarda el usuario en la base de datos
-    ResponseEntity<Void> registerUser(@RequestBody UserDto user);
+    ResponseEntity<Void> registerUser(@RequestBody UserDto user, HttpServletRequest request);
 
     // Actualiza los datos de un usuarios
     ResponseEntity<UserDto> updateUser(@RequestBody UserDto user);
