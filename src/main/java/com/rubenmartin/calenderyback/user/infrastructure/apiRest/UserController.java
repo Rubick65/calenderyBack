@@ -15,6 +15,7 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.PublicKeyDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper.UserMapper;
@@ -118,6 +119,21 @@ public class UserController implements UserRestApi {
         User user = mediator.dispatch(new GetUserByEmailRequest(email)).getUser(); // Buscas los datos completos para el front
 
         return ResponseEntity.ok(new UserResponseDto(user));
+    }
+
+    @PutMapping("/publicKey")
+    public ResponseEntity<Void> putUserPublicKey(@RequestParam("userId") Long userId, @RequestBody PublicKeyDto publicKey) {
+        GetUserByIdResponse response = mediator.dispatch(new GetUserByIdRequest(userId));
+
+        UserDto userDto = userMapper.mapToUserDto(response.getUser());
+
+        userDto.setClavePublica(publicKey.getPublicKey());
+
+        UpdateUserRequest request = userMapper.mapToUpdateUserRequest(userDto);
+
+        mediator.dispatch(request);
+
+        return ResponseEntity.ok().build();
     }
 
     @Override
