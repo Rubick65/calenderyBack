@@ -1,10 +1,12 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
-import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.deleteAll.DeleteAllUsersRequest;
+import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserResponse;
+import com.rubenmartin.calenderyback.user.application.command.registrationComplete.OnRegistrationCompleteEvent;
+import com.rubenmartin.calenderyback.user.application.command.save.SaveUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
 import com.rubenmartin.calenderyback.user.application.query.getAll.GetAllUsersRequest;
 import com.rubenmartin.calenderyback.user.application.query.getAll.GetAllUsersResponse;
@@ -13,17 +15,22 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
-import com.rubenmartin.calenderyback.user.application.command.registrationComplete.OnRegistrationCompleteEvent;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper.UserMapper;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.user.infrastructure.database.mapper.UserEntityMapper;
+import com.rubenmartin.calenderyback.vertificationToken.application.query.getByToken.GetVerificationTokenByTokenRequest;
+import com.rubenmartin.calenderyback.vertificationToken.domain.entity.VerificationToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.net.URI;
 import java.util.List;
@@ -38,6 +45,7 @@ public class UserController implements UserRestApi {
     private final UserMapper userMapper;
     private final UserEntityMapper userEntityMapper;
 
+    @Autowired
     ApplicationEventPublisher eventPublisher;
 
 
@@ -72,7 +80,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @PostMapping("/auth/register")
-    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<UserResponseDto> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
         RegisterUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
         RegisterUserResponse userResponse = mediator.dispatch(userRequest);
 
@@ -83,7 +91,33 @@ public class UserController implements UserRestApi {
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registeredUser,
                 request.getLocale(), appUrl));
 
-        return ResponseEntity.created(URI.create("/api/v1/users".concat(userDto.getEmail()))).build();
+        return ResponseEntity.ok(new UserResponseDto(registeredUser));
+    }
+
+    @Override
+    @GetMapping("/registrationConfirm")
+    public ResponseEntity<Void> confirmRegistration(WebRequest request, String token) {
+        GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(token);
+        VerificationToken verificationToken = mediator.dispatch(tokenRequest).getVerificationToken();
+
+        User user = verificationToken.getUser();
+
+        user.setEnable(true);
+
+        SaveUserRequest saveUserRequest = new SaveUserRequest(user);
+
+        mediator.dispatch(saveUserRequest);
+
+        return ResponseEntity.created(URI.create("/api/users/email".concat(user.getEmail()))).build();
+    }
+
+    @PostMapping("/auth/login")
+    public ResponseEntity<UserResponseDto> login(Authentication authentication) {
+
+        String email = authentication.getName();
+        User user = mediator.dispatch(new GetUserByEmailRequest(email)).getUser(); // Buscas los datos completos para el front
+
+        return ResponseEntity.ok(new UserResponseDto(user));
     }
 
     @Override

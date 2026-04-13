@@ -1,6 +1,5 @@
 package com.rubenmartin.calenderyback.vertificationToken.infrastructure.database;
 
-import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.vertificationToken.domain.entity.VerificationToken;
 import com.rubenmartin.calenderyback.vertificationToken.domain.port.VerificationTokenPort;
@@ -28,10 +27,7 @@ public class VerificationTokenRepositoryImpl implements VerificationTokenPort {
     @Override
     public void createVerificationToken(UserEntity user, String token) {
 
-        VerificationTokenEntity verificationTokenEntity = VerificationTokenEntity.builder()
-                .user(user)
-                .token(token)
-                .build();
+        VerificationTokenEntity verificationTokenEntity = new VerificationTokenEntity(user, token);
 
         verificationTokenJPARepository.save(verificationTokenEntity);
 

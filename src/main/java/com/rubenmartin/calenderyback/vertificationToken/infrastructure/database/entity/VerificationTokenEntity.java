@@ -21,6 +21,12 @@ import java.util.Date;
 public class VerificationTokenEntity {
     private static final int EXPIRATION = 60 * 24;
 
+    public VerificationTokenEntity(UserEntity user, String token) {
+        this.user = user;
+        this.token = token;
+        this.expiryDate = calculateExpiryDate(EXPIRATION);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -31,6 +37,7 @@ public class VerificationTokenEntity {
     @JoinColumn(nullable = false, name = "id_usuario")
     private UserEntity user;
 
+    @Column(name = "expiryDate")
     private Date expiryDate;
 
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
@@ -39,5 +46,6 @@ public class VerificationTokenEntity {
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
         return new Date(cal.getTime().getTime());
     }
+
 
 }

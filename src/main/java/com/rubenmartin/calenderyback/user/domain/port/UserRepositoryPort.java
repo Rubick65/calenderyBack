@@ -1,14 +1,13 @@
 package com.rubenmartin.calenderyback.user.domain.port;
 
 import com.rubenmartin.calenderyback.user.domain.entity.User;
-import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserRepositoryPort {
 
-    void upsertUser(User user);
+    User upsertUser(User user);
 
     void deleteUser(Long id);
 

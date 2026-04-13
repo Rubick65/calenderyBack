@@ -37,16 +37,16 @@ public class RegisterUserHandler implements RequestHandler<RegisterUserRequest, 
                 .nombre(request.getNombre()).
                 email(request.getEmail()).
                 keypass(result).
-                enable(false).
+                enable(true).
                 clavePublica(request.getClavePublica()).build();
 
         Rol user_rol = rolRepositoryPort.findByName(USER_ROL).orElseThrow(() -> new RolNotFoundException(USER_ROL));
 
         newUser.setRoles(List.of(user_rol));
 
-        userRepositoryPort.upsertUser(newUser);
+        User registeredUser = userRepositoryPort.upsertUser(newUser);
 
-        return new RegisterUserResponse(newUser);
+        return new RegisterUserResponse(registeredUser);
     }
 
     private boolean userExist(RegisterUserRequest request) {

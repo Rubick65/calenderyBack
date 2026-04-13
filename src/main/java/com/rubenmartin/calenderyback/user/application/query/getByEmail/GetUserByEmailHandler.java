@@ -5,9 +5,9 @@ import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.domain.exception.UserAlreadyExistException;
 import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import org.springframework.stereotype.Component;
 
-@Data
+@Component
 @AllArgsConstructor
 public class GetUserByEmailHandler implements RequestHandler<GetUserByEmailRequest, GetUserByEmailResponse> {
 
