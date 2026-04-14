@@ -26,3 +26,8 @@ spring:
           auth: true
           starttls:
             enable: true
+            required: true
+              # Configuración de Timeouts (Vital para que Render no se cuelgue)
+            connectiontimeout: 5000 # 5 segundos para conectar
+            timeout: 5000           # 5 segundos para recibir respuesta
+            writetimeout: 5000

@@ -14,4 +14,5 @@ public class UpdateUserRequest implements Request<Void> {
     private String clavePublica;
     private int cantidadSeguidores;
     private int cantidadSeguidos;
+    private boolean enable;
 }

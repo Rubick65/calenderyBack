@@ -15,6 +15,8 @@ public class UpdateUserHandler implements RequestHandler<UpdateUserRequest, Void
     public Void handle(UpdateUserRequest request) {
         User updatedUser = User.builder()
                 .idUsuario(request.getIdUsuario())
+                .enable(request.isEnable())
+                .fotoPerfil(request.getFotoPerfil())
                 .nombre(request.getNombre())
                 .email(request.getEmail())
                 .keypass(request.getKeypass())
