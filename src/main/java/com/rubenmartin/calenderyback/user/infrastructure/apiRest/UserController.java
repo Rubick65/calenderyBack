@@ -169,7 +169,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/activeAccountConfirmation")
-    public ResponseEntity<Void> activeAccountConfirmation(Long idUsuario) {
+    public ResponseEntity<Void> activeAccountConfirmation(@RequestParam("idUsuario") Long idUsuario) {
         isUserEnabledRequest userRequest = new isUserEnabledRequest(idUsuario);
         mediator.dispatch(userRequest);
 
