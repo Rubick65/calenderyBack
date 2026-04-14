@@ -33,7 +33,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -81,7 +80,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @PostMapping("/auth/register")
-    public ResponseEntity<UserResponseDto> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
         RegisterUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
         RegisterUserResponse userResponse = mediator.dispatch(userRequest);
 
@@ -92,12 +91,12 @@ public class UserController implements UserRestApi {
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registeredUser,
                 request.getLocale(), appUrl));
 
-        return ResponseEntity.ok(new UserResponseDto(registeredUser));
+        return ResponseEntity.ok().build();
     }
 
     @Override
     @GetMapping("/registrationConfirm")
-    public ResponseEntity<Void> confirmRegistration(WebRequest request, String token) {
+    public ResponseEntity<UserResponseDto> confirmRegistration(WebRequest request, String token) {
         GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(token);
         VerificationToken verificationToken = mediator.dispatch(tokenRequest).getVerificationToken();
 
@@ -109,7 +108,7 @@ public class UserController implements UserRestApi {
 
         mediator.dispatch(saveUserRequest);
 
-        return ResponseEntity.created(URI.create("/api/users/email".concat(user.getEmail()))).build();
+        return ResponseEntity.ok(new UserResponseDto(user));
     }
 
     @PostMapping("/auth/login")

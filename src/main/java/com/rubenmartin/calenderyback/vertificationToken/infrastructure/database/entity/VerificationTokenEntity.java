@@ -29,6 +29,7 @@ public class VerificationTokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_token")
     private Long id;
 
     private String token;

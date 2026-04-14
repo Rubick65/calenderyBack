@@ -40,8 +40,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.brevo.com/v3/smtp/email";
 
-        System.out.println("Enviando a Brevo con la clave: " + apiKey.substring(0, 5) + "...");
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("api-key", apiKey);
@@ -50,7 +48,6 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         body.put("sender", Map.of("name", "Mi App Spring", "email", "martinandraderuben@gmail.com"));
 
-        // El destinatario
         body.put("to", List.of(Map.of("email", user.getEmail(), "name", user.getNombre())));
 
         body.put("subject", "¡Bienvenido a mi App!");
