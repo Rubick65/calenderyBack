@@ -31,6 +31,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 
@@ -87,15 +88,21 @@ public class UserController implements UserRestApi {
 
         String appUrl = request.getContextPath();
 
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registeredUser,
-                request.getLocale(), appUrl));
+        try {
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registeredUser,
+                    request.getLocale(), appUrl));
+
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
 
         return ResponseEntity.ok().build();
     }
 
     @Override
     @GetMapping("/registrationConfirm")
-    public ResponseEntity<UserResponseDto> confirmRegistration(@RequestBody String validarToken) {
+    public ResponseEntity<UserResponseDto> confirmRegistration(WebRequest request, @RequestBody String validarToken) {
         GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(validarToken);
         VerificationToken verificationToken = mediator.dispatch(tokenRequest).getVerificationToken();
 
