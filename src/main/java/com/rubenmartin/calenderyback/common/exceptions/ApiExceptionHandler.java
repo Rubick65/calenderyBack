@@ -7,6 +7,7 @@ import com.rubenmartin.calenderyback.vertificationToken.domain.exception.Expired
 import com.rubenmartin.calenderyback.vertificationToken.domain.exception.TokenNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -81,7 +82,7 @@ public class ApiExceptionHandler {
         );
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ExpiredVerificationTokenException.class)
     @ResponseBody
     public ErrorMessage expiredToken(HttpServletRequest request, Exception exception) {
@@ -91,6 +92,18 @@ public class ApiExceptionHandler {
                 request.getRequestURI()
         );
     }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(DisabledException.class)
+    @ResponseBody
+    public ErrorMessage accountDisable(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
 
 
 }
