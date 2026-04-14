@@ -6,10 +6,12 @@ import com.rubenmartin.calenderyback.vertificationToken.domain.exception.Expired
 import com.rubenmartin.calenderyback.vertificationToken.domain.exception.TokenNotFoundException;
 import com.rubenmartin.calenderyback.vertificationToken.domain.port.VerificationTokenPort;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Optional;
 
+@Component
 @AllArgsConstructor
 public class GetVerificationTokenByTokenHandler implements RequestHandler<GetVerificationTokenByTokenRequest, GetVerificationTokenByTokenResponse> {
 

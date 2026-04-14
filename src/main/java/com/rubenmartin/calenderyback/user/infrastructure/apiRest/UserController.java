@@ -102,8 +102,8 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/registrationConfirm")
-    public ResponseEntity<UserResponseDto> confirmRegistration(WebRequest request, @RequestBody String validarToken) {
-        GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(validarToken);
+    public ResponseEntity<UserResponseDto> confirmRegistration(WebRequest request, @RequestParam("token") String token) {
+        GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(token);
         VerificationToken verificationToken = mediator.dispatch(tokenRequest).getVerificationToken();
 
         User user = verificationToken.getUser();

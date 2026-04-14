@@ -3,6 +3,7 @@ package com.rubenmartin.calenderyback.common.security;
 import com.rubenmartin.calenderyback.user.application.security.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,6 +28,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/auth/register").permitAll()
                         .requestMatchers("/api/users/registrationConfirm").permitAll()
+                        .requestMatchers("/", "/index.html", "/static/**", "/*.js", "/*.css", "/favicon.ico").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
