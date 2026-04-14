@@ -25,7 +25,7 @@ public interface UserRestApi {
     // Guarda el usuario en la base de datos
     ResponseEntity<Void> registerUser(@RequestBody UserDto user, HttpServletRequest request);
 
-    ResponseEntity<UserResponseDto> confirmRegistration(WebRequest request, @RequestParam("token") String token);
+    ResponseEntity<UserResponseDto> confirmRegistration(@RequestBody String token);
 
     // Actualiza los datos de un usuarios
     ResponseEntity<UserDto> updateUser(@RequestBody UserDto user);

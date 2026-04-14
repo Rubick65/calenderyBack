@@ -36,6 +36,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         UserEntity user = event.getUser();
         String token = UUID.randomUUID().toString();
         verificationTokenPort.createVerificationToken(user, token);
+        String createdToken = "https://calenderyback.com/registrationConfirm?token=" + token;
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.brevo.com/v3/smtp/email";
@@ -51,7 +52,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         body.put("to", List.of(Map.of("email", user.getEmail(), "name", user.getNombre())));
 
         body.put("subject", "¡Bienvenido a mi App!");
-        body.put("htmlContent", "<html><body><h1>Hola " + user.getNombre() + "</h1><p>Haz click en este link para terminar tu registro.</p></body></html>");
+        body.put("htmlContent", createdToken);
 
         try {
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);

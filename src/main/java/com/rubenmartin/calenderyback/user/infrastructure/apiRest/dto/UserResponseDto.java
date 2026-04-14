@@ -10,18 +10,15 @@ import java.util.List;
 
 @Data
 public class UserResponseDto {
-    String email;
     Long idUsuario;
     List<String> roles;
 
     public UserResponseDto(User user) {
-        this.email = user.getEmail();
         this.idUsuario = user.getIdUsuario();
         this.roles = user.getRoles().stream().map(Rol::getRolName).toList();
     }
 
     public UserResponseDto(UserEntity user) {
-        this.email = user.getEmail();
         this.idUsuario = user.getIdUsuario();
         System.out.println(this.idUsuario);
         this.roles = user.getRoles().stream().map(RolEntity::getRolName).toList();

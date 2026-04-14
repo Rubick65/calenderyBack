@@ -31,7 +31,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 
@@ -96,8 +95,8 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/registrationConfirm")
-    public ResponseEntity<UserResponseDto> confirmRegistration(WebRequest request, String token) {
-        GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(token);
+    public ResponseEntity<UserResponseDto> confirmRegistration(@RequestBody String validarToken) {
+        GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(validarToken);
         VerificationToken verificationToken = mediator.dispatch(tokenRequest).getVerificationToken();
 
         User user = verificationToken.getUser();
@@ -115,7 +114,7 @@ public class UserController implements UserRestApi {
     public ResponseEntity<UserResponseDto> login(Authentication authentication) {
 
         String email = authentication.getName();
-        User user = mediator.dispatch(new GetUserByEmailRequest(email)).getUser(); // Buscas los datos completos para el front
+        User user = mediator.dispatch(new GetUserByEmailRequest(email)).getUser();
 
         return ResponseEntity.ok(new UserResponseDto(user));
     }

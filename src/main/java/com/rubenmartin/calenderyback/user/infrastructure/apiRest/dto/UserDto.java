@@ -23,7 +23,6 @@ public class UserDto {
     @NotBlank
     String keypass;
     String fotoPerfil;
-    @NotBlank
     String clavePublica;
     int cantidadSeguidores;
     int cantidadSeguidos;
