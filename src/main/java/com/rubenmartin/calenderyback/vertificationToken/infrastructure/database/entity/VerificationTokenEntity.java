@@ -29,8 +29,10 @@ public class VerificationTokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_token")
     private Long id;
 
+    @Column(name = "token")
     private String token;
 
     @OneToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
