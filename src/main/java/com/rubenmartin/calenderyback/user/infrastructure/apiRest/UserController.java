@@ -80,7 +80,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @PostMapping("/auth/register")
-    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<UserResponseDto> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
         RegisterUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
         RegisterUserResponse userResponse = mediator.dispatch(userRequest);
 
@@ -97,12 +97,12 @@ public class UserController implements UserRestApi {
         }
 
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new UserResponseDto(registeredUser));
     }
 
     @Override
     @GetMapping("/registrationConfirm")
-    public ResponseEntity<UserResponseDto> confirmRegistration(WebRequest request, @RequestParam("token") String token) {
+    public ResponseEntity<Void> confirmRegistration(WebRequest request, @RequestParam("token") String token) {
         GetVerificationTokenByTokenRequest tokenRequest = new GetVerificationTokenByTokenRequest(token);
         VerificationToken verificationToken = mediator.dispatch(tokenRequest).getVerificationToken();
 
@@ -114,7 +114,7 @@ public class UserController implements UserRestApi {
 
         mediator.dispatch(saveUserRequest);
 
-        return ResponseEntity.ok(new UserResponseDto(user));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/auth/login")
