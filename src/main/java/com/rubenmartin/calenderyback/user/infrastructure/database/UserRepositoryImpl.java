@@ -53,4 +53,9 @@ public class UserRepositoryImpl implements UserRepositoryPort {
                 .map(userEntityMapper::mapToUser);
 
     }
+
+    @Override
+    public boolean accountIsEnabled(Long idUsuario) {
+        return userJPARepository.accountIsEnabled(idUsuario);
+    }
 }

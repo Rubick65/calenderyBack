@@ -104,6 +104,17 @@ public class ApiExceptionHandler {
         );
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserDisableAccountException.class)
+    @ResponseBody
+    public ErrorMessage userAccountNotActive(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
 
 
 }

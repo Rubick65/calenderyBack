@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
+import com.rubenmartin.calenderyback.user.application.command.accountEnabled.isUserEnabledRequest;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.deleteAll.DeleteAllUsersRequest;
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
@@ -151,6 +152,7 @@ public class UserController implements UserRestApi {
         return ResponseEntity.noContent().build();
     }
 
+
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
@@ -163,5 +165,14 @@ public class UserController implements UserRestApi {
     public ResponseEntity<Void> deleteAllUsers() {
         mediator.dispatch(new DeleteAllUsersRequest());
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/activeAccountConfirmation")
+    public ResponseEntity<Void> activeAccountConfirmation(Long idUsuario) {
+        isUserEnabledRequest userRequest = new isUserEnabledRequest(idUsuario);
+        mediator.dispatch(userRequest);
+
+        return ResponseEntity.ok().build();
     }
 }

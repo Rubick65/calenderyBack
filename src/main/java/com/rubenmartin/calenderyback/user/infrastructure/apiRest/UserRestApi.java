@@ -36,4 +36,6 @@ public interface UserRestApi {
     // Elimina todos los usuarios
     ResponseEntity<Void> deleteAllUsers();
 
+    ResponseEntity<Void> activeAccountConfirmation(@RequestParam Long idUsuario);
+
 }
