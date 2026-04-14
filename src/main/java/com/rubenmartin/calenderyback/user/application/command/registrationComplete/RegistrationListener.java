@@ -36,7 +36,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         UserEntity user = event.getUser();
         String token = UUID.randomUUID().toString();
         verificationTokenPort.createVerificationToken(user, token);
-        String createdToken = "https://calenderyback.com/registrationConfirm?token=" + token;
+        String createdToken = "https://calenderyback.onrender.com/?token=" + token;
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.brevo.com/v3/smtp/email";
