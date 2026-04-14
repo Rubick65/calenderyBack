@@ -22,6 +22,7 @@ spring:
     password: qeok apwb rqqw iius
     properties:
       mail:
+        debug: true
         smtp:
           auth: true
           starttls:
