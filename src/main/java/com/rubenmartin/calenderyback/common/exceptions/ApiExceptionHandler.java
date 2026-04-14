@@ -2,6 +2,7 @@ package com.rubenmartin.calenderyback.common.exceptions;
 
 import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserAlreadyExistException;
+import com.rubenmartin.calenderyback.user.domain.exception.UserDisableAccountException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
 import com.rubenmartin.calenderyback.vertificationToken.domain.exception.ExpiredVerificationTokenException;
 import com.rubenmartin.calenderyback.vertificationToken.domain.exception.TokenNotFoundException;
