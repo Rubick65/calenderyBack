@@ -34,6 +34,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -169,7 +170,14 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/activeAccountConfirmation")
-    public ResponseEntity<Void> activeAccountConfirmation(@RequestParam("idUsuario") Long idUsuario) {
+    public ResponseEntity<Void> activeAccountConfirmation(HttpServletRequest request, @RequestParam("idUsuario") Long idUsuario) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Basic ")) {
+            String base64 = authHeader.substring(6);
+            String decoded = new String(Base64.getDecoder().decode(base64));
+            System.out.println("Credenciales crudas: " + decoded);
+        }
+
         isUserEnabledRequest userRequest = new isUserEnabledRequest(idUsuario);
         mediator.dispatch(userRequest);
 

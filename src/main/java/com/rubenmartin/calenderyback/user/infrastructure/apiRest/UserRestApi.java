@@ -4,6 +4,7 @@ import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,6 @@ public interface UserRestApi {
     // Elimina todos los usuarios
     ResponseEntity<Void> deleteAllUsers();
 
-    ResponseEntity<Void> activeAccountConfirmation(@RequestParam Long idUsuario);
+    ResponseEntity<Void> activeAccountConfirmation(HttpServletRequest request, @RequestParam Long idUsuario);
 
 }
