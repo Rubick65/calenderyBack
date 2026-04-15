@@ -1,10 +1,9 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserInfoResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +23,7 @@ public interface UserRestApi {
 
 
     // Guarda el usuario en la base de datos
-    ResponseEntity<UserResponseDto> registerUser(@RequestBody UserDto user, HttpServletRequest request);
+    ResponseEntity<UserInfoResponseDto> registerUser(@RequestBody UserDto user, HttpServletRequest request);
 
     ResponseEntity<Void> confirmRegistration(WebRequest request, @RequestParam("token") String token);
 
@@ -37,6 +36,6 @@ public interface UserRestApi {
     // Elimina todos los usuarios
     ResponseEntity<Void> deleteAllUsers();
 
-    ResponseEntity<Void> activeAccountConfirmation(HttpServletRequest request, @RequestParam Long idUsuario);
+    ResponseEntity<Void> activeAccountConfirmation(@RequestParam Long idUsuario);
 
 }

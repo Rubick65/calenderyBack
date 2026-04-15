@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/auth/register").permitAll()
                         .requestMatchers("/api/users/registrationConfirm").permitAll()
+                        .requestMatchers("/api/users/app/**").hasRole("USER")
                         .requestMatchers("/", "/index.html", "/static/**", "/*.js", "/*.css", "/favicon.ico").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()

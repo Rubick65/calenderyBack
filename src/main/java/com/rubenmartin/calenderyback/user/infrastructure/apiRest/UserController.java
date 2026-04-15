@@ -18,7 +18,7 @@ import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdR
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.PublicKeyDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserInfoResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper.UserMapper;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.user.infrastructure.database.mapper.UserEntityMapper;
@@ -34,7 +34,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -82,7 +81,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @PostMapping("/auth/register")
-    public ResponseEntity<UserResponseDto> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<UserInfoResponseDto> registerUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
         RegisterUserRequest userRequest = userMapper.mapToCreateUserRequest(userDto);
         RegisterUserResponse userResponse = mediator.dispatch(userRequest);
 
@@ -99,7 +98,7 @@ public class UserController implements UserRestApi {
         }
 
 
-        return ResponseEntity.ok(new UserResponseDto(registeredUser));
+        return ResponseEntity.ok(new UserInfoResponseDto(registeredUser));
     }
 
     @Override
@@ -120,15 +119,15 @@ public class UserController implements UserRestApi {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<UserResponseDto> login(Authentication authentication) {
+    public ResponseEntity<UserInfoResponseDto> login(Authentication authentication) {
 
         String email = authentication.getName();
         User user = mediator.dispatch(new GetUserByEmailRequest(email)).getUser();
 
-        return ResponseEntity.ok(new UserResponseDto(user));
+        return ResponseEntity.ok(new UserInfoResponseDto(user));
     }
 
-    @PutMapping("/publicKey")
+    @PutMapping("/app/publicKey")
     public ResponseEntity<Void> putUserPublicKey(@RequestParam("userId") Long userId, @RequestBody PublicKeyDto publicKey) {
         GetUserByIdResponse response = mediator.dispatch(new GetUserByIdRequest(userId));
 
@@ -170,14 +169,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/activeAccountConfirmation")
-    public ResponseEntity<Void> activeAccountConfirmation(HttpServletRequest request, @RequestParam("idUsuario") Long idUsuario) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Basic ")) {
-            String base64 = authHeader.substring(6);
-            String decoded = new String(Base64.getDecoder().decode(base64));
-            System.out.println("Credenciales crudas: " + decoded);
-        }
-
+    public ResponseEntity<Void> activeAccountConfirmation(@RequestParam("idUsuario") Long idUsuario) {
         isUserEnabledRequest userRequest = new isUserEnabledRequest(idUsuario);
         mediator.dispatch(userRequest);
 
