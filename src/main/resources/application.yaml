@@ -31,3 +31,9 @@ spring:
             connectiontimeout: 5000
             timeout: 5000
             writetimeout: 5000
+logging:
+  level:
+    org.springframework.security: TRACE
+    org.springframework.web: DEBUG
+
+
