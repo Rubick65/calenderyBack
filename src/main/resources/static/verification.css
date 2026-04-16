@@ -1,0 +1,51 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* FONDO */
+.container {
+    min-height: 100vh; /* mejor que 100% */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+            to bottom,
+            #fff 0%,
+            #fff 40%,
+            rgba(255, 255, 255, 0) 100%
+    ),
+    linear-gradient(to right, #0ed2da, #5f29c7);
+
+    position: relative;
+    overflow: hidden;
+}
+
+/* GRID */
+.container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(90deg, #ccc 1px, transparent 1px);
+    background-size: 50px 100%;
+    pointer-events: none;
+    mask-image: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 0) 70%
+    );
+}
+
+/* BOX  CENTRAL */
+.verification-box {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.65);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    z-index: 1;
+}
