@@ -6,7 +6,7 @@ html, body {
 
 /* FONDO */
 .container {
-    min-height: 100vh; /* mejor que 100% */
+    min-height: 100vh; 
     display: flex;
     justify-content: center;
     align-items: center;
