@@ -34,9 +34,6 @@ async function sendToken(token) {
 
         console.log("STATUS:", response.status);
 
-        const data = await response.json();
-        console.log(data);
-
     } catch (error) {
         changeToErrorText(error)
         console.error('Error:', error);
