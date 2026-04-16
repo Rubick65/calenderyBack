@@ -24,14 +24,11 @@ public class RegisterUserHandler implements RequestHandler<RegisterUserRequest, 
     @Override
     public RegisterUserResponse handle(RegisterUserRequest request) {
 
-        // TODO mejor cambiar esto por un caso de prueba que devuelva un booleano, ahorra memoría
         if (userExist(request))
             throw new UserAlreadyExistException(request.getEmail());
-        // Create an encoder with strength 16
+        // Create an encoder with strength 12
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         String result = encoder.encode(request.getKeypass());
-
-        //assertTrue(encoder.matches("myPassword", result));
 
         User newUser = User.builder()
                 .nombre(request.getNombre()).

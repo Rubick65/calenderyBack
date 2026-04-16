@@ -3,7 +3,6 @@ package com.rubenmartin.calenderyback.user.application.command.registrationCompl
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.vertificationToken.domain.port.VerificationTokenPort;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.http.*;
@@ -51,16 +50,11 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         body.put("to", List.of(Map.of("email", user.getEmail(), "name", user.getNombre())));
 
-        body.put("subject", "¡Bienvenido a mi App!");
+        body.put("subject", "Welcome to mi app!");
         body.put("htmlContent", createdToken);
 
         try {
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
-            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
-
-            if (response.getStatusCode() == HttpStatus.CREATED)
-                System.out.println("Email enviado correctamente vía API");
-
         } catch (Exception e) {
             System.err.println("Error al enviar el mail: " + e.getMessage());
         }
