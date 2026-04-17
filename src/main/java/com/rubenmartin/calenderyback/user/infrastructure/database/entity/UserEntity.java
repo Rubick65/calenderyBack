@@ -32,7 +32,7 @@ public class UserEntity {
     @Column(nullable = true)
     String fotoPerfil;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = true, unique = true, columnDefinition = "TEXT")
     String clavePublica;
 
     @Column(nullable = true)
