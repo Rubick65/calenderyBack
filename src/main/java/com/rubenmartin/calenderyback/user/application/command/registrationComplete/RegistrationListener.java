@@ -56,6 +56,8 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
         try {
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+            ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
+
         } catch (Exception e) {
             System.err.println("Error al enviar el mail: " + e.getMessage());
         }
