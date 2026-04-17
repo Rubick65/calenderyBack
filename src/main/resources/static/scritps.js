@@ -5,7 +5,7 @@ const registrationConfirmEndpoint = 'https://calenderyback.onrender.com/api/user
 const VERIFICATION_ERROR_TEXT = "Something went wrong, please try again"
 
 const SUCCESS_TITLE_TEXT = "Registration complete"
-const SUCCESS_MESSAGES_TEXT = "Your registration is completed pleas go back to the application."
+const SUCCESS_MESSAGES_TEXT = "Your registration is completed please go back to the application."
 
 const titleText = document.getElementById("verification-title")
 const messageText = document.getElementById("verification-message")

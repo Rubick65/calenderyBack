@@ -31,9 +31,6 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
         User user = userRepositoryPort.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
 
-        System.out.println("LLegó el usuario con datos " + user);
-
-
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;

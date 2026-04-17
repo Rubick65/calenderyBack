@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class PublicKeyDto {
-    String publicKey;
+    private String publicKey;
 }
