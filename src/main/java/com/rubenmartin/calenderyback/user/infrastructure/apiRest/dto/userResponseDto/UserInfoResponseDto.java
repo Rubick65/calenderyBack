@@ -20,7 +20,6 @@ public class UserInfoResponseDto {
 
     public UserInfoResponseDto(UserEntity user) {
         this.idUsuario = user.getIdUsuario();
-        System.out.println(this.idUsuario);
         this.roles = user.getRoles().stream().map(RolEntity::getRolName).toList();
     }
 

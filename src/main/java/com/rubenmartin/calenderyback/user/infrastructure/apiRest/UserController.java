@@ -93,7 +93,7 @@ public class UserController implements UserRestApi {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registeredUser,
                     request.getLocale(), appUrl));
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -141,6 +141,7 @@ public class UserController implements UserRestApi {
 
         return ResponseEntity.ok().build();
     }
+
 
     @Override
     @PutMapping("")

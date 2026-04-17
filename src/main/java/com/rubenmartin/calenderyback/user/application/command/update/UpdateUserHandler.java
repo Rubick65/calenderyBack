@@ -21,6 +21,7 @@ public class UpdateUserHandler implements RequestHandler<UpdateUserRequest, Void
                 .email(request.getEmail())
                 .keypass(request.getKeypass())
                 .clavePublica(request.getClavePublica())
+                .roles(request.getRoles())
                 .build();
 
         userRepositoryPort.upsertUser(updatedUser);
