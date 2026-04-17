@@ -3,6 +3,7 @@ package com.rubenmartin.calenderyback.user.application.command.registrationCompl
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.vertificationToken.domain.port.VerificationTokenPort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.http.*;
