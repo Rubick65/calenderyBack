@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class UpdateUserHandler implements RequestHandler<UpdateUserRequest, Void> {
     private final UserRepositoryPort userRepositoryPort;
 
+
     @Override
     public Void handle(UpdateUserRequest request) {
         User updatedUser = User.builder()

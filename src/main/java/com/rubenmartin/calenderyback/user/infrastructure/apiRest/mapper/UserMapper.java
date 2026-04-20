@@ -2,9 +2,15 @@ package com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper;
 
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
+import com.rubenmartin.calenderyback.user.application.command.updateUserSettings.UpdateUserSettingsRequest;
+import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdResponse;
+import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdResponse;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
@@ -15,6 +21,14 @@ public interface UserMapper {
 
     UpdateUserRequest mapToUpdateUserRequest(UserDto user);
 
+    @Mapping(target = "idUsuario", source = "userId")
+    UpdateUserSettingsRequest mapToUpdateUserSettingsRequest(UserSettingsResponseDto user, Long userId);
+
     UserDto mapToUserDto(User user);
+
+    UserSettingsResponseDto mapToUserSettingsResponseDto(GetUserSettingsByIdResponse response);
+
+    UserProfileResponseDto mapToUserProfileResponseDto(GetUserProfileByIdResponse response);
+
 
 }

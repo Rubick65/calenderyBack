@@ -9,16 +9,23 @@ import com.rubenmartin.calenderyback.user.application.command.register.RegisterU
 import com.rubenmartin.calenderyback.user.application.command.registrationComplete.OnRegistrationCompleteEvent;
 import com.rubenmartin.calenderyback.user.application.command.save.SaveUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
+import com.rubenmartin.calenderyback.user.application.command.updateUserSettings.UpdateUserSettingsRequest;
 import com.rubenmartin.calenderyback.user.application.query.getAll.GetAllUsersRequest;
 import com.rubenmartin.calenderyback.user.application.query.getAll.GetAllUsersResponse;
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailRequest;
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
+import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdRequest;
+import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdResponse;
+import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdRequest;
+import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdResponse;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.PublicKeyDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserInfoResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper.UserMapper;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.user.infrastructure.database.mapper.UserEntityMapper;
@@ -176,4 +183,35 @@ public class UserController implements UserRestApi {
 
         return ResponseEntity.ok().build();
     }
+
+    @Override
+    @GetMapping("/app/getUserSettings")
+    public ResponseEntity<UserSettingsResponseDto> getUserSettingsInfo(@RequestParam("idUsuario") Long id) {
+        GetUserSettingsByIdRequest request = new GetUserSettingsByIdRequest(id);
+        GetUserSettingsByIdResponse response = mediator.dispatch(request);
+
+        UserSettingsResponseDto userSetting = userMapper.mapToUserSettingsResponseDto(response);
+
+        return ResponseEntity.ok(userSetting);
+    }
+
+    @Override
+    @GetMapping("/app/getUserProfile")
+    public ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam("idUsuario") Long id) {
+        GetUserProfileByIdRequest request = new GetUserProfileByIdRequest(id);
+        GetUserProfileByIdResponse response = mediator.dispatch(request);
+
+        UserProfileResponseDto userProfile = userMapper.mapToUserProfileResponseDto(response);
+        return ResponseEntity.ok(userProfile);
+
+    }
+
+    @Override
+    @PutMapping("/app/updateUserSetting")
+    public ResponseEntity<Void> updateUserSettings(@RequestParam("idUsuario") Long id, @Valid @RequestBody UserSettingsResponseDto userSettingsDto) {
+        UpdateUserSettingsRequest request = userMapper.mapToUpdateUserSettingsRequest(userSettingsDto, id);
+        mediator.dispatch(request);
+        return ResponseEntity.noContent().build();
+    }
+
 }
