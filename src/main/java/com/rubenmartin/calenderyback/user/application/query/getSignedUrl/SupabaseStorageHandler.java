@@ -2,6 +2,7 @@ package com.rubenmartin.calenderyback.user.application.query.getSignedUrl;
 
 
 import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,11 +17,11 @@ import java.util.UUID;
 public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageRequest, SupabaseStorageResponse> {
 
 
-    //@Value("${SUPABASE_URL}")
-    private String supabaseUrl = "https://hplwhrjrasmhwsjtawht.supabase.co";
+    @Value("${SUPABASE_URL}")
+    private String supabaseUrl;
 
-    //@Value("${SERVICE_KEY}")
-    private String serviceKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwbHdocmpyYXNtaHdzanRhd2h0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mjg4NDY3MywiZXhwIjoyMDg4NDYwNjczfQ.yBtOS5bjVDCuNzcj5W---yXZY3cIJ-yyCwKof2uaLh0";
+    @Value("${SERVICE_KEY}")
+    private String serviceKey;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
