@@ -5,7 +5,8 @@ import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.vertificationToken.domain.entity.VerificationToken;
 import com.rubenmartin.calenderyback.vertificationToken.domain.exception.TokenNotFoundException;
 import com.rubenmartin.calenderyback.vertificationToken.domain.port.VerificationTokenPort;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,12 +20,16 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-@AllArgsConstructor
 public class ResendTokenHandler implements RequestHandler<ResendTokenRequest, Void> {
+
     private final VerificationTokenPort verificationTokenPort;
 
-    //@Value("${BREVO_API_KEY}")
-    //private String apiKey;
+    @Value("${BREVO_API_KEY}")
+    private String apiKey;
+
+    public ResendTokenHandler(VerificationTokenPort verificationTokenPort) {
+        this.verificationTokenPort = verificationTokenPort;
+    }
 
     @Override
     public Void handle(ResendTokenRequest request) {
@@ -59,7 +64,7 @@ public class ResendTokenHandler implements RequestHandler<ResendTokenRequest, Vo
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("api-key", "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");
+        headers.set("api-key", apiKey);
 
         Map<String, Object> body = new HashMap<>();
 
