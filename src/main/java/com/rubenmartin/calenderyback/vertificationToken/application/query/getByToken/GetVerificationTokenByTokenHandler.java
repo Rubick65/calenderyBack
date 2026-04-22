@@ -23,7 +23,7 @@ public class GetVerificationTokenByTokenHandler implements RequestHandler<GetVer
         Optional<VerificationToken> verificationTokenOpt = verificationTokenPort.findByToken(token);
 
         if (verificationTokenOpt.isEmpty())
-            throw new TokenNotFoundException(token);
+            throw new TokenNotFoundException();
 
         VerificationToken verificationToken = verificationTokenOpt.get();
 

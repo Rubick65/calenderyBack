@@ -7,5 +7,10 @@ import java.util.Optional;
 
 public interface VerificationTokenPort {
     Optional<VerificationToken> findByToken(String token);
+
     void createVerificationToken(UserEntity user, String token);
+
+    VerificationToken generateNewVerificationToken(String token);
+
+    Optional<VerificationToken> findByUserId(Long id);
 }

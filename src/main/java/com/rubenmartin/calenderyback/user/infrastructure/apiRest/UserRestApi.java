@@ -40,6 +40,8 @@ public interface UserRestApi {
 
     ResponseEntity<Void> activeAccountConfirmation(@RequestParam Long idUsuario);
 
+    ResponseEntity<Void> resendRegistrationToken(@RequestParam Long id);
+
     ResponseEntity<UserSettingsResponseDto> getUserSettingsInfo(@RequestParam Long userId);
 
     ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam Long userId);

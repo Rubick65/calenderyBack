@@ -7,6 +7,7 @@ import com.rubenmartin.calenderyback.user.application.command.deleteAll.DeleteAl
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserResponse;
 import com.rubenmartin.calenderyback.user.application.command.registrationComplete.OnRegistrationCompleteEvent;
+import com.rubenmartin.calenderyback.user.application.command.resendToken.ResendTokenRequest;
 import com.rubenmartin.calenderyback.user.application.command.save.SaveUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.updateUserSettings.UpdateUserSettingsRequest;
@@ -55,7 +56,6 @@ public class UserController implements UserRestApi {
 
     @Autowired
     ApplicationEventPublisher eventPublisher;
-
 
     @Override
     @GetMapping("")
@@ -185,6 +185,15 @@ public class UserController implements UserRestApi {
     }
 
     @Override
+    @GetMapping("/auth/resendRegistrationToken")
+    public ResponseEntity<Void> resendRegistrationToken(@RequestParam("idUsuario") Long id) {
+        ResendTokenRequest request = new ResendTokenRequest(id);
+        mediator.dispatch(request);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @Override
     @GetMapping("/app/getUserSettings")
     public ResponseEntity<UserSettingsResponseDto> getUserSettingsInfo(@RequestParam("idUsuario") Long id) {
         GetUserSettingsByIdRequest request = new GetUserSettingsByIdRequest(id);
@@ -213,5 +222,6 @@ public class UserController implements UserRestApi {
         mediator.dispatch(request);
         return ResponseEntity.noContent().build();
     }
+
 
 }

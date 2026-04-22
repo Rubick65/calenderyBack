@@ -24,7 +24,7 @@ public class VerificationTokenEntity {
     public VerificationTokenEntity(UserEntity user, String token) {
         this.user = user;
         this.token = token;
-        this.expiryDate = calculateExpiryDate(EXPIRATION);
+        this.expiryDate = calculateExpiryDate();
     }
 
     @Id
@@ -42,10 +42,10 @@ public class VerificationTokenEntity {
     @Column(name = "expiryDate")
     private Date expiryDate;
 
-    private Date calculateExpiryDate(int expiryTimeInMinutes) {
+    public Date calculateExpiryDate() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Timestamp(cal.getTime().getTime()));
-        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        cal.add(Calendar.MINUTE, EXPIRATION);
         return new Date(cal.getTime().getTime());
     }
 
