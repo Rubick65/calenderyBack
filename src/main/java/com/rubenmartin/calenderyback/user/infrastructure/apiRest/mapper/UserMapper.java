@@ -28,7 +28,8 @@ public interface UserMapper {
 
     UserSettingsResponseDto mapToUserSettingsResponseDto(GetUserSettingsByIdResponse response);
 
-    UserProfileResponseDto mapToUserProfileResponseDto(GetUserProfileByIdResponse response);
+    @Mapping(target = "fotoPerfil", source = "fotoPerfil")
+    UserProfileResponseDto mapToUserProfileResponseDto(GetUserProfileByIdResponse response, String fotoPerfil);
 
 
 }

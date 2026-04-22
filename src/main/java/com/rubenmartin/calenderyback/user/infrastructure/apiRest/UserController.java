@@ -17,6 +17,8 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
+import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.SupabaseStorageRequest;
+import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.SupabaseStorageResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdRequest;
@@ -38,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -48,6 +51,8 @@ import java.util.List;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController implements UserRestApi {
+
+    private final String PROFILE_PHOTOS_BUCKET = "Avatares";
 
     private final Mediator mediator;
 
@@ -135,6 +140,7 @@ public class UserController implements UserRestApi {
     }
 
     @PutMapping("/app/publicKey")
+    @PreAuthorize("#userId == authentication.principal.idUsuario")
     public ResponseEntity<Void> putUserPublicKey(@RequestParam("userId") Long userId, @RequestBody PublicKeyDto publicKey) {
         GetUserByIdResponse response = mediator.dispatch(new GetUserByIdRequest(userId));
 
@@ -177,6 +183,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/activeAccountConfirmation")
+    @PreAuthorize("#idUsuario == authentication.principal.idUsuario")
     public ResponseEntity<Void> activeAccountConfirmation(@RequestParam("idUsuario") Long idUsuario) {
         isUserEnabledRequest userRequest = new isUserEnabledRequest(idUsuario);
         mediator.dispatch(userRequest);
@@ -186,6 +193,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/auth/resendRegistrationToken")
+    @PreAuthorize("#id == authentication.principal.idUsuario")
     public ResponseEntity<Void> resendRegistrationToken(@RequestParam("idUsuario") Long id) {
         ResendTokenRequest request = new ResendTokenRequest(id);
         mediator.dispatch(request);
@@ -195,6 +203,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/app/getUserSettings")
+    @PreAuthorize("#id == authentication.principal.idUsuario")
     public ResponseEntity<UserSettingsResponseDto> getUserSettingsInfo(@RequestParam("idUsuario") Long id) {
         GetUserSettingsByIdRequest request = new GetUserSettingsByIdRequest(id);
         GetUserSettingsByIdResponse response = mediator.dispatch(request);
@@ -206,17 +215,24 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/app/getUserProfile")
+    @PreAuthorize("#id == authentication.principal.idUsuario")
     public ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam("idUsuario") Long id) {
         GetUserProfileByIdRequest request = new GetUserProfileByIdRequest(id);
         GetUserProfileByIdResponse response = mediator.dispatch(request);
 
-        UserProfileResponseDto userProfile = userMapper.mapToUserProfileResponseDto(response);
+        String fileLink = response.getFotoPerfil();
+
+        SupabaseStorageRequest getUrlRequest = new SupabaseStorageRequest(PROFILE_PHOTOS_BUCKET, fileLink);
+        SupabaseStorageResponse responseUrl = mediator.dispatch(getUrlRequest);
+
+        UserProfileResponseDto userProfile = userMapper.mapToUserProfileResponseDto(response, responseUrl.getUrl());
         return ResponseEntity.ok(userProfile);
 
     }
 
     @Override
     @PutMapping("/app/updateUserSetting")
+    @PreAuthorize("#id == authentication.principal.idUsuario")
     public ResponseEntity<Void> updateUserSettings(@RequestParam("idUsuario") Long id, @Valid @RequestBody UserSettingsResponseDto userSettingsDto) {
         UpdateUserSettingsRequest request = userMapper.mapToUpdateUserSettingsRequest(userSettingsDto, id);
         mediator.dispatch(request);

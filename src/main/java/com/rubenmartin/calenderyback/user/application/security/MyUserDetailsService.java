@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.application.security;
 
+import com.rubenmartin.calenderyback.common.security.CustomUserSecurity;
 import com.rubenmartin.calenderyback.rol.domain.entity.Rol;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
@@ -31,18 +32,11 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
         User user = userRepositoryPort.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
 
-        boolean accountNonExpired = true;
-        boolean credentialsNonExpired = true;
-        boolean accountNonLocked = true;
-
-
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUserSecurity(
+                user.getIdUsuario(),
                 user.getEmail(),
                 user.getKeypass(),
                 user.isEnable(),
-                accountNonExpired,
-                credentialsNonExpired,
-                accountNonLocked,
                 getAuthorities(user.getRoles()));
     }
 
