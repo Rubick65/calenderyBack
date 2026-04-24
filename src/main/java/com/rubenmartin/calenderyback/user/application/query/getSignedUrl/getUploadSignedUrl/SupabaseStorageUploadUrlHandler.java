@@ -38,6 +38,7 @@ public class SupabaseStorageUploadUrlHandler implements RequestHandler<SupabaseS
 
         String bucketName = request.getBucket();
         String path = generateFileName();
+        System.out.println(path);
 
 
         String url = String.format("%s/storage/v1/object/upload/sign/%s/%s", supabaseUrl, bucketName, path);
@@ -56,6 +57,8 @@ public class SupabaseStorageUploadUrlHandler implements RequestHandler<SupabaseS
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 String partialUrl = (String) response.getBody().get("signedURL");
                 String completeUrl = supabaseUrl + "/storage/v1" + partialUrl;
+
+                System.out.println(completeUrl + " Entró");
 
                 user.setFotoPerfil(path);
 
