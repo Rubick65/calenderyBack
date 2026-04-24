@@ -194,7 +194,6 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/auth/resendRegistrationToken")
-    @PreAuthorize("#id == authentication.principal.idUsuario")
     public ResponseEntity<Void> resendRegistrationToken(@RequestParam("idUsuario") Long id) {
         ResendTokenRequest request = new ResendTokenRequest(id);
         mediator.dispatch(request);
