@@ -204,7 +204,7 @@ public class UserController implements UserRestApi {
     }
 
     @Override
-    @GetMapping("/app/getUploadProfileSignedUrlº")
+    @GetMapping("/app/getUploadProfileSignedUrl")
     public ResponseEntity<SupabaseUrlDto> getSignedUrl(Authentication authentication) {
         String email = authentication.getName();
         GetUserByEmailRequest getUserByEmailRequest = new GetUserByEmailRequest(email);
