@@ -213,7 +213,7 @@ public class UserController implements UserRestApi {
         SupabaseStorageUploadUrlRequest uploadRequest = new SupabaseStorageUploadUrlRequest(PROFILE_PHOTOS_BUCKET, userDto.getIdUsuario());
         SupabaseStorageUploadUrlResponse uploadResponse = mediator.dispatch(uploadRequest);
         SupabaseUrlDto supabaseUrlDto = new SupabaseUrlDto(uploadResponse.getUrl());
-        
+
         return ResponseEntity.ok(supabaseUrlDto);
     }
 
@@ -225,7 +225,14 @@ public class UserController implements UserRestApi {
         GetUserSettingsByIdRequest request = new GetUserSettingsByIdRequest(id);
         GetUserSettingsByIdResponse response = mediator.dispatch(request);
 
-        UserSettingsResponseDto userSetting = userMapper.mapToUserSettingsResponseDto(response);
+        String fileLink = response.getFotoPerfil();
+
+
+        SupabaseStorageRequest getUrlRequest = new SupabaseStorageRequest(PROFILE_PHOTOS_BUCKET, fileLink);
+        SupabaseStorageResponse responseUrl = mediator.dispatch(getUrlRequest);
+
+
+        UserSettingsResponseDto userSetting = userMapper.mapToUserSettingsResponseDto(response, responseUrl.getUrl());
 
         return ResponseEntity.ok(userSetting);
     }
