@@ -56,6 +56,8 @@ public class SupabaseStorageUploadUrlHandler implements RequestHandler<SupabaseS
             ResponseEntity<Map> response = restTemplate.postForEntity(url, entity, Map.class);
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 String partialUrl = (String) response.getBody().get("signedURL");
+                System.out.println(response.getBody());
+
                 String completeUrl = supabaseUrl + "/storage/v1" + partialUrl;
 
                 System.out.println(completeUrl + " Entró");
