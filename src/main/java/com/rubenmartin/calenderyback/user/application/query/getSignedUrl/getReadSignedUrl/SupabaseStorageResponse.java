@@ -1,4 +1,4 @@
-package com.rubenmartin.calenderyback.user.application.query.getSignedUrl;
+package com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getReadSignedUrl;
 
 import lombok.Builder;
 import lombok.Data;

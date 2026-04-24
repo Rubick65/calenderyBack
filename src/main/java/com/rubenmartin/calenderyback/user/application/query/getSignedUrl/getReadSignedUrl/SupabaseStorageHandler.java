@@ -1,4 +1,4 @@
-package com.rubenmartin.calenderyback.user.application.query.getSignedUrl;
+package com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getReadSignedUrl;
 
 
 import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Component
 public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageRequest, SupabaseStorageResponse> {
@@ -25,11 +24,10 @@ public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageReq
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-
     @Override
     public SupabaseStorageResponse handle(SupabaseStorageRequest request) {
         String bucketName = request.getBucket();
-        String path = "Perfil_defecto.png";
+        String path = request.getFileName();
 
         String url = String.format("%s/storage/v1/object/sign/%s/%s", supabaseUrl, bucketName, path);
 
@@ -62,7 +60,5 @@ public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageReq
         return SupabaseStorageRequest.class;
     }
 
-    private String generateFileName() {
-        return UUID.randomUUID().toString();
-    }
+
 }

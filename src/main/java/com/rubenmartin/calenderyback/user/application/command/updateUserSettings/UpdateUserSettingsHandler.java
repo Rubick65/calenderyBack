@@ -20,7 +20,6 @@ public class UpdateUserSettingsHandler implements RequestHandler<UpdateUserSetti
         User user = userRepositoryPort.findUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         user.setNombre(request.getNombre());
-        user.setFotoPerfil(request.getFotoPerfil());
         user.setDescripcion(request.getDescripcion());
 
         userRepositoryPort.upsertUser(user);

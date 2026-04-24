@@ -17,8 +17,10 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
-import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.SupabaseStorageRequest;
-import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.SupabaseStorageResponse;
+import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getReadSignedUrl.SupabaseStorageRequest;
+import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getReadSignedUrl.SupabaseStorageResponse;
+import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlRequest;
+import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdRequest;
@@ -26,6 +28,7 @@ import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetU
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.PublicKeyDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.SupabaseUrlDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserInfoResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
@@ -134,7 +137,7 @@ public class UserController implements UserRestApi {
     public ResponseEntity<UserInfoResponseDto> login(Authentication authentication) {
 
         String email = authentication.getName();
-        User user = mediator.dispatch(new GetUserByEmailRequest(email)).getUser();
+        UserDto user = userMapper.mapToUserDto(mediator.dispatch(new GetUserByEmailRequest(email)).getUser());
 
         return ResponseEntity.ok(new UserInfoResponseDto(user));
     }
@@ -198,6 +201,20 @@ public class UserController implements UserRestApi {
         ResendTokenRequest request = new ResendTokenRequest(id);
         mediator.dispatch(request);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/app/getUploadProfileSignedUrlº")
+    public ResponseEntity<SupabaseUrlDto> getSignedUrl(Authentication authentication) {
+        String email = authentication.getName();
+        GetUserByEmailRequest getUserByEmailRequest = new GetUserByEmailRequest(email);
+        UserDto userDto = userMapper.mapToUserDto(mediator.dispatch(getUserByEmailRequest).getUser());
+
+        SupabaseStorageUploadUrlRequest uploadRequest = new SupabaseStorageUploadUrlRequest(PROFILE_PHOTOS_BUCKET, userDto.getIdUsuario());
+        SupabaseStorageUploadUrlResponse uploadResponse = mediator.dispatch(uploadRequest);
+        SupabaseUrlDto supabaseUrlDto = new SupabaseUrlDto(uploadResponse.getUrl());
+        
+        return ResponseEntity.ok(supabaseUrlDto);
     }
 
 

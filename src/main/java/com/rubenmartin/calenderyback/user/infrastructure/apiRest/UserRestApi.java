@@ -1,11 +1,13 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.SupabaseUrlDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserInfoResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +43,8 @@ public interface UserRestApi {
     ResponseEntity<Void> activeAccountConfirmation(@RequestParam Long idUsuario);
 
     ResponseEntity<Void> resendRegistrationToken(@RequestParam Long id);
+
+    ResponseEntity<SupabaseUrlDto> getSignedUrl(Authentication authentication);
 
     ResponseEntity<UserSettingsResponseDto> getUserSettingsInfo(@RequestParam Long userId);
 
