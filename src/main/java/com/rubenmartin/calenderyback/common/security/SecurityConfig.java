@@ -31,6 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/auth/register").permitAll()
                         .requestMatchers("/api/users/registrationConfirm").permitAll()
                         .requestMatchers("/api/users/auth/resendRegistrationToken").permitAll()
+                        .requestMatchers("/api/users/auth/validateUser").permitAll()
                         .requestMatchers("/api/users/app/**").hasRole("USER")
                         .requestMatchers("/", "/index.html", "/static/**", "/*.js", "/*.css", "/favicon.ico").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()

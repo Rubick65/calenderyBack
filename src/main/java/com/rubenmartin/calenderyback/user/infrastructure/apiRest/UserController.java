@@ -1,7 +1,8 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
-import com.rubenmartin.calenderyback.user.application.command.accountEnabled.isUserEnabledRequest;
+import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledRequest;
+import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledResponse;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.deleteAll.DeleteAllUsersRequest;
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
@@ -28,10 +29,7 @@ import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetU
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.PublicKeyDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.SupabaseUrlDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserInfoResponseDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.*;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper.UserMapper;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.user.infrastructure.database.mapper.UserEntityMapper;
@@ -188,7 +186,7 @@ public class UserController implements UserRestApi {
     @GetMapping("/activeAccountConfirmation")
     @PreAuthorize("#idUsuario == authentication.principal.idUsuario")
     public ResponseEntity<Void> activeAccountConfirmation(@RequestParam("idUsuario") Long idUsuario) {
-        isUserEnabledRequest userRequest = new isUserEnabledRequest(idUsuario);
+        IsUserEnabledRequest userRequest = new IsUserEnabledRequest(idUsuario);
         mediator.dispatch(userRequest);
 
         return ResponseEntity.ok().build();
@@ -261,6 +259,20 @@ public class UserController implements UserRestApi {
         UpdateUserSettingsRequest request = userMapper.mapToUpdateUserSettingsRequest(userSettingsDto, id);
         mediator.dispatch(request);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/auth/validateUser")
+    public ResponseEntity<UserValidationDto> validateUser(@RequestParam("email") String email) {
+
+        GetUserByEmailRequest getUserByEmailRequest = new GetUserByEmailRequest(email);
+        UserDto user = userMapper.mapToUserDto(mediator.dispatch(getUserByEmailRequest).getUser());
+
+        IsUserEnabledRequest enable = new IsUserEnabledRequest(user.getIdUsuario());
+
+        IsUserEnabledResponse isUserActive = mediator.dispatch(enable);
+
+        return ResponseEntity.ok(new UserValidationDto(new UserInfoResponseDto(user), isUserActive.isEnabled()));
     }
 
 

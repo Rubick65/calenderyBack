@@ -1,10 +1,7 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.SupabaseUrlDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserInfoResponseDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
-import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,7 +21,6 @@ public interface UserRestApi {
     ResponseEntity<UserDto> getUserById(@PathVariable Long id);
 
     ResponseEntity<UserDto> getUserByEmail(@PathVariable String email);
-
 
     // Guarda el usuario en la base de datos
     ResponseEntity<UserInfoResponseDto> registerUser(@RequestBody UserDto user, HttpServletRequest request);
@@ -51,5 +47,6 @@ public interface UserRestApi {
     ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam Long userId);
 
     ResponseEntity<Void> updateUserSettings(@RequestParam Long userId, @RequestBody UserSettingsResponseDto userSettingsDto);
-
+    
+    ResponseEntity<UserValidationDto> validateUser(@RequestBody String email);
 }
