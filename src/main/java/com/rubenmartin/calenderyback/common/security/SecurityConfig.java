@@ -2,6 +2,7 @@ package com.rubenmartin.calenderyback.common.security;
 
 import com.rubenmartin.calenderyback.user.application.security.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@ComponentScan("com.rubenmartin.calenderyback.common.security")
 public class SecurityConfig {
     private final MyUserDetailsService userDetailsService;
 
@@ -33,7 +35,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/auth/resendRegistrationToken").permitAll()
                         .requestMatchers("/api/users/auth/validateUser").permitAll()
                         .requestMatchers("/api/users/app/**").hasRole("USER")
-                        .requestMatchers("/", "/index.html", "/static/**", "/*.js", "/*.css", "/favicon.ico").permitAll()
+                        .requestMatchers("/api/chat/**").hasRole("USER")
+                        .requestMatchers("/chat/**").hasRole("USER")
+                        .requestMatchers("/ws-endpoint/**").hasRole("USER")
+                        .requestMatchers("/", "/chatTest.html", "/index.html", "/static/**", "/*.js", "/*.css", "/favicon.ico").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
