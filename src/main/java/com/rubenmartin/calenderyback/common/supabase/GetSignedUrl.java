@@ -38,7 +38,6 @@ public class GetSignedUrl {
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 String partialUrl = (String) response.getBody().get(urlName);
-                String completeUrl = supabaseUrl + "/storage/v1" + partialUrl;
 
                 return supabaseUrl + "/storage/v1" + partialUrl;
             }
