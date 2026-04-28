@@ -23,7 +23,7 @@ public class GetSignedUrl {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String getSignedUrl(String url) {
+    public String getSignedUrl(String url, String urlName) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + serviceKey);
         headers.set("apikey", serviceKey);
@@ -37,7 +37,8 @@ public class GetSignedUrl {
             ResponseEntity<Map> response = restTemplate.postForEntity(url, entity, Map.class);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                String partialUrl = (String) response.getBody().get("url");
+                String partialUrl = (String) response.getBody().get(urlName);
+                String completeUrl = supabaseUrl + "/storage/v1" + partialUrl;
 
                 return supabaseUrl + "/storage/v1" + partialUrl;
             }
@@ -49,12 +50,12 @@ public class GetSignedUrl {
 
     public String createUploadSignedUrl(String bucketName, String path) {
         String url = String.format("%s/storage/v1/object/upload/sign/%s/%s", supabaseUrl, bucketName, path);
-        return getSignedUrl(url);
+        return getSignedUrl(url, "url");
     }
 
     public String createStorageSignedUrl(String bucketName, String path) {
         String url = String.format("%s/storage/v1/object/sign/%s/%s", supabaseUrl, bucketName, path);
-        return getSignedUrl(url);
+        return getSignedUrl(url, "signedURL");
     }
 
 }

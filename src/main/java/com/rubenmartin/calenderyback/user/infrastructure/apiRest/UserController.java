@@ -224,11 +224,9 @@ public class UserController implements UserRestApi {
 
         String fileLink = response.getFotoPerfil();
 
-
         SupabaseStorageRequest getUrlRequest = new SupabaseStorageRequest(PROFILE_PHOTOS_BUCKET, fileLink);
         SupabaseStorageResponse responseUrl = mediator.dispatch(getUrlRequest);
-
-
+        
         UserSettingsResponseDto userSetting = userMapper.mapToUserSettingsResponseDto(response, responseUrl.getUrl());
 
         return ResponseEntity.ok(userSetting);
