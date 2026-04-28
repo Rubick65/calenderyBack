@@ -1,20 +1,17 @@
-package com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getReadSignedUrl;
+package com.rubenmartin.calenderyback.common.supabase;
 
-
-import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
-@Component
-public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageRequest, SupabaseStorageResponse> {
-
+@Getter
+public class GetSignedUrl {
 
     @Value("${SUPABASE_URL}")
     private String supabaseUrl;
@@ -24,13 +21,7 @@ public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageReq
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Override
-    public SupabaseStorageResponse handle(SupabaseStorageRequest request) {
-        String bucketName = request.getBucket();
-        String path = request.getFileName();
-
-        String url = String.format("%s/storage/v1/object/sign/%s/%s", supabaseUrl, bucketName, path);
-
+    public String getSignedUrl(String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + serviceKey);
         headers.set("apikey", serviceKey);
@@ -42,23 +33,26 @@ public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageReq
 
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity(url, entity, Map.class);
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                String partialUrl = (String) response.getBody().get("signedURL");
-                String completeUrl = supabaseUrl + "/storage/v1" + partialUrl;
 
-                return new SupabaseStorageResponse(completeUrl);
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                String partialUrl = (String) response.getBody().get("url");
+
+                return supabaseUrl + "/storage/v1" + partialUrl;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
-    @Override
-    public Class<SupabaseStorageRequest> getRequestType() {
-        return SupabaseStorageRequest.class;
+    public String createUploadSignedUrl(String bucketName, String path) {
+        String url = String.format("%s/storage/v1/object/upload/sign/%s/%s", supabaseUrl, bucketName, path);
+        return getSignedUrl(url);
     }
 
+    public String createStorageSignedUrl(String bucketName, String path) {
+        String url = String.format("%s/storage/v1/object/sign/%s/%s", supabaseUrl, bucketName, path);
+        return getSignedUrl(url);
+    }
 
 }

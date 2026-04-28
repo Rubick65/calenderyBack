@@ -18,10 +18,10 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
-import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getReadSignedUrl.SupabaseStorageRequest;
-import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getReadSignedUrl.SupabaseStorageResponse;
-import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlRequest;
-import com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlResponse;
+import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getReadSignedUrl.SupabaseStorageRequest;
+import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getReadSignedUrl.SupabaseStorageResponse;
+import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlRequest;
+import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdRequest;

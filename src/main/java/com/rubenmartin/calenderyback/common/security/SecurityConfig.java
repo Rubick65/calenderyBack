@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/auth/resendRegistrationToken").permitAll()
                         .requestMatchers("/api/users/auth/validateUser").permitAll()
                         .requestMatchers("/api/users/app/**").hasRole("USER")
+                        .requestMatchers("/api/publication/app/**").hasRole("USER")
                         .requestMatchers("/api/chat/**").hasRole("USER")
                         .requestMatchers("/chat/**").hasRole("USER")
                         .requestMatchers("/ws-endpoint/**").hasRole("USER")

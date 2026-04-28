@@ -1,4 +1,4 @@
-package com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getUploadSignedUrl;
+package com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl;
 
 import com.rubenmartin.calenderyback.common.mediator.Request;
 import lombok.AllArgsConstructor;

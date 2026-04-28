@@ -1,4 +1,4 @@
-package com.rubenmartin.calenderyback.user.application.query.getSignedUrl.getUploadSignedUrl;
+package com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl;
 
 import lombok.Builder;
 import lombok.Data;

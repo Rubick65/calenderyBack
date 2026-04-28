@@ -2,6 +2,7 @@ package com.rubenmartin.calenderyback.common.exceptions;
 
 import com.rubenmartin.calenderyback.chat.domain.exception.ChatNotFoundException;
 import com.rubenmartin.calenderyback.message.domain.exception.MessageNotFoundException;
+import com.rubenmartin.calenderyback.publication.domain.exception.PublicationNotFoundException;
 import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserAlreadyExistException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserDisableAccountException;
@@ -133,6 +134,17 @@ public class ApiExceptionHandler {
     @ExceptionHandler(ChatNotFoundException.class)
     @ResponseBody
     public ErrorMessage chatNotFound(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PublicationNotFoundException.class)
+    @ResponseBody
+    public ErrorMessage publicationNotFound(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),

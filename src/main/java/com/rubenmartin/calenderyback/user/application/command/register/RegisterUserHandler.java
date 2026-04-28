@@ -36,6 +36,7 @@ public class RegisterUserHandler implements RequestHandler<RegisterUserRequest, 
                 keypass(result).
                 enable(false).
                 build();
+        
         Rol user_rol = rolRepositoryPort.findByName(USER_ROL).orElseThrow(() -> new RolNotFoundException(USER_ROL));
 
         newUser.setRoles(List.of(user_rol));
