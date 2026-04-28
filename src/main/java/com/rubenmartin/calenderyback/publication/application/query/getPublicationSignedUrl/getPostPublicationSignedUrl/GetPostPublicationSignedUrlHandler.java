@@ -17,7 +17,7 @@ import java.util.UUID;
 public class GetPostPublicationSignedUrlHandler implements RequestHandler<GetPostPublicationSignedUrlRequest, GetPostPublicationSignedUrlResponse> {
     private final PublicationRepositoryPort publicationRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
-    private final GetSignedUrl getSignedUrl = new GetSignedUrl();
+    private final GetSignedUrl getSignedUrl;
     private final String BUCKET_NAME = "fotos_publicaciones";
 
     @Override

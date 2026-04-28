@@ -15,7 +15,7 @@ import java.util.UUID;
 public class SupabaseStorageUploadUrlHandler implements RequestHandler<SupabaseStorageUploadUrlRequest, SupabaseStorageUploadUrlResponse> {
 
     private final UserRepositoryPort userRepositoryPort;
-    private final GetSignedUrl getSignedUrl = new GetSignedUrl();
+    private final GetSignedUrl getSignedUrl;
 
     @Override
     public SupabaseStorageUploadUrlResponse handle(SupabaseStorageUploadUrlRequest request) {
