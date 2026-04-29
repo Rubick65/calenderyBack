@@ -23,10 +23,11 @@ public class UpdatePublicationHandler implements RequestHandler<UpdatePublicatio
     public UpdatePublicationResponse handle(UpdatePublicationRequest request) {
         String message = request.getMessage();
         Long idUsuario = request.getIdUsuario();
-        
+
         Publication publicationToUpdate = request.getPublicationToUpdate();
 
         PublicationDate publicationDate = PublicationDate.builder()
+                .publication(publicationToUpdate)
                 .uploadDate(LocalDate.now())
                 .calendarDate(request.getCalendarDate())
                 .build();
