@@ -18,7 +18,7 @@ public class GetByUserAndMonthAndYearHandler implements RequestHandler<GetByUser
     public GetByUserAndMonthAndYearResponse handle(GetByUserAndMonthAndYearRequest request) {
         Page<Publication> publicationPage = publicationRepositoryPort.findUserPublications(request.idUsuario, request.month, request.year, request.pageable);
         List<Publication> publicationsList = publicationPage.getContent().stream().toList();
-        // publicationsList.stream().map(publication -> )
+        List<String> fileNameList = publicationsList.stream().map(Publication::getPublicationFileName).toList();
 
         return null;
     }

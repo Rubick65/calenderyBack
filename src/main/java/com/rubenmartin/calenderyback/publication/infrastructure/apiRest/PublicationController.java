@@ -1,8 +1,12 @@
 package com.rubenmartin.calenderyback.publication.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
+import com.rubenmartin.calenderyback.publication.application.command.update.UpdatePublicationRequest;
+import com.rubenmartin.calenderyback.publication.application.query.getPublication.GetPublicationByIDRequest;
+import com.rubenmartin.calenderyback.publication.application.query.getPublication.GetPublicationByIDResponse;
 import com.rubenmartin.calenderyback.publication.application.query.getPublicationSignedUrl.getPostPublicationSignedUrl.GetPostPublicationSignedUrlRequest;
 import com.rubenmartin.calenderyback.publication.application.query.getPublicationSignedUrl.getPostPublicationSignedUrl.GetPostPublicationSignedUrlResponse;
+import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PostDataDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PublicationDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.SignedUrlPostDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.mapper.PublicationDtoMapper;
@@ -11,9 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
 
@@ -40,5 +42,23 @@ public class PublicationController implements PublicationRestApi {
         SignedUrlPostDto responseDto = publicationDtoMapper.mapToSignedPostDto(postResponse);
 
         return ResponseEntity.ok(responseDto);
+    }
+
+    @Override
+    @PutMapping("/app/putPublicationData")
+    public ResponseEntity<Void> putPublicationData(@RequestBody PostDataDto postDataDto) {
+        GetPublicationByIDRequest getPublicationRequest = new GetPublicationByIDRequest(postDataDto.getIdPost());
+        GetPublicationByIDResponse getPublicationResponse = mediator.dispatch(getPublicationRequest);
+
+        UpdatePublicationRequest updatePublicationRequest = new UpdatePublicationRequest(
+                getPublicationResponse.getPublication()
+                , postDataDto.getMessage()
+                , postDataDto.getIdUsuario()
+                , postDataDto.getCalendarDate()
+        );
+
+        mediator.dispatch(updatePublicationRequest);
+        
+        return ResponseEntity.ok().build();
     }
 }

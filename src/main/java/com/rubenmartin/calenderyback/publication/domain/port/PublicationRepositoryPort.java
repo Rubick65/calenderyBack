@@ -4,6 +4,8 @@ import com.rubenmartin.calenderyback.publication.domain.entity.Publication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface PublicationRepositoryPort {
 
     Page<Publication> findUserPublications(Long idUsuario,
@@ -13,5 +15,5 @@ public interface PublicationRepositoryPort {
 
     Publication savePublication(Publication publication);
 
-
+    Optional<Publication> getPublicationByID(Long id);
 }

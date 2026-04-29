@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
 public class PublicationRepositoryImpl implements PublicationRepositoryPort {
@@ -26,7 +28,13 @@ public class PublicationRepositoryImpl implements PublicationRepositoryPort {
     @Override
     public Publication savePublication(Publication publication) {
         PublicationEntity savedPublication = publicationJPARepository.save(publicationEntityMapper.mapToPublicationEntity(publication));
-        
+
         return publicationEntityMapper.mapToPublication(savedPublication);
+    }
+
+    @Override
+    public Optional<Publication> getPublicationByID(Long id) {
+        return publicationJPARepository.findById(id)
+                .map(publicationEntityMapper::mapToPublication);
     }
 }
