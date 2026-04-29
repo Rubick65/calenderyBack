@@ -10,7 +10,7 @@ import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class UpdatePublicationHandler implements RequestHandler<UpdatePublicatio
 
         PublicationDate publicationDate = PublicationDate.builder()
                 .publication(publicationToUpdate)
-                .uploadDate(LocalDate.now())
+                .uploadDate(LocalDateTime.now())
                 .calendarDate(request.getCalendarDate())
                 .build();
 

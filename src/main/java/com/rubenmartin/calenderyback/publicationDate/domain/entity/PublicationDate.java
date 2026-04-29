@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -16,5 +17,5 @@ public class PublicationDate {
     private Long id;
     private Publication publication;
     private LocalDate calendarDate;
-    private LocalDate uploadDate;
+    private LocalDateTime uploadDate;
 }
