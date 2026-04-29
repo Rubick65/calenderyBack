@@ -36,4 +36,11 @@ public class PublicationEntity {
     @OneToOne(mappedBy = "publication", cascade = CascadeType.ALL)
     private PublicationDateEntity publicationDate;
 
+    public void setPublicationDate(PublicationDateEntity publicationDate) {
+        this.publicationDate = publicationDate;
+        if (publicationDate != null) {
+            publicationDate.setPublication(this);
+        }
+    }
+
 }
