@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.infrastructure.database.entity;
 
+import com.rubenmartin.calenderyback.follower.infrastructure.database.entity.FollowerEntity;
 import com.rubenmartin.calenderyback.rol.infrastrcture.database.entity.RolEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -35,12 +36,6 @@ public class UserEntity {
     @Column(nullable = true, unique = true, columnDefinition = "TEXT")
     String clavePublica;
 
-    @Column(nullable = true)
-    int cantidadSeguidores;
-
-    @Column(nullable = true)
-    int cantidadSeguidos;
-
     @Column(nullable = false)
     boolean enable;
 
@@ -52,4 +47,9 @@ public class UserEntity {
     )
     List<RolEntity> roles;
 
+    @OneToMany(mappedBy = "userFollow")
+    private List<FollowerEntity> followers;
+
+    @OneToMany(mappedBy = "userFollowed")
+    private List<FollowerEntity> followings;
 }

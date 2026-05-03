@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserRepositoryPort userRepositoryPort;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
         User user = userRepositoryPort.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
 

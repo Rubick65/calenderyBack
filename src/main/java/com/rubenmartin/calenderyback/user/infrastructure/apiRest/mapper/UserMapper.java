@@ -24,6 +24,8 @@ public interface UserMapper {
     @Mapping(target = "idUsuario", source = "userId")
     UpdateUserSettingsRequest mapToUpdateUserSettingsRequest(UserSettingsResponseDto user, Long userId);
 
+    @Mapping(target = "cantidadSeguidores", ignore = true)
+    @Mapping(target = "cantidadSeguidos", ignore = true)
     UserDto mapToUserDto(User user);
 
     UserSettingsResponseDto mapToUserSettingsResponseDto(GetUserSettingsByIdResponse response);

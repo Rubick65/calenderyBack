@@ -9,6 +9,6 @@ public class GetUserProfileByIdResponse {
     private String nombre;
     private String fotoPerfil;
     private String descripcion;
-    private int cantidadSeguidores;
-    private int cantidadSeguidos;
+    private Long cantidadSeguidores;
+    private Long cantidadSeguidos;
 }

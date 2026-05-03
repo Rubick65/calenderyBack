@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.domain.entity;
 
+import com.rubenmartin.calenderyback.follower.domain.entity.Follower;
 import com.rubenmartin.calenderyback.rol.domain.entity.Rol;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +25,8 @@ public class User {
     String keypass;
     String fotoPerfil;
     String clavePublica;
-    int cantidadSeguidores;
-    int cantidadSeguidos;
     List<Rol> roles;
+    List<Follower> followers;
+    List<Follower> followings;
     boolean enable;
 }

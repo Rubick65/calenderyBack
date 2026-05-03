@@ -13,8 +13,7 @@ import java.util.Optional;
 public interface UserJPARepository extends JpaRepository<UserEntity, Long> {
 
     @Query("SELECT u.enable FROM UserEntity u WHERE u.idUsuario = :idUsuario")
-    Boolean accountIsEnabled(@Param("idUsuario")Long idUsuario);
+    Boolean accountIsEnabled(@Param("idUsuario") Long idUsuario);
 
     Optional<UserEntity> findUserByEmail(String email);
-
 }
