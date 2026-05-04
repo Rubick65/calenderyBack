@@ -234,7 +234,6 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/app/getUserProfile")
-    @PreAuthorize("#id == authentication.principal.idUsuario")
     public ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam("idUsuario") Long id) {
         GetUserProfileByIdRequest request = new GetUserProfileByIdRequest(id);
         GetUserProfileByIdResponse response = mediator.dispatch(request);
