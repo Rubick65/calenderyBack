@@ -44,7 +44,7 @@ public interface UserRestApi {
 
     ResponseEntity<UserSettingsResponseDto> getUserSettingsInfo(@RequestParam Long userId);
 
-    ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam Long userId);
+    ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam Long userId, Authentication auth);
 
     ResponseEntity<Void> updateUserSettings(@RequestParam Long userId, @RequestBody UserSettingsResponseDto userSettingsDto);
     

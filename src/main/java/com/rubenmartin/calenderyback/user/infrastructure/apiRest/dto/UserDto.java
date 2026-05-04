@@ -17,7 +17,7 @@ public class UserDto {
     @NotBlank
     @ValidEmail
     String email;
-    @Size(min = 1, max = 100, message = "User description length should be lower than 100 characters.")
+    @Size(min = 1, max = 200, message = "User description length should be lower than 100 characters.")
     String descripcion;
     @NotBlank
     String keypass;

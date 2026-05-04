@@ -17,4 +17,9 @@ public interface FollowerJPARepository extends JpaRepository<FollowerEntity, Lon
     @Modifying
     @Query("DELETE FROM FollowerEntity f WHERE f.userFollow.idUsuario = :idUsuario AND f.userFollowed.idUsuario = :userToFollowId")
     int unFollow(@Param("idUsuario") Long followerId, @Param("userToFollowId") Long userToFollowId);
+
+    @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END " +
+            "FROM FollowerEntity f " +
+            "WHERE f.userFollow = :idUsuario AND f.userFollowed = :possibleFollower")
+    boolean isFollowing(@Param("idUsuario") Long idUsuario, @Param("possibleFollower")Long possibleFollower);
 }

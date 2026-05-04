@@ -37,4 +37,9 @@ public class FollowerRepositoryImpl implements FollowerRepositoryPort {
     public Long countFollowed(Long idUsuario) {
         return followerJPARepository.countFollowed(idUsuario);
     }
+
+    @Override
+    public boolean isFollowing(Long idUsuario, Long possibleFollower) {
+        return followerJPARepository.isFollowing(idUsuario, possibleFollower);
+    }
 }

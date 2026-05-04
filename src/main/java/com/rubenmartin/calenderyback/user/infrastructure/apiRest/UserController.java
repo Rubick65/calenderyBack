@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
+import com.rubenmartin.calenderyback.follower.application.query.isFollowing.isFollowingRequest;
 import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledRequest;
 import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledResponse;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
@@ -18,6 +19,8 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
+import com.rubenmartin.calenderyback.user.application.query.getIDByEmail.GetIDByEmailRequest;
+import com.rubenmartin.calenderyback.user.application.query.getIDByEmail.GetIDByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getReadSignedUrl.SupabaseStorageRequest;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getReadSignedUrl.SupabaseStorageResponse;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlRequest;
@@ -226,7 +229,7 @@ public class UserController implements UserRestApi {
 
         SupabaseStorageRequest getUrlRequest = new SupabaseStorageRequest(PROFILE_PHOTOS_BUCKET, fileLink);
         SupabaseStorageResponse responseUrl = mediator.dispatch(getUrlRequest);
-        
+
         UserSettingsResponseDto userSetting = userMapper.mapToUserSettingsResponseDto(response, responseUrl.getUrl());
 
         return ResponseEntity.ok(userSetting);
@@ -234,7 +237,7 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/app/getUserProfile")
-    public ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam("idUsuario") Long id) {
+    public ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam("idUsuario") Long id, Authentication auth) {
         GetUserProfileByIdRequest request = new GetUserProfileByIdRequest(id);
         GetUserProfileByIdResponse response = mediator.dispatch(request);
 
@@ -244,9 +247,15 @@ public class UserController implements UserRestApi {
         SupabaseStorageResponse responseUrl = mediator.dispatch(getUrlRequest);
 
         UserProfileResponseDto userProfile = userMapper.mapToUserProfileResponseDto(response, responseUrl.getUrl());
-        return ResponseEntity.ok(userProfile);
 
+        isFollowingRequest followingRequest = new isFollowingRequest(auth.getName(), id);
+
+        boolean isFollowing = mediator.dispatch(followingRequest).isFollowing();
+        userProfile.setSeguidor(isFollowing);
+
+        return ResponseEntity.ok(userProfile);
     }
+
 
     @Override
     @PutMapping("/app/updateUserSetting")

@@ -10,4 +10,6 @@ public interface FollowerRepositoryPort {
     Long countFollowers(Long idUsuario);
 
     Long countFollowed(Long idUsuario);
+
+    boolean isFollowing(Long idUsuario, Long possibleFollower);
 }

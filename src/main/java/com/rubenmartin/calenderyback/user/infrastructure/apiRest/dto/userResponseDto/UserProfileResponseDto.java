@@ -14,4 +14,5 @@ public class UserProfileResponseDto {
     private String descripcion;
     private int cantidadSeguidores;
     private int cantidadSeguidos;
+    private boolean seguidor;
 }

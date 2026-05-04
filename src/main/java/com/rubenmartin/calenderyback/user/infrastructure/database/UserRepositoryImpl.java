@@ -58,4 +58,9 @@ public class UserRepositoryImpl implements UserRepositoryPort {
     public boolean accountIsEnabled(Long idUsuario) {
         return userJPARepository.accountIsEnabled(idUsuario);
     }
+
+    @Override
+    public Long getUserIdByEmail(String email) {
+        return userJPARepository.getUserIdByEmail(email);
+    }
 }
