@@ -16,7 +16,7 @@ public class SupabaseStorageHandler implements RequestHandler<SupabaseStorageReq
     public SupabaseStorageResponse handle(SupabaseStorageRequest request) {
         String bucketName = request.getBucket();
         String path = request.getFileName();
-        String url = getSignedUrl.createStorageSignedUrl(bucketName, path);
+        String url = getSignedUrl.createPublicUrl(bucketName, path);
 
         return new SupabaseStorageResponse(url);
     }

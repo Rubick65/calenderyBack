@@ -103,5 +103,11 @@ public class GetSignedUrl {
         return getSignedUrls(url, paths);
     }
 
+    public String createPublicUrl(String bucketName, String path){
+        return supabaseUrl + "/storage/v1/object/public/" + bucketName + "/" + path;
+    }
+
+
+
 
 }
