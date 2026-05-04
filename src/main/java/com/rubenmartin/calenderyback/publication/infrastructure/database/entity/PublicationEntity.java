@@ -1,10 +1,13 @@
 package com.rubenmartin.calenderyback.publication.infrastructure.database.entity;
 
+import com.rubenmartin.calenderyback.comment.infrastructure.database.entity.CommentEntity;
 import com.rubenmartin.calenderyback.publicationDate.infrastructure.database.entity.PublicationDateEntity;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -35,6 +38,9 @@ public class PublicationEntity {
 
     @OneToOne(mappedBy = "publication", cascade = CascadeType.ALL)
     private PublicationDateEntity publicationDate;
+
+    @OneToMany(mappedBy = "publication")
+    private List<CommentEntity> comments;
 
     public void setPublicationDate(PublicationDateEntity publicationDate) {
         this.publicationDate = publicationDate;
