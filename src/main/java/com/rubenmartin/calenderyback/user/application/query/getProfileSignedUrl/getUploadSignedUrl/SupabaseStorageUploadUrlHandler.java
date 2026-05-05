@@ -27,7 +27,7 @@ public class SupabaseStorageUploadUrlHandler implements RequestHandler<SupabaseS
 
         String url = getSignedUrl.createUploadSignedUrl(bucketName, path);
 
-        user.setFotoPerfil(path);
+        user.setFotoPerfil(getSignedUrl.createPublicUrl(bucketName, path));
 
         userRepositoryPort.upsertUser(user);
 
