@@ -23,9 +23,9 @@ public class SaveCommentHandler implements RequestHandler<SaveCommentRequest, Vo
 
     @Override
     public Void handle(SaveCommentRequest request) {
-        Comment comment = request.getComment();
         Long idPublicacion = request.getIdPublicacion();
         String email = request.getUserEmail();
+        String comentario = request.getComentario();
 
         User commentUser = userRepositoryPort
                 .findUserByEmail(email)
@@ -35,9 +35,12 @@ public class SaveCommentHandler implements RequestHandler<SaveCommentRequest, Vo
                 .getPublicationByID(idPublicacion)
                 .orElseThrow(() -> new PublicationNotFoundException(idPublicacion));
 
-        comment.setPublication(commentPublication);
-        comment.setUser(commentUser);
-        comment.setLocalDateTimeData(LocalDateTime.now());
+        Comment comment = Comment.builder()
+                .user(commentUser)
+                .publication(commentPublication)
+                .comentario(comentario)
+                .localDateTimeData(LocalDateTime.now())
+                .build();
 
         commentRepositoryPort.saveComment(comment);
 

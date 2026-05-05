@@ -1,7 +1,10 @@
 package com.rubenmartin.calenderyback.comment.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.comment.application.command.save.SaveCommentRequest;
+import com.rubenmartin.calenderyback.comment.application.query.getAllPublicationComments.GetCommentsPublicationByPublicationIDRequest;
+import com.rubenmartin.calenderyback.comment.application.query.getAllPublicationComments.GetCommentsPublicationByPublicationIDResponse;
 import com.rubenmartin.calenderyback.comment.infrastructure.apiRest.dto.CommentDto;
+import com.rubenmartin.calenderyback.comment.infrastructure.apiRest.dto.PostCommentDto;
 import com.rubenmartin.calenderyback.comment.infrastructure.apiRest.mapper.CommentMapper;
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +23,8 @@ public class CommentController implements CommentRestApi {
 
     @Override
     @PostMapping("/app/postComment")
-    public ResponseEntity<CommentDto> postComment(@RequestParam("idPublicacion") Long publicationId, @RequestBody CommentDto commentDto, Authentication auth) {
-        SaveCommentRequest saveCommentRequest = new SaveCommentRequest(publicationId, commentMapper.mapToComment(commentDto), auth.getName());
+    public ResponseEntity<CommentDto> postComment(@RequestBody PostCommentDto postCommentDto, Authentication auth) {
+        SaveCommentRequest saveCommentRequest = new SaveCommentRequest(postCommentDto.getIdPublicacion(), postCommentDto.getComentario(), auth.getName());
         mediator.dispatch(saveCommentRequest);
 
         return ResponseEntity.ok().build();
@@ -30,6 +33,11 @@ public class CommentController implements CommentRestApi {
     @Override
     @GetMapping("/app/getComments")
     public ResponseEntity<Page<CommentDto>> getAllComments(@RequestParam("idPublicacion") Long publicationId, Pageable pageable) {
-        return null;
+        GetCommentsPublicationByPublicationIDRequest getCommentsRequest = new GetCommentsPublicationByPublicationIDRequest(publicationId, pageable);
+        GetCommentsPublicationByPublicationIDResponse getCommentsResponse = mediator.dispatch(getCommentsRequest);
+        
+        Page<CommentDto> commentDtoList = getCommentsResponse.getCommentsPage().map(commentMapper::mapToCommentDto);
+
+        return ResponseEntity.ok(commentDtoList);
     }
 }
