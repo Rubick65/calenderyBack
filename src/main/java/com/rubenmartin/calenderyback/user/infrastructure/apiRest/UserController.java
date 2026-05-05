@@ -19,10 +19,6 @@ import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserBy
 import com.rubenmartin.calenderyback.user.application.query.getByEmail.GetUserByEmailResponse;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
-import com.rubenmartin.calenderyback.user.application.query.getIDByEmail.GetIDByEmailRequest;
-import com.rubenmartin.calenderyback.user.application.query.getIDByEmail.GetIDByEmailResponse;
-import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getReadSignedUrl.SupabaseStorageRequest;
-import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getReadSignedUrl.SupabaseStorageResponse;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlRequest;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdRequest;
@@ -227,10 +223,8 @@ public class UserController implements UserRestApi {
 
         String fileLink = response.getFotoPerfil();
 
-        SupabaseStorageRequest getUrlRequest = new SupabaseStorageRequest(PROFILE_PHOTOS_BUCKET, fileLink);
-        SupabaseStorageResponse responseUrl = mediator.dispatch(getUrlRequest);
 
-        UserSettingsResponseDto userSetting = userMapper.mapToUserSettingsResponseDto(response, responseUrl.getUrl());
+        UserSettingsResponseDto userSetting = userMapper.mapToUserSettingsResponseDto(response, fileLink);
 
         return ResponseEntity.ok(userSetting);
     }
@@ -243,10 +237,8 @@ public class UserController implements UserRestApi {
 
         String fileLink = response.getFotoPerfil();
 
-        SupabaseStorageRequest getUrlRequest = new SupabaseStorageRequest(PROFILE_PHOTOS_BUCKET, fileLink);
-        SupabaseStorageResponse responseUrl = mediator.dispatch(getUrlRequest);
 
-        UserProfileResponseDto userProfile = userMapper.mapToUserProfileResponseDto(response, responseUrl.getUrl());
+        UserProfileResponseDto userProfile = userMapper.mapToUserProfileResponseDto(response, fileLink);
 
         isFollowingRequest followingRequest = new isFollowingRequest(auth.getName(), id);
 
