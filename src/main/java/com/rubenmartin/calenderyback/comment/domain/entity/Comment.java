@@ -14,10 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-    private Long commentId;
+    private Long idComentario;
     private Publication publication;
     private User user;
-    private String message;
-    private LocalDateTime commentDate;
-
+    private String comentario;
+    private LocalDateTime localDateTimeData;
 }

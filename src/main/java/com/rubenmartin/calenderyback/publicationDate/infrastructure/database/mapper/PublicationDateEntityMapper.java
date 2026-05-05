@@ -3,13 +3,16 @@ package com.rubenmartin.calenderyback.publicationDate.infrastructure.database.ma
 import com.rubenmartin.calenderyback.publicationDate.domain.entity.PublicationDate;
 import com.rubenmartin.calenderyback.publicationDate.infrastructure.database.entity.PublicationDateEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface PublicationDateEntityMapper {
 
+    @Mapping(target = "publication.publicationDate", ignore = true)
     PublicationDateEntity mapToPublicationDateEntity(PublicationDate publicationDate);
 
+    @Mapping(target = "publication.publicationDate", ignore = true)
     PublicationDate mapToPublicationDateEntity(PublicationDateEntity publication);
 }
