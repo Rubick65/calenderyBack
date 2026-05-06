@@ -37,8 +37,9 @@ public class SavePublicationLikeHandler implements RequestHandler<SavePublicatio
                 .user(likeUser)
                 .build();
 
-        publicationRepositoryPort.savePublication(likedPublication);
         publicationLikeRepositoryPort.saveLike(newPublicationLike);
+        publicationRepositoryPort.savePublication(likedPublication);
+
 
         return null;
     }

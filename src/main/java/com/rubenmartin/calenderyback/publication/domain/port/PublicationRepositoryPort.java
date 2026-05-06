@@ -16,4 +16,6 @@ public interface PublicationRepositoryPort {
     Publication savePublication(Publication publication);
 
     Optional<Publication> getPublicationByID(Long id);
+
+    Page<Publication> getMonthHomePublications(int currentMonth, Long userId, Pageable pageable);
 }

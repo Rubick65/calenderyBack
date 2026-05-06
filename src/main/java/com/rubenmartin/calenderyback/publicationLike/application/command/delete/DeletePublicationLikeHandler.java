@@ -30,8 +30,8 @@ public class DeletePublicationLikeHandler implements RequestHandler<DeletePublic
         Long userId = userRepositoryPort.getUserIdByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException(userEmail));
 
-        publicationRepositoryPort.savePublication(removedPublicationLike);
         publicationLikeRepositoryPort.deletePublicationLike(publicationId, userId);
+        publicationRepositoryPort.savePublication(removedPublicationLike);
 
         return null;
     }

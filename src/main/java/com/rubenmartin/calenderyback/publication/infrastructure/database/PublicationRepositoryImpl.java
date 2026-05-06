@@ -37,4 +37,11 @@ public class PublicationRepositoryImpl implements PublicationRepositoryPort {
         return publicationJPARepository.findById(id)
                 .map(publicationEntityMapper::mapToPublication);
     }
+
+    @Override
+    public Page<Publication> getMonthHomePublications(int currentMonth, Long userId, Pageable pageable) {
+        Page<PublicationEntity> entityPage = publicationJPARepository.getCurrentMonthPublications(currentMonth, userId, pageable);
+
+        return entityPage.map(publicationEntityMapper::mapToPublication);
+    }
 }
