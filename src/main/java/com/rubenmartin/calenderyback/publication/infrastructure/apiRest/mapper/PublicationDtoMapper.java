@@ -17,5 +17,8 @@ public interface PublicationDtoMapper {
     @Mapping(target = "fechaCalendario", source = "publicationDate.calendarDate")
     @Mapping(target = "fechaPublicacion", source = "publicationDate.uploadDate")
     @Mapping(target = "fotoPublicacion", source = "publicationFileName")
+    @Mapping(target = "mensaje", source = "message")
+    @Mapping(target = "cantidadLikes", source = "likesAmount")
+    @Mapping(target = "cantidadComentarios", source = "commentaryAmount")
     PublicationProfileDto mapToPublicationProfile(Publication publication);
 }

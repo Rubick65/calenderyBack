@@ -37,7 +37,7 @@ public class SavePublicationLikeHandler implements RequestHandler<SavePublicatio
                 .build();
 
         publicationLikeRepositoryPort.saveLike(newPublicationLike);
-        
+
         return null;
     }
 
