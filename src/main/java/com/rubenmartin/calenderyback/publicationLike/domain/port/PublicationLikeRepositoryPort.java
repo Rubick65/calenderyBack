@@ -8,5 +8,5 @@ public interface PublicationLikeRepositoryPort {
 
     int getPublicationLikes(Long publicationId);
 
-    Void deletePublicationLike(Long idPublication, Long idUser);
+    int deletePublicationLike(Long idPublication, Long idUser);
 }

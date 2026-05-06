@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.follower.application.command.unfollow;
 
 import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
+import com.rubenmartin.calenderyback.follower.domain.exception.UserNotFollowingException;
 import com.rubenmartin.calenderyback.follower.domain.port.FollowerRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,13 @@ public class UnFollowHandler implements RequestHandler<UnFollowRequest, Void> {
     @Override
     @Transactional
     public Void handle(UnFollowRequest request) {
-        int deleted = followerRepositoryPort.unfollow(request.getFollowerId(), request.getUserToUnFollowId());
+        Long followerId = request.getFollowerId();
+        Long userToUnFollowId = request.getUserToUnFollowId();
+        int deleted = followerRepositoryPort.unfollow(followerId, userToUnFollowId);
+        
+        if (deleted == 0)
+            throw new UserNotFollowingException(followerId, userToUnFollowId);
+
         return null;
     }
 

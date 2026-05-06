@@ -4,6 +4,7 @@ import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
 import com.rubenmartin.calenderyback.publication.domain.entity.Publication;
 import com.rubenmartin.calenderyback.publication.domain.exception.PublicationNotFoundException;
 import com.rubenmartin.calenderyback.publication.domain.port.PublicationRepositoryPort;
+import com.rubenmartin.calenderyback.publicationLike.domain.exception.PublicationLikeNotFoundedException;
 import com.rubenmartin.calenderyback.publicationLike.domain.port.PublicationLikeRepositoryPort;
 import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
 import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
@@ -30,7 +31,12 @@ public class DeletePublicationLikeHandler implements RequestHandler<DeletePublic
         Long userId = userRepositoryPort.getUserIdByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException(userEmail));
 
-        publicationLikeRepositoryPort.deletePublicationLike(publicationId, userId);
+        int response = publicationLikeRepositoryPort.deletePublicationLike(publicationId, userId);
+        
+        if (response == 0)
+            throw new PublicationLikeNotFoundedException(userId);
+
+
         publicationRepositoryPort.savePublication(removedPublicationLike);
 
         return null;

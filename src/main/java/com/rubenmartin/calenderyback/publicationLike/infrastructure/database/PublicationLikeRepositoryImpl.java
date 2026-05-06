@@ -28,8 +28,7 @@ public class PublicationLikeRepositoryImpl implements PublicationLikeRepositoryP
     }
 
     @Override
-    public Void deletePublicationLike(Long idPublication, Long idUser) {
-        publicationLikeJPARepository.deletePublicationLike(idPublication, idUser);
-        return null;
+    public int deletePublicationLike(Long idPublication, Long idUser) {
+        return publicationLikeJPARepository.deletePublicationLike(idPublication, idUser);
     }
 }
