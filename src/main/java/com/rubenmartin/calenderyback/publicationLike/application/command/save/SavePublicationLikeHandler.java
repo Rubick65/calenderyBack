@@ -28,6 +28,7 @@ public class SavePublicationLikeHandler implements RequestHandler<SavePublicatio
         Publication likedPublication = publicationRepositoryPort.getPublicationByID(idPublicacion)
                 .orElseThrow(() -> new PublicationNotFoundException(idPublicacion));
 
+        likedPublication.setLikesAmount(likedPublication.getLikesAmount() + 1);
         User likeUser = userRepositoryPort.findUserByEmail(userEmail)
                 .orElseThrow(() -> new UserNotFoundException(userEmail));
 
@@ -36,6 +37,7 @@ public class SavePublicationLikeHandler implements RequestHandler<SavePublicatio
                 .user(likeUser)
                 .build();
 
+        publicationRepositoryPort.savePublication(likedPublication);
         publicationLikeRepositoryPort.saveLike(newPublicationLike);
 
         return null;

@@ -30,8 +30,6 @@ public class GetByUserAndMonthAndYearHandler implements RequestHandler<GetByUser
 
         publicationsList.forEach(publication -> {
             String signedUrl = fileSignedUrls.get(publication.getPublicationFileName());
-            int likeNumber = publicationLikeRepositoryPort.getPublicationLikes(publication.getId());
-            publication.setLikesAmount(likeNumber);
             if (signedUrl != null)
                 publication.setPublicationFileName(signedUrl);
         });

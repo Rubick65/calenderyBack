@@ -34,7 +34,7 @@ public class SaveCommentHandler implements RequestHandler<SaveCommentRequest, Sa
         Publication commentPublication = publicationRepositoryPort
                 .getPublicationByID(idPublicacion)
                 .orElseThrow(() -> new PublicationNotFoundException(idPublicacion));
-
+        
         Comment comment = Comment.builder()
                 .user(commentUser)
                 .publication(commentPublication)
