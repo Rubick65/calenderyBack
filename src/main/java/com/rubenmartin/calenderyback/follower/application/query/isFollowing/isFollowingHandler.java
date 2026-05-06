@@ -2,6 +2,7 @@ package com.rubenmartin.calenderyback.follower.application.query.isFollowing;
 
 import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
 import com.rubenmartin.calenderyback.follower.domain.port.FollowerRepositoryPort;
+import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
 import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,12 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class isFollowingHandler implements RequestHandler<isFollowingRequest, isFollowingResponse> {
-   private final UserRepositoryPort userRepositoryPort;
-   private final FollowerRepositoryPort followerRepositoryPort;
+    private final UserRepositoryPort userRepositoryPort;
+    private final FollowerRepositoryPort followerRepositoryPort;
 
     @Override
     public isFollowingResponse handle(isFollowingRequest request) {
-        Long userId = userRepositoryPort.getUserIdByEmail(request.getUserEmail());
+        String userEmail = request.getUserEmail();
+        Long userId = userRepositoryPort.getUserIdByEmail(userEmail).orElseThrow(() -> new UserNotFoundException(userEmail));
         Long possibleFollower = request.getPossibleFollower();
 
         boolean isFollowing = followerRepositoryPort.isFollowing(userId, possibleFollower);

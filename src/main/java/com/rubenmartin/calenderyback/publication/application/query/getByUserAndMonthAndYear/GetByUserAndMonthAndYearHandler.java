@@ -4,6 +4,7 @@ import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
 import com.rubenmartin.calenderyback.common.supabase.GetSignedUrl;
 import com.rubenmartin.calenderyback.publication.domain.entity.Publication;
 import com.rubenmartin.calenderyback.publication.domain.port.PublicationRepositoryPort;
+import com.rubenmartin.calenderyback.publicationLike.domain.port.PublicationLikeRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GetByUserAndMonthAndYearHandler implements RequestHandler<GetByUserAndMonthAndYearRequest, GetByUserAndMonthAndYearResponse> {
     private final PublicationRepositoryPort publicationRepositoryPort;
+    private final PublicationLikeRepositoryPort publicationLikeRepositoryPort;
     private final GetSignedUrl getSignedUrl;
     private final String BUCKET_NAME = "fotos_publicaciones";
 
@@ -28,13 +30,11 @@ public class GetByUserAndMonthAndYearHandler implements RequestHandler<GetByUser
 
         publicationsList.forEach(publication -> {
             String signedUrl = fileSignedUrls.get(publication.getPublicationFileName());
-
+            int likeNumber = publicationLikeRepositoryPort.getPublicationLikes(publication.getId());
+            publication.setLikesAmount(likeNumber);
             if (signedUrl != null)
                 publication.setPublicationFileName(signedUrl);
-
         });
-
-        System.out.println(publicationPage);
 
         return new GetByUserAndMonthAndYearResponse(publicationPage);
     }

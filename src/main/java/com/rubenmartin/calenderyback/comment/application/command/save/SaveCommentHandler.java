@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class SaveCommentHandler implements RequestHandler<SaveCommentRequest, Void> {
+public class SaveCommentHandler implements RequestHandler<SaveCommentRequest, SaveCommentResponse> {
     private final CommentRepositoryPort commentRepositoryPort;
     private final PublicationRepositoryPort publicationRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
 
     @Override
-    public Void handle(SaveCommentRequest request) {
+    public SaveCommentResponse handle(SaveCommentRequest request) {
         Long idPublicacion = request.getIdPublicacion();
         String email = request.getUserEmail();
         String comentario = request.getComentario();
@@ -42,9 +42,9 @@ public class SaveCommentHandler implements RequestHandler<SaveCommentRequest, Vo
                 .localDateTimeData(LocalDateTime.now())
                 .build();
 
-        commentRepositoryPort.saveComment(comment);
+        Comment savedComment = commentRepositoryPort.saveComment(comment);
 
-        return null;
+        return new SaveCommentResponse(savedComment.getIdComentario());
     }
 
     @Override

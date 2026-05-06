@@ -21,5 +21,5 @@ public interface UserRepositoryPort {
 
     boolean accountIsEnabled(Long idUsuario);
 
-    Long getUserIdByEmail(String email);
+    Optional<Long> getUserIdByEmail(String email);
 }

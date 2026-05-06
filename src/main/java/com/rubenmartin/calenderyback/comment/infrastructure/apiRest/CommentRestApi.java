@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 
 public interface CommentRestApi {
 
-    ResponseEntity<CommentDto> postComment(PostCommentDto postCommentDto, Authentication auth);
+    ResponseEntity<Long> postComment(PostCommentDto postCommentDto, Authentication auth);
 
     ResponseEntity<Page<CommentDto>> getAllComments(Long publicationId, Pageable pageable);
 }

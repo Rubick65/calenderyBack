@@ -60,7 +60,7 @@ public class UserRepositoryImpl implements UserRepositoryPort {
     }
 
     @Override
-    public Long getUserIdByEmail(String email) {
+    public Optional<Long> getUserIdByEmail(String email) {
         return userJPARepository.getUserIdByEmail(email);
     }
 }

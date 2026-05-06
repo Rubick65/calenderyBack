@@ -23,11 +23,11 @@ public class CommentController implements CommentRestApi {
 
     @Override
     @PostMapping("/app/postComment")
-    public ResponseEntity<CommentDto> postComment(@RequestBody PostCommentDto postCommentDto, Authentication auth) {
+    public ResponseEntity<Long> postComment(@RequestBody PostCommentDto postCommentDto, Authentication auth) {
         SaveCommentRequest saveCommentRequest = new SaveCommentRequest(postCommentDto.getIdPublicacion(), postCommentDto.getComentario(), auth.getName());
-        mediator.dispatch(saveCommentRequest);
+        Long commentId = mediator.dispatch(saveCommentRequest).getCommentId();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(commentId);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CommentController implements CommentRestApi {
     public ResponseEntity<Page<CommentDto>> getAllComments(@RequestParam("idPublicacion") Long publicationId, Pageable pageable) {
         GetCommentsPublicationByPublicationIDRequest getCommentsRequest = new GetCommentsPublicationByPublicationIDRequest(publicationId, pageable);
         GetCommentsPublicationByPublicationIDResponse getCommentsResponse = mediator.dispatch(getCommentsRequest);
-        
+
         Page<CommentDto> commentDtoList = getCommentsResponse.getCommentsPage().map(commentMapper::mapToCommentDto);
 
         return ResponseEntity.ok(commentDtoList);

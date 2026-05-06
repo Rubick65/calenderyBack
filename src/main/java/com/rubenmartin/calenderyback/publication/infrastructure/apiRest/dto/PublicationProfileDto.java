@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class PublicationProfileDto {
     private Long id;
     private String fotoPublicacion;
-    private String mensasje;
+    private String mensaje;
     private int cantidadLikes;
     private int cantidadComentarios;
     private LocalDate fechaCalendario;
