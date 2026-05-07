@@ -16,4 +16,5 @@ public class PublicationProfileDto {
     private int cantidadComentarios;
     private LocalDate fechaCalendario;
     private LocalDateTime fechaPublicacion;
+    private boolean like;
 }

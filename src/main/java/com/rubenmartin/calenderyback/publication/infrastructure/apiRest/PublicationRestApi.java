@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 
 public interface PublicationRestApi {
 
-    ResponseEntity<Page<PublicationProfileDto>> getByUserAndMonthAndYear(Long idUsuario, int month, int year, Pageable pageable);
+    ResponseEntity<Page<PublicationProfileDto>> getByUserAndMonthAndYear(Long idUsuario, int month, int year, Pageable pageable, Authentication auth);
 
     ResponseEntity<SignedUrlPostDto> getSignedPostUrl(Authentication authentication);
 

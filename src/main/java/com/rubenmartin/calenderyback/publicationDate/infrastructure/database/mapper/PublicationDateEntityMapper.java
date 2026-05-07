@@ -14,5 +14,6 @@ public interface PublicationDateEntityMapper {
     PublicationDateEntity mapToPublicationDateEntity(PublicationDate publicationDate);
 
     @Mapping(target = "publication.publicationDate", ignore = true)
+    @Mapping(target = "publication.like", ignore = true)
     PublicationDate mapToPublicationDateEntity(PublicationDateEntity publication);
 }

@@ -12,4 +12,5 @@ public class GetByUserAndMonthAndYearRequest implements Request<GetByUserAndMont
     private int month;
     private int year;
     private Pageable pageable;
+    private String userEmail;
 }

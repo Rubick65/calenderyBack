@@ -31,4 +31,9 @@ public class PublicationLikeRepositoryImpl implements PublicationLikeRepositoryP
     public int deletePublicationLike(Long idPublication, Long idUser) {
         return publicationLikeJPARepository.deletePublicationLike(idPublication, idUser);
     }
+
+    @Override
+    public boolean userLiked(Long userId, Long publicationId) {
+        return publicationLikeJPARepository.userLiked(userId, publicationId);
+    }
 }

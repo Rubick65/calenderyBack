@@ -19,5 +19,6 @@ public class Publication {
     private int commentaryAmount;
     private int likesAmount;
     private PublicationDate publicationDate;
+    private boolean like;
 
 }

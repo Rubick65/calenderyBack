@@ -14,4 +14,9 @@ public interface PublicationLikeJPARepository extends JpaRepository<PublicationL
     @Modifying
     @Query("DELETE FROM PublicationLikeEntity p WHERE p.publication.id = :publicationId AND p.user.idUsuario = :userId")
     int deletePublicationLike(@Param("publicationId") Long publicationId, @Param("userId") Long userId);
+
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
+            "FROM PublicationLikeEntity p " +
+            "WHERE p.user.idUsuario = :userId AND p.publication.id = :publicationId")
+    boolean userLiked(@Param("userId") Long userId, @Param("publicationId") Long publicationId);
 }

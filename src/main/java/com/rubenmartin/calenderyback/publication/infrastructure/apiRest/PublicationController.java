@@ -30,8 +30,8 @@ public class PublicationController implements PublicationRestApi {
 
     @Override
     @GetMapping("/app/getProfilePosts")
-    public ResponseEntity<Page<PublicationProfileDto>> getByUserAndMonthAndYear(@RequestParam("idUsuario") Long idUsuario, @RequestParam("month") int month, @RequestParam("year") int year, Pageable pageable) {
-        GetByUserAndMonthAndYearRequest request = new GetByUserAndMonthAndYearRequest(idUsuario, month, year, pageable);
+    public ResponseEntity<Page<PublicationProfileDto>> getByUserAndMonthAndYear(@RequestParam("idUsuario") Long idUsuario, @RequestParam("month") int month, @RequestParam("year") int year, Pageable pageable, Authentication auth) {
+        GetByUserAndMonthAndYearRequest request = new GetByUserAndMonthAndYearRequest(idUsuario, month, year, pageable, auth.getName());
         GetByUserAndMonthAndYearResponse response = mediator.dispatch(request);
         Page<PublicationProfileDto> fileList = response.getPage().map(publicationDtoMapper::mapToPublicationProfile);
 
