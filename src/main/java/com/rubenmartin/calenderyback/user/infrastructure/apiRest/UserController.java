@@ -21,6 +21,8 @@ import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdR
 import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdResponse;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlRequest;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlResponse;
+import com.rubenmartin.calenderyback.user.application.query.getUserCommentData.GetUserCommentDataRequest;
+import com.rubenmartin.calenderyback.user.application.query.getUserCommentData.GetUserCommentDataResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdRequest;
@@ -270,6 +272,15 @@ public class UserController implements UserRestApi {
         IsUserEnabledResponse isUserActive = mediator.dispatch(enable);
 
         return ResponseEntity.ok(new UserValidationDto(new UserInfoResponseDto(user), isUserActive.isEnabled()));
+    }
+
+    @Override
+    @GetMapping("/app/getUserCommentData")
+    public ResponseEntity<CommentUserDto> getUserCommentData(Authentication auth) {
+        GetUserCommentDataRequest getUserRequest = new GetUserCommentDataRequest(auth.getName());
+        GetUserCommentDataResponse getUserResponse = mediator.dispatch(getUserRequest);
+
+        return ResponseEntity.ok(new CommentUserDto(getUserResponse.getFotoPerfil(), getUserResponse.getNombreUsuario()));
     }
 
 

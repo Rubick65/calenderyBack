@@ -47,6 +47,8 @@ public interface UserRestApi {
     ResponseEntity<UserProfileResponseDto> getUserProfileInfo(@RequestParam Long userId, Authentication auth);
 
     ResponseEntity<Void> updateUserSettings(@RequestParam Long userId, @RequestBody UserSettingsResponseDto userSettingsDto);
-    
+
     ResponseEntity<UserValidationDto> validateUser(@RequestBody String email);
+
+    ResponseEntity<CommentUserDto> getUserCommentData(Authentication auth);
 }
