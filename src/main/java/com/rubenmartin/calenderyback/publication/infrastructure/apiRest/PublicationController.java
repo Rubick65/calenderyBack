@@ -4,11 +4,14 @@ import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import com.rubenmartin.calenderyback.publication.application.command.update.UpdatePublicationRequest;
 import com.rubenmartin.calenderyback.publication.application.query.getByUserAndMonthAndYear.GetByUserAndMonthAndYearRequest;
 import com.rubenmartin.calenderyback.publication.application.query.getByUserAndMonthAndYear.GetByUserAndMonthAndYearResponse;
+import com.rubenmartin.calenderyback.publication.application.query.getHomePublications.GetHomePublicationsRequest;
+import com.rubenmartin.calenderyback.publication.application.query.getHomePublications.GetHomePublicationsResponse;
 import com.rubenmartin.calenderyback.publication.application.query.getPublication.GetPublicationByIDRequest;
 import com.rubenmartin.calenderyback.publication.application.query.getPublication.GetPublicationByIDResponse;
 import com.rubenmartin.calenderyback.publication.application.query.getPublicationSignedUrl.getPostPublicationSignedUrl.GetPostPublicationSignedUrlRequest;
 import com.rubenmartin.calenderyback.publication.application.query.getPublicationSignedUrl.getPostPublicationSignedUrl.GetPostPublicationSignedUrlResponse;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PostDataDto;
+import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PublicationHomeDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PublicationProfileDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.SignedUrlPostDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.mapper.PublicationDtoMapper;
@@ -66,4 +69,17 @@ public class PublicationController implements PublicationRestApi {
 
         return ResponseEntity.ok().build();
     }
+
+    @Override
+    @GetMapping("/app/getHomePublications")
+    public ResponseEntity<Page<PublicationHomeDto>> getHomePublications(Pageable pageable, Authentication auth) {
+        GetHomePublicationsRequest homePublicationsRequest = new GetHomePublicationsRequest(auth.getName(), pageable);
+        GetHomePublicationsResponse homePublicationsResponse = mediator.dispatch(homePublicationsRequest);
+        Page<PublicationHomeDto> homePostPage = homePublicationsResponse
+                .getHomePublicationPage()
+                .map(publicationDtoMapper::mapToPublicationHome);
+
+        return ResponseEntity.ok(homePostPage);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.publication.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PostDataDto;
+import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PublicationHomeDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.PublicationProfileDto;
 import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.dto.SignedUrlPostDto;
 import org.springframework.data.domain.Page;
@@ -15,4 +16,7 @@ public interface PublicationRestApi {
     ResponseEntity<SignedUrlPostDto> getSignedPostUrl(Authentication authentication);
 
     ResponseEntity<Void> putPublicationData(PostDataDto postDataDto);
+
+    ResponseEntity<Page<PublicationHomeDto>> getHomePublications(Pageable pageable, Authentication auth);
+
 }

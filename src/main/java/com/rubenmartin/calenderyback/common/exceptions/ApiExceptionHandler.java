@@ -2,8 +2,10 @@ package com.rubenmartin.calenderyback.common.exceptions;
 
 import com.rubenmartin.calenderyback.chat.domain.exception.ChatNotFoundException;
 import com.rubenmartin.calenderyback.follower.domain.exception.FollowerNotFoundException;
+import com.rubenmartin.calenderyback.follower.domain.exception.UserNotFollowingException;
 import com.rubenmartin.calenderyback.message.domain.exception.MessageNotFoundException;
 import com.rubenmartin.calenderyback.publication.domain.exception.PublicationNotFoundException;
+import com.rubenmartin.calenderyback.publicationLike.domain.exception.PublicationLikeNotFoundedException;
 import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserAlreadyExistException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserDisableAccountException;
@@ -157,6 +159,28 @@ public class ApiExceptionHandler {
     @ExceptionHandler(FollowerNotFoundException.class)
     @ResponseBody
     public ErrorMessage followerNotFound(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PublicationLikeNotFoundedException.class)
+    @ResponseBody
+    public ErrorMessage publicationLikeNotFound(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(UserNotFollowingException.class)
+    @ResponseBody
+    public ErrorMessage userNotFollowing(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),
