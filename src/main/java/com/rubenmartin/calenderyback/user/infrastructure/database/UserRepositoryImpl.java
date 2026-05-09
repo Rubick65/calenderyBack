@@ -81,6 +81,6 @@ public class UserRepositoryImpl implements UserRepositoryPort {
 
     @Override
     public Optional<String> getUserPublicKey(Long idUsuario) {
-        return Optional.empty();
+        return userJPARepository.getUserPublicKey(idUsuario);
     }
 }

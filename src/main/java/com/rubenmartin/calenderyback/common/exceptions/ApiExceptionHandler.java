@@ -7,6 +7,7 @@ import com.rubenmartin.calenderyback.message.domain.exception.MessageNotFoundExc
 import com.rubenmartin.calenderyback.publication.domain.exception.PublicationNotFoundException;
 import com.rubenmartin.calenderyback.publicationLike.domain.exception.PublicationLikeNotFoundedException;
 import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
+import com.rubenmartin.calenderyback.user.domain.exception.PublicKeyNotFoundException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserAlreadyExistException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserDisableAccountException;
 import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
@@ -181,6 +182,17 @@ public class ApiExceptionHandler {
     @ExceptionHandler(UserNotFollowingException.class)
     @ResponseBody
     public ErrorMessage userNotFollowing(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(PublicKeyNotFoundException.class)
+    @ResponseBody
+    public ErrorMessage publicKeyNotFound(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),
