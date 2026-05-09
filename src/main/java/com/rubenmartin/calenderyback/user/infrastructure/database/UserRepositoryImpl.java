@@ -5,6 +5,8 @@ import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import com.rubenmartin.calenderyback.user.infrastructure.database.mapper.UserEntityMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +15,6 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryPort {
-
     private final UserJPARepository userJPARepository;
     private final UserEntityMapper userEntityMapper;
 
@@ -62,5 +63,19 @@ public class UserRepositoryImpl implements UserRepositoryPort {
     @Override
     public Optional<Long> getUserIdByEmail(String email) {
         return userJPARepository.getUserIdByEmail(email);
+    }
+
+    @Override
+    public Page<User> findUserContacts(Long idUsuario, Pageable pageable) {
+        return userJPARepository
+                .finUserContacts(idUsuario, pageable)
+                .map(userEntityMapper::mapToUser);
+    }
+
+    @Override
+    public Page<User> findUserContactsByName(Long userId, String userName, Pageable pageable) {
+        return userJPARepository
+                .findUserContactsByName(userId, userName, pageable)
+                .map(userEntityMapper::mapToUser);
     }
 }

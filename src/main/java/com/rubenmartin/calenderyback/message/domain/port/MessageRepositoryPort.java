@@ -11,4 +11,6 @@ public interface MessageRepositoryPort {
 
     Optional<Message> getMessageById(Long userId);
 
+    String getLastChatMessage(Long idUsuario, Long id_receptor);
+
 }

@@ -23,6 +23,8 @@ import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserCommentData.GetUserCommentDataRequest;
 import com.rubenmartin.calenderyback.user.application.query.getUserCommentData.GetUserCommentDataResponse;
+import com.rubenmartin.calenderyback.user.application.query.getUserContacts.GetUserContactsRequest;
+import com.rubenmartin.calenderyback.user.application.query.getUserContacts.GetUserContactsResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdRequest;
 import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUserProfileByIdResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdRequest;
@@ -41,6 +43,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -48,6 +52,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -281,6 +286,20 @@ public class UserController implements UserRestApi {
         GetUserCommentDataResponse getUserResponse = mediator.dispatch(getUserRequest);
 
         return ResponseEntity.ok(new CommentUserDto(getUserResponse.getFotoPerfil(), getUserResponse.getNombreUsuario()));
+    }
+
+    @Override
+    @GetMapping("/app/getUserContacts")
+    public ResponseEntity<Page<UserChatDataDto>> getUserContacts(@RequestParam("nombre") String userName, Pageable pageable, Authentication auth) {
+        GetUserContactsRequest getUserContactsRequest = new GetUserContactsRequest(userName, auth.getName(), pageable);
+        GetUserContactsResponse getUserContactsResponse = mediator.dispatch(getUserContactsRequest);
+
+        Page<User> usersPage = getUserContactsResponse.getContactPage();
+        Map<String, String> lastChatsMessage = getUserContactsResponse.getLastChatsMessage();
+
+        Page<UserChatDataDto> userChatPage = usersPage.map(user -> userMapper.mapToUserChatDto(user, lastChatsMessage.get(user.getNombre())));
+
+        return ResponseEntity.ok(userChatPage);
     }
 
 

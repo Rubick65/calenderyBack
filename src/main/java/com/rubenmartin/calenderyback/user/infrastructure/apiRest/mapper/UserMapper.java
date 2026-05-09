@@ -7,12 +7,10 @@ import com.rubenmartin.calenderyback.user.application.query.getUserProfile.GetUs
 import com.rubenmartin.calenderyback.user.application.query.getUserSettings.GetUserSettingsByIdResponse;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserChatDataDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface UserMapper {
@@ -37,4 +35,11 @@ public interface UserMapper {
 
     @Mapping(target = "fotoPerfil", source = "fotoPerfil")
     UserSettingsResponseDto mapToUserSettingsResponseDto(GetUserSettingsByIdResponse response, String fotoPerfil);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "ultimoMensaje", source = "lastMessage")
+    @Mapping(target = "nombre", source = "user.nombre")
+    @Mapping(target = "idUsuario", source = "user.idUsuario")
+    @Mapping(target = "fotoPerfil", source = "user.fotoPerfil")
+    UserChatDataDto mapToUserChatDto(User user, String lastMessage);
 }

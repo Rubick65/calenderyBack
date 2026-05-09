@@ -20,4 +20,5 @@ public class Message {
     private User toUser;
     private Date timeStamp;
     private String content;
+    private EstadoMensaje messageState;
 }

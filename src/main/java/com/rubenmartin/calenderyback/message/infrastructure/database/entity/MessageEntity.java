@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.message.infrastructure.database.entity;
 
 import com.rubenmartin.calenderyback.chat.infrastructure.database.entity.ChatEntity;
+import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -36,5 +37,9 @@ public class MessageEntity {
 
     @Column(nullable = false, name = "contenido")
     private String content;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private EstadoMensaje messageState;
 
 }

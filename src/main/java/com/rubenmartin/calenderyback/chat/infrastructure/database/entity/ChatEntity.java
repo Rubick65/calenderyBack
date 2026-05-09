@@ -23,4 +23,5 @@ public class ChatEntity {
     @JoinColumn(name = "id_usuario2", nullable = false)
     private UserEntity user2;
 
+
 }

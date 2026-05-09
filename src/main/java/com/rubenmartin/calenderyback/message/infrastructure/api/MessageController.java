@@ -51,7 +51,6 @@ public class MessageController implements MessageApi {
                 "/secured/user/queue/specific-user",
                 messageDtoMapper.mapToMessageDto(message)
         );
-
     }
 
 

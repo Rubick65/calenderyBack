@@ -3,6 +3,8 @@ package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,4 +53,6 @@ public interface UserRestApi {
     ResponseEntity<UserValidationDto> validateUser(@RequestBody String email);
 
     ResponseEntity<CommentUserDto> getUserCommentData(Authentication auth);
+
+    ResponseEntity<Page<UserChatDataDto>> getUserContacts(String userName, Pageable pageable, Authentication auth);
 }

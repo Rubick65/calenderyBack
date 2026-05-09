@@ -34,4 +34,9 @@ public class MessageRepositoryImpl implements MessageRepositoryPort {
         return messageJPARepository.findById(userId)
                 .map(messageEntityMapper::mapToMessage);
     }
+
+    @Override
+    public String getLastChatMessage(Long idUsuario, Long id_receptor) {
+        return messageJPARepository.getLastChatMessage(idUsuario, id_receptor);
+    }
 }

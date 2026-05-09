@@ -1,6 +1,8 @@
 package com.rubenmartin.calenderyback.user.domain.port;
 
 import com.rubenmartin.calenderyback.user.domain.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +24,8 @@ public interface UserRepositoryPort {
     boolean accountIsEnabled(Long idUsuario);
 
     Optional<Long> getUserIdByEmail(String email);
+
+    Page<User> findUserContacts(Long idUsuario, Pageable pageable);
+
+    Page<User> findUserContactsByName(Long idUsuario, String userName, Pageable pageable);
 }

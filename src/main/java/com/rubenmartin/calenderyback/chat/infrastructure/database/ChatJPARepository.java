@@ -11,4 +11,5 @@ public interface ChatJPARepository extends JpaRepository<ChatEntity, Long> {
 
     @Query("SELECT c FROM ChatEntity c WHERE c.user1.idUsuario = :userId OR c.user2.idUsuario = :userId")
     List<ChatEntity> findByUserId(@Param("userId") Long userId);
+
 }

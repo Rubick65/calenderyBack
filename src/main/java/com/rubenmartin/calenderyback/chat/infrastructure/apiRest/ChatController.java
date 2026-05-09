@@ -10,12 +10,11 @@ import com.rubenmartin.calenderyback.chat.infrastructure.apiRest.mapper.ChatDtoM
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/chat")
 @RequiredArgsConstructor
 public class ChatController implements ChatRestApi {

@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.message.infrastructure.enter.dto;
 
+import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -21,4 +22,6 @@ public class MessageDto {
 
     @NotBlank
     private String content;
+
+    private EstadoMensaje messageState;
 }
