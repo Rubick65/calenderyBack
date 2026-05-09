@@ -5,11 +5,11 @@ import com.rubenmartin.calenderyback.message.domain.entity.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 public class SaveMessageRequest implements Request<SaveMessageResponse> {
     private Message message;
-    private Date timeStamp;
+    private LocalDateTime timeStamp;
 }

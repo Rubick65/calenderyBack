@@ -78,4 +78,9 @@ public class UserRepositoryImpl implements UserRepositoryPort {
                 .findUserContactsByName(userId, userName, pageable)
                 .map(userEntityMapper::mapToUser);
     }
+
+    @Override
+    public Optional<String> getUserPublicKey(Long idUsuario) {
+        return Optional.empty();
+    }
 }

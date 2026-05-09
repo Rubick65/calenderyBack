@@ -55,4 +55,6 @@ public interface UserRestApi {
     ResponseEntity<CommentUserDto> getUserCommentData(Authentication auth);
 
     ResponseEntity<Page<UserChatDataDto>> getUserContacts(String userName, Pageable pageable, Authentication auth);
+
+    ResponseEntity<String> getPublicKey(Long userId);
 }

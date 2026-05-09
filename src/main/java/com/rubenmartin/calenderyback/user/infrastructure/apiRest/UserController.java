@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 
+import com.rubenmartin.calenderyback.chat.application.query.checkIfChatExists.CheckIfChatExistsRequest;
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import com.rubenmartin.calenderyback.follower.application.query.isFollowing.isFollowingRequest;
 import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledRequest;
@@ -248,9 +249,13 @@ public class UserController implements UserRestApi {
         UserProfileResponseDto userProfile = userMapper.mapToUserProfileResponseDto(response, fileLink);
 
         isFollowingRequest followingRequest = new isFollowingRequest(auth.getName(), id);
+        CheckIfChatExistsRequest checkIfChatExistsRequest = new CheckIfChatExistsRequest(auth.getName(), id);
 
         boolean isFollowing = mediator.dispatch(followingRequest).isFollowing();
+        boolean chatExists = mediator.dispatch(checkIfChatExistsRequest).isChatExists();
+
         userProfile.setSeguidor(isFollowing);
+        userProfile.setExisteChat(chatExists);
 
         return ResponseEntity.ok(userProfile);
     }
@@ -300,6 +305,12 @@ public class UserController implements UserRestApi {
         Page<UserChatDataDto> userChatPage = usersPage.map(user -> userMapper.mapToUserChatDto(user, lastChatsMessage.get(user.getNombre())));
 
         return ResponseEntity.ok(userChatPage);
+    }
+
+    @Override
+    @GetMapping("/app/getPublicKey")
+    public ResponseEntity<String> getPublicKey(@RequestParam("idUsuario") Long userId) {
+        return null;
     }
 
 

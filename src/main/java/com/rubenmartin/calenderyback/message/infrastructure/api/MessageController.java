@@ -15,7 +15,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class MessageController implements MessageApi {
     @MessageMapping("/secured/chat")
     @SendTo("/secured/history")
     public MessageDto sendMessage(MessageDto messageDto) {
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
         SaveMessageRequest request = new SaveMessageRequest(messageDtoMapper.mapToMessage(messageDto), date);
         SaveMessageResponse response = mediator.dispatch(request);
 
@@ -41,14 +41,14 @@ public class MessageController implements MessageApi {
     @Override
     @MessageMapping("/chat.sendPrivate")
     public void sendSpecific(@Payload MessageDto messageDto, Principal user) {
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
         SaveMessageRequest request = new SaveMessageRequest(messageDtoMapper.mapToMessage(messageDto), date);
         SaveMessageResponse response = mediator.dispatch(request);
         Message message = response.getMessage();
 
         simpMessagingTemplate.convertAndSendToUser(
                 message.getToUser().getEmail(),
-                "/secured/user/queue/specific-user",
+                "/queue/mensajes",
                 messageDtoMapper.mapToMessageDto(message)
         );
     }

@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -18,7 +18,8 @@ public class Message {
     private Chat chatId;
     private User fromUser;
     private User toUser;
-    private Date timeStamp;
+    private LocalDateTime timeStamp;
     private String content;
+    private String selfMessage;
     private EstadoMensaje messageState;
 }

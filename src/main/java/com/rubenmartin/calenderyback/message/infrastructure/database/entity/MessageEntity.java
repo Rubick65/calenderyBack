@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -33,7 +33,10 @@ public class MessageEntity {
     private UserEntity toUser;
 
     @Column(nullable = false, name = "fecha_mensaje")
-    private Date timeStamp;
+    private LocalDateTime timeStamp;
+
+    @Column(name = "mensaje_propio")
+    private String selfMessage;
 
     @Column(nullable = false, name = "contenido")
     private String content;

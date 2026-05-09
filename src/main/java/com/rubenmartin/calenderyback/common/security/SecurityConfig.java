@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/publication/app/**").hasRole("USER")
                         .requestMatchers("/api/chat/**").hasRole("USER")
                         .requestMatchers("/chat/**").hasRole("USER")
-                        .requestMatchers("/ws-endpoint/**").permitAll()
+                        .requestMatchers("/ws-endpoint/**").hasRole("USER")
                         .requestMatchers("/", "/chatTest.html", "/index.html", "/static/**", "/*.js", "/*.css", "/favicon.ico").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()

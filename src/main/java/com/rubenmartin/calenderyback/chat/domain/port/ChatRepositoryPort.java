@@ -12,4 +12,6 @@ public interface ChatRepositoryPort {
 
     Optional<List<Chat>> getUserChats(Long userId);
 
+    Boolean checkIfChatExists(Long userId, Long userToCheckId);
+
 }

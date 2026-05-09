@@ -4,7 +4,7 @@ import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class MessageDto {
@@ -18,10 +18,13 @@ public class MessageDto {
 
     @NotBlank
     private Long toUser;
-    private Date timeStamp;
+    private LocalDateTime timeStamp;
 
     @NotBlank
     private String content;
+
+    @NotBlank
+    private String selfMessage;
 
     private EstadoMensaje messageState;
 }

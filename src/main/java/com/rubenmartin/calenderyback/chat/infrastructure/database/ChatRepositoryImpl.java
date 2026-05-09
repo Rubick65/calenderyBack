@@ -33,4 +33,9 @@ public class ChatRepositoryImpl implements ChatRepositoryPort {
         return Optional.of(chatJPARepository.findByUserId(userId).stream()
                 .map(chatEntityMapper::mapToChat).toList());
     }
+
+    @Override
+    public Boolean checkIfChatExists(Long userId, Long userToCheckId) {
+        return chatJPARepository.checkIfChatExists(userId, userToCheckId);
+    }
 }

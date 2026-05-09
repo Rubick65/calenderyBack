@@ -15,4 +15,5 @@ public class UserProfileResponseDto {
     private int cantidadSeguidores;
     private int cantidadSeguidos;
     private boolean seguidor;
+    private boolean existeChat;
 }

@@ -41,4 +41,7 @@ public interface UserJPARepository extends JpaRepository<UserEntity, Long> {
     Page<UserEntity> findUserContactsByName(@Param("idUsuario") Long idUsuario, @Param("userName") String userName, Pageable pageable);
 
 
+    @Query("SELECT u.clavePublica FROM UserEntity u WHERE u.idUsuario = :idUsuario")
+    Optional<String> getUserPublicKey(@Param("idUsuario") Long idUsuario);
+
 }

@@ -8,7 +8,7 @@ import com.rubenmartin.calenderyback.message.infrastructure.enter.dto.MessageDto
 import com.rubenmartin.calenderyback.message.infrastructure.enter.mapper.MessageDtoMapper;
 import lombok.AllArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 public class MessageEnterPoint implements MessageEnterInterface {
@@ -18,7 +18,7 @@ public class MessageEnterPoint implements MessageEnterInterface {
 
     @Override
     public void saveMessage(MessageDto message) {
-        Date date = new Date();
+        LocalDateTime date = LocalDateTime.now();
         SaveMessageRequest saveRequest = new SaveMessageRequest(messageDtoMapper.mapToMessage(message), date);
         mediator.dispatch(saveRequest);
     }
