@@ -30,6 +30,7 @@ public interface UserMapper {
 
     @Mapping(target = "fotoPerfil", source = "fotoPerfil")
     @Mapping(target = "seguidor", ignore = true)
+    @Mapping(target = "existeChat", ignore = true)
     UserProfileResponseDto mapToUserProfileResponseDto(GetUserProfileByIdResponse response, String fotoPerfil);
 
 
