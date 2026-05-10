@@ -14,7 +14,7 @@ public interface ChatJPARepository extends JpaRepository<ChatEntity, Long> {
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
             "FROM ChatEntity c " +
-            "WHERE (c.user1.idUsuario = :userId AND c.user2.idUsuario = :serToCheckId)" +
+            "WHERE (c.user1.idUsuario = :userId AND c.user2.idUsuario = :userToCheckId)" +
             "OR (c.user2.idUsuario = :userId AND c.user1.idUsuario = :userToCheckId) ")
     Boolean checkIfChatExists(@Param("userId") Long userId, @Param("userToCheckId") Long userToCheckId);
 
