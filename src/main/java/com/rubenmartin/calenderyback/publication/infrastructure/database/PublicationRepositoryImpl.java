@@ -44,4 +44,11 @@ public class PublicationRepositoryImpl implements PublicationRepositoryPort {
 
         return entityPage.map(publicationEntityMapper::mapToPublication);
     }
+
+    @Override
+    public Void deletePublication(Publication publication) {
+        publicationJPARepository.delete(publicationEntityMapper.mapToPublicationEntity(publication));
+
+        return null;
+    }
 }

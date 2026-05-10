@@ -18,4 +18,6 @@ public interface PublicationRepositoryPort {
     Optional<Publication> getPublicationByID(Long id);
 
     Page<Publication> getMonthHomePublications(int currentMonth, Long userId, Pageable pageable);
+
+    Void deletePublication(Publication publication);
 }

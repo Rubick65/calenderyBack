@@ -5,6 +5,7 @@ import com.rubenmartin.calenderyback.follower.domain.exception.FollowerNotFoundE
 import com.rubenmartin.calenderyback.follower.domain.exception.UserNotFollowingException;
 import com.rubenmartin.calenderyback.message.domain.exception.MessageNotFoundException;
 import com.rubenmartin.calenderyback.message.domain.exception.MessageStateNoUpdatedException;
+import com.rubenmartin.calenderyback.publication.domain.exception.PublicationDeleteException;
 import com.rubenmartin.calenderyback.publication.domain.exception.PublicationNotFoundException;
 import com.rubenmartin.calenderyback.publicationLike.domain.exception.PublicationLikeNotFoundedException;
 import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
@@ -205,6 +206,17 @@ public class ApiExceptionHandler {
     @ExceptionHandler(MessageStateNoUpdatedException.class)
     @ResponseBody
     public ErrorMessage messageStateNoUpdated(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(PublicationDeleteException.class)
+    @ResponseBody
+    public ErrorMessage invalidDeletePublication(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),
