@@ -323,12 +323,11 @@ public class UserController implements UserRestApi {
 
     @Override
     @GetMapping("/app/getPublicKey")
-    public ResponseEntity<String> getPublicKey(@RequestParam("idUsuario") Long userId) {
+    public ResponseEntity<PublicUserKeyDto> getPublicKey(@RequestParam("idUsuario") Long userId) {
         GetPublicKeyRequest getPublicKeyRequest = new GetPublicKeyRequest(userId);
         String publicKey = mediator.dispatch(getPublicKeyRequest).getPublicKey();
 
-        return ResponseEntity.ok(publicKey);
+        return ResponseEntity.ok(new PublicUserKeyDto(publicKey));
     }
-
 
 }
