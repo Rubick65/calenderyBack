@@ -4,6 +4,7 @@ import com.rubenmartin.calenderyback.chat.domain.exception.ChatNotFoundException
 import com.rubenmartin.calenderyback.follower.domain.exception.FollowerNotFoundException;
 import com.rubenmartin.calenderyback.follower.domain.exception.UserNotFollowingException;
 import com.rubenmartin.calenderyback.message.domain.exception.MessageNotFoundException;
+import com.rubenmartin.calenderyback.message.domain.exception.MessageStateNoUpdatedException;
 import com.rubenmartin.calenderyback.publication.domain.exception.PublicationNotFoundException;
 import com.rubenmartin.calenderyback.publicationLike.domain.exception.PublicationLikeNotFoundedException;
 import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
@@ -201,7 +202,7 @@ public class ApiExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    @ExceptionHandler(MessageNotFoundException.class)
+    @ExceptionHandler(MessageStateNoUpdatedException.class)
     @ResponseBody
     public ErrorMessage messageStateNoUpdated(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(

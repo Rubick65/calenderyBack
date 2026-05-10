@@ -55,4 +55,9 @@ public class MessageRepositoryImpl implements MessageRepositoryPort {
         return messageJPARepository.changeMessageState(messageId, messageState);
     }
 
+    @Override
+    public Boolean checkForPendingMessages(Long userId) {
+        return messageJPARepository.checkIfForPendingMessages(userId, EstadoMensaje.ENTREGADO);
+    }
+
 }

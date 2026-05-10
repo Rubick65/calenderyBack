@@ -27,8 +27,13 @@ public interface MessageJPARepository extends JpaRepository<MessageEntity, Long>
 
     @Modifying
     @Transactional
-    @Query("UPDATE MessageEntity m SET m.estado = :state WHERE m.id = :messageId")
+    @Query("UPDATE MessageEntity m SET m.messageState = :state WHERE m.id = :messageId")
     int changeMessageState(@Param("messageId") Long messageId, @Param("state") EstadoMensaje messageState);
 
+    @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true else false END " +
+            "FROM MessageEntity m " +
+            "WHERE ((m.fromUser.idUsuario = :userId OR m.toUser.idUsuario = :userId) " +
+            "AND  m.messageState = :state)")
+    boolean checkIfForPendingMessages(@Param("userId") Long userId, @Param("state") EstadoMensaje messageState);
 
 }

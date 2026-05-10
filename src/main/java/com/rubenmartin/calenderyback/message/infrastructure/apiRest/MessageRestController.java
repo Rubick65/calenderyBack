@@ -2,6 +2,7 @@ package com.rubenmartin.calenderyback.message.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import com.rubenmartin.calenderyback.message.application.command.changeState.ChangeMessageStateRequest;
+import com.rubenmartin.calenderyback.message.application.command.checkForPendingMessages.CheckForPendingMessagesRequest;
 import com.rubenmartin.calenderyback.message.application.query.getChatMessages.GetChatMessagesByIdRequest;
 import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.message.infrastructure.apiRest.dto.MessageDto;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,7 +45,16 @@ public class MessageRestController implements MessageRestApi {
         EstadoMensaje readState = EstadoMensaje.LEIDO;
         ChangeMessageStateRequest changeMessageStateRequest = new ChangeMessageStateRequest(messageId, readState);
         mediator.dispatch(changeMessageStateRequest);
-        
+
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    @GetMapping("/app/checkForPendingMessages")
+    public ResponseEntity<Boolean> checkForPendingMessages(Authentication auth) {
+        CheckForPendingMessagesRequest checkForPendingMessagesRequest = new CheckForPendingMessagesRequest(auth.getName());
+        boolean pendingMessages = mediator.dispatch(checkForPendingMessagesRequest).isPendingMessages();
+        
+        return ResponseEntity.ok(pendingMessages);
     }
 }
