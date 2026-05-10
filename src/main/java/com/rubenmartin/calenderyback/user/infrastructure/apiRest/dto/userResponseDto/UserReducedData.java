@@ -8,5 +8,5 @@ import lombok.Data;
 public class UserReducedData {
     private Long idUsuario;
     private String nombre;
-    private String fotoPefil;
+    private String fotoPerfil;
 }

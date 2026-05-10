@@ -40,6 +40,15 @@ public interface UserJPARepository extends JpaRepository<UserEntity, Long> {
             "))")
     Page<UserEntity> findUserContactsByName(@Param("idUsuario") Long idUsuario, @Param("userName") String userName, Pageable pageable);
 
+    @Query("SELECT DISTINCT u FROM UserEntity u " +
+            "WHERE u.idUsuario <> :idUsuario")
+    Page<UserEntity> findSearchUsers(@Param("idUsuario") Long idUsuario, Pageable pageable);
+
+    @Query("SELECT DISTINCT u FROM UserEntity u " +
+            "WHERE (u.idUsuario <> :idUsuario " +
+            "AND LOWER(u.nombre) LIKE LOWER(CONCAT('%', :userName, '%')))")
+    Page<UserEntity> findSearchUsersByName(@Param("idUsuario") Long idUsuario, @Param("userName") String userName, Pageable pageable);
+
 
     @Query("SELECT u.clavePublica FROM UserEntity u WHERE u.idUsuario = :idUsuario")
     Optional<String> getUserPublicKey(@Param("idUsuario") Long idUsuario);

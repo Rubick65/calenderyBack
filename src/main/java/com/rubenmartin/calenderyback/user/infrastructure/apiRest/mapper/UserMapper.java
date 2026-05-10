@@ -9,6 +9,7 @@ import com.rubenmartin.calenderyback.user.domain.entity.User;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.UserDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserChatDataDto;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserProfileResponseDto;
+import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserReducedData;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserSettingsResponseDto;
 import org.mapstruct.*;
 
@@ -43,4 +44,10 @@ public interface UserMapper {
     @Mapping(target = "idUsuario", source = "user.idUsuario")
     @Mapping(target = "fotoPerfil", source = "user.fotoPerfil")
     UserChatDataDto mapToUserChatDto(User user, String lastMessage);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "idUsuario", source = "idUsuario")
+    @Mapping(target = "nombre", source = "nombre")
+    @Mapping(target = "fotoPerfil", source = "fotoPerfil")
+    UserReducedData mapToReduceData(User user);
 }

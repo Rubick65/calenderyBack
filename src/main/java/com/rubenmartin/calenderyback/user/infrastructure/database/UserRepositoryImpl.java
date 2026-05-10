@@ -80,6 +80,20 @@ public class UserRepositoryImpl implements UserRepositoryPort {
     }
 
     @Override
+    public Page<User> findSearchUsers(Long idUsuario, Pageable pageable) {
+        return userJPARepository
+                .findSearchUsers(idUsuario, pageable)
+                .map(userEntityMapper::mapToUser);
+    }
+
+    @Override
+    public Page<User> findSearchUsersByName(Long idUsuario, String userName, Pageable pageable) {
+        return userJPARepository
+                .findSearchUsersByName(idUsuario, userName, pageable)
+                .map(userEntityMapper::mapToUser);
+    }
+
+    @Override
     public Optional<String> getUserPublicKey(Long idUsuario) {
         return userJPARepository.getUserPublicKey(idUsuario);
     }

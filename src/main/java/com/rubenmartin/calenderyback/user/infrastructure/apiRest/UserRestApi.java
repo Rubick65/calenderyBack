@@ -56,5 +56,7 @@ public interface UserRestApi {
 
     ResponseEntity<Page<UserChatDataDto>> getUserContacts(String userName, Pageable pageable, Authentication auth);
 
+    ResponseEntity<Page<UserReducedData>> getSearchUsers(String userName, Pageable pageable, Authentication auth);
+
     ResponseEntity<String> getPublicKey(Long userId);
 }

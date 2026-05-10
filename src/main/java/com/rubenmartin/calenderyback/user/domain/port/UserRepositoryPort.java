@@ -29,5 +29,9 @@ public interface UserRepositoryPort {
 
     Page<User> findUserContactsByName(Long idUsuario, String userName, Pageable pageable);
 
+    Page<User> findSearchUsers(Long idUsuario, Pageable pageable);
+
+    Page<User> findSearchUsersByName(Long idUsuario, String userName, Pageable pageable);
+
     Optional<String> getUserPublicKey(Long idUsuario);
 }

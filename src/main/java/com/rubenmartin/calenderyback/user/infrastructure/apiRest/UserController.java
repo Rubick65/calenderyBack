@@ -23,6 +23,8 @@ import com.rubenmartin.calenderyback.user.application.query.getById.GetUserByIdR
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlRequest;
 import com.rubenmartin.calenderyback.user.application.query.getProfileSignedUrl.getUploadSignedUrl.SupabaseStorageUploadUrlResponse;
 import com.rubenmartin.calenderyback.user.application.query.getPublicKey.GetPublicKeyRequest;
+import com.rubenmartin.calenderyback.user.application.query.getSearchUsers.GetSearchUsersRequest;
+import com.rubenmartin.calenderyback.user.application.query.getSearchUsers.GetSearchUsersResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserCommentData.GetUserCommentDataRequest;
 import com.rubenmartin.calenderyback.user.application.query.getUserCommentData.GetUserCommentDataResponse;
 import com.rubenmartin.calenderyback.user.application.query.getUserContacts.GetUserContactsRequest;
@@ -307,6 +309,17 @@ public class UserController implements UserRestApi {
 
         return ResponseEntity.ok(userChatPage);
     }
+
+    @Override
+    @GetMapping("/app/getSearchUsers")
+    public ResponseEntity<Page<UserReducedData>> getSearchUsers(@RequestParam("nombre") String userName, Pageable pageable, Authentication auth) {
+        GetSearchUsersRequest getSearchUsersRequest = new GetSearchUsersRequest(userName, auth.getName(), pageable);
+        GetSearchUsersResponse getSearchUsersResponse = mediator.dispatch(getSearchUsersRequest);
+        Page<UserReducedData> searchUserPage = getSearchUsersResponse.getSearchUserPage().map(userMapper::mapToReduceData);
+
+        return ResponseEntity.ok(searchUserPage);
+    }
+
 
     @Override
     @GetMapping("/app/getPublicKey")
