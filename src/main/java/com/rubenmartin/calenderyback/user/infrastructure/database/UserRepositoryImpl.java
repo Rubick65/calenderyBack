@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,7 @@ public class UserRepositoryImpl implements UserRepositoryPort {
         return entityUsers.stream().map(userEntityMapper::mapToUser).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<User> findUserById(Long id) {
         return userJPARepository.findById(id)
