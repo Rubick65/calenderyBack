@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.message.infrastructure.api;
 
-import com.rubenmartin.calenderyback.message.infrastructure.enter.dto.MessageDto;
+
+import com.rubenmartin.calenderyback.message.infrastructure.apiRest.dto.MessageDto;
 
 import java.security.Principal;
 

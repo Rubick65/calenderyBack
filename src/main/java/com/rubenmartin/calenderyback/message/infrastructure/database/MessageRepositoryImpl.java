@@ -5,6 +5,8 @@ import com.rubenmartin.calenderyback.message.domain.port.MessageRepositoryPort;
 import com.rubenmartin.calenderyback.message.infrastructure.database.entity.MessageEntity;
 import com.rubenmartin.calenderyback.message.infrastructure.database.mapper.MessageEntityMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -38,5 +40,12 @@ public class MessageRepositoryImpl implements MessageRepositoryPort {
     @Override
     public String getLastChatMessage(Long idUsuario, Long id_receptor) {
         return messageJPARepository.getLastChatMessage(idUsuario, id_receptor);
+    }
+
+    @Override
+    public Page<Message> getMessages(Long idChat, Pageable pageable) {
+        return messageJPARepository
+                .getMessages(idChat, pageable)
+                .map(messageEntityMapper::mapToMessage);
     }
 }

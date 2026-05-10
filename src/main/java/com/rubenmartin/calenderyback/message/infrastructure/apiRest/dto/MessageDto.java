@@ -1,4 +1,4 @@
-package com.rubenmartin.calenderyback.message.infrastructure.enter.dto;
+package com.rubenmartin.calenderyback.message.infrastructure.apiRest.dto;
 
 import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import jakarta.validation.constraints.NotBlank;

@@ -1,8 +1,11 @@
 package com.rubenmartin.calenderyback.message.infrastructure.database;
 
 import com.rubenmartin.calenderyback.message.infrastructure.database.entity.MessageEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface MessageJPARepository extends JpaRepository<MessageEntity, Long> {
 
@@ -14,5 +17,10 @@ public interface MessageJPARepository extends JpaRepository<MessageEntity, Long>
             " ORDER BY m.fecha_mensaje DESC" +
             " LIMIT 1", nativeQuery = true)
     String getLastChatMessage(Long idUsuario, Long id_receptor);
+
+    @Query("SELECT m FROM MessageEntity m " +
+            "WHERE m.chatId.id = :chatId")
+    Page<MessageEntity> getMessages(@Param("chatId") Long chatId, Pageable pageable);
+
 
 }
