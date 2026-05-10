@@ -19,4 +19,6 @@ public interface PublicationRestApi {
 
     ResponseEntity<Page<PublicationHomeDto>> getHomePublications(Pageable pageable, Authentication auth);
 
+    ResponseEntity<Void> deletePublication(Long publicationId, Authentication authentication);
+
 }

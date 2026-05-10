@@ -23,4 +23,5 @@ public interface PublicationJPARepository extends JpaRepository<PublicationEntit
             "AND YEAR(p.publicationDate.uploadDate) = YEAR(CURRENT_DATE)" +
             "AND p.user.idUsuario <> :userId")
     Page<PublicationEntity> getCurrentMonthPublications(@Param("currentMonth") int currentMonth, @Param("userId") Long userId, Pageable pageable);
+    
 }

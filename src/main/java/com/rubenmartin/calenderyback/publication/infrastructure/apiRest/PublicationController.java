@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.publication.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
+import com.rubenmartin.calenderyback.publication.application.command.delete.DeletePublicationRequest;
 import com.rubenmartin.calenderyback.publication.application.command.update.UpdatePublicationRequest;
 import com.rubenmartin.calenderyback.publication.application.query.getByUserAndMonthAndYear.GetByUserAndMonthAndYearRequest;
 import com.rubenmartin.calenderyback.publication.application.query.getByUserAndMonthAndYear.GetByUserAndMonthAndYearResponse;
@@ -18,6 +19,7 @@ import com.rubenmartin.calenderyback.publication.infrastructure.apiRest.mapper.P
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -80,6 +82,15 @@ public class PublicationController implements PublicationRestApi {
                 .map(publicationDtoMapper::mapToPublicationHome);
 
         return ResponseEntity.ok(homePostPage);
+    }
+
+    @Override
+    @DeleteMapping("/app/deletePublication")
+    public ResponseEntity<Void> deletePublication(@Param("idPublicacion") Long publicationId, Authentication authentication) {
+        DeletePublicationRequest deletePublicationRequest = new DeletePublicationRequest(authentication.getName(), publicationId);
+        mediator.dispatch(deletePublicationRequest);
+        
+        return ResponseEntity.ok().build();
     }
 
 }
