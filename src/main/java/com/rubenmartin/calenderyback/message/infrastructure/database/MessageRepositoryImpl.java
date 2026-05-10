@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.message.infrastructure.database;
 
+import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.message.domain.entity.Message;
 import com.rubenmartin.calenderyback.message.domain.port.MessageRepositoryPort;
 import com.rubenmartin.calenderyback.message.infrastructure.database.entity.MessageEntity;
@@ -48,4 +49,10 @@ public class MessageRepositoryImpl implements MessageRepositoryPort {
                 .getMessages(idChat, pageable)
                 .map(messageEntityMapper::mapToMessage);
     }
+
+    @Override
+    public int changeMessageState(Long messageId, EstadoMensaje messageState) {
+        return messageJPARepository.changeMessageState(messageId, messageState);
+    }
+
 }

@@ -1,11 +1,14 @@
 package com.rubenmartin.calenderyback.message.infrastructure.database;
 
+import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.message.infrastructure.database.entity.MessageEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface MessageJPARepository extends JpaRepository<MessageEntity, Long> {
 
@@ -21,6 +24,11 @@ public interface MessageJPARepository extends JpaRepository<MessageEntity, Long>
     @Query("SELECT m FROM MessageEntity m " +
             "WHERE m.chatId.id = :chatId")
     Page<MessageEntity> getMessages(@Param("chatId") Long chatId, Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE MessageEntity m SET m.estado = :state WHERE m.id = :messageId")
+    int changeMessageState(@Param("messageId") Long messageId, @Param("state") EstadoMensaje messageState);
 
 
 }

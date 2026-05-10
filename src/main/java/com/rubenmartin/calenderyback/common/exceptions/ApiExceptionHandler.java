@@ -189,10 +189,21 @@ public class ApiExceptionHandler {
         );
     }
 
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(PublicKeyNotFoundException.class)
     @ResponseBody
     public ErrorMessage publicKeyNotFound(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(MessageNotFoundException.class)
+    @ResponseBody
+    public ErrorMessage messageStateNoUpdated(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),
