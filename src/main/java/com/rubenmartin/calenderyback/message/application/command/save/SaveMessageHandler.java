@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.message.application.command.save;
 
 import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
+import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.message.domain.entity.Message;
 import com.rubenmartin.calenderyback.message.domain.port.MessageRepositoryPort;
 import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
@@ -25,7 +26,8 @@ public class SaveMessageHandler implements RequestHandler<SaveMessageRequest, Sa
         message.setTimeStamp(request.getTimeStamp());
         message.setFromUser(userRepository.findUserById(fromUserId).orElseThrow(() -> new UserNotFoundException(fromUserId)));
         message.setToUser(userRepository.findUserById(toUserId).orElseThrow(() -> new UserNotFoundException(toUserId)));
-
+        message.setMessageState(EstadoMensaje.ENVIADO);
+        
         Message savedMessage = messageRepository.saveMessage(message).orElse(null);
 
         return new SaveMessageResponse(savedMessage);

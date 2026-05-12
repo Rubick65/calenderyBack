@@ -5,11 +5,12 @@ import com.rubenmartin.calenderyback.message.application.command.changeState.Cha
 import com.rubenmartin.calenderyback.message.application.command.checkForPendingMessages.CheckForPendingMessagesRequest;
 import com.rubenmartin.calenderyback.message.application.query.getChatMessages.GetChatMessagesByIdRequest;
 import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
-import com.rubenmartin.calenderyback.message.infrastructure.apiRest.dto.MessageDto;
+import com.rubenmartin.calenderyback.message.infrastructure.apiRest.dto.MessageResponseDto;
 import com.rubenmartin.calenderyback.message.infrastructure.apiRest.mapper.MessageDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,11 @@ public class MessageRestController implements MessageRestApi {
     private final MessageDtoMapper messageDtoMapper;
 
     @Override
+    //@PreAuthorize("#currentUserId == authentication.principal.idUsuario")
     @GetMapping("/app/getChatMessages")
-    public ResponseEntity<Page<MessageDto>> getMessages(@RequestParam("idChat") Long idChat, Pageable pageable) {
+    public ResponseEntity<Page<MessageResponseDto>> getMessages(@RequestParam("idChat") Long idChat, @Param("usuarioActual") Long currentUserId, Pageable pageable) {
         GetChatMessagesByIdRequest getChatMessages = new GetChatMessagesByIdRequest(idChat, pageable);
-        Page<MessageDto> messagePage = mediator.dispatch(getChatMessages).getMessagePage().map(messageDtoMapper::mapToMessageDto);
+        Page<MessageResponseDto> messagePage = mediator.dispatch(getChatMessages).getMessagePage().map(message -> messageDtoMapper.mapToMessageResponse(message, currentUserId));
 
         return ResponseEntity.ok(messagePage);
     }
@@ -54,7 +56,7 @@ public class MessageRestController implements MessageRestApi {
     public ResponseEntity<Boolean> checkForPendingMessages(Authentication auth) {
         CheckForPendingMessagesRequest checkForPendingMessagesRequest = new CheckForPendingMessagesRequest(auth.getName());
         boolean pendingMessages = mediator.dispatch(checkForPendingMessagesRequest).isPendingMessages();
-        
+
         return ResponseEntity.ok(pendingMessages);
     }
 }

@@ -1,6 +1,6 @@
 package com.rubenmartin.calenderyback.message.infrastructure.apiRest;
 
-import com.rubenmartin.calenderyback.message.infrastructure.apiRest.dto.MessageDto;
+import com.rubenmartin.calenderyback.message.infrastructure.apiRest.dto.MessageResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 
 public interface MessageRestApi {
 
-    ResponseEntity<Page<MessageDto>> getMessages(Long idChat, Pageable pageable);
+    ResponseEntity<Page<MessageResponseDto>> getMessages(Long idChat, Long usuarioActual, Pageable pageable);
 
     ResponseEntity<Void> changeMessageToSendState(Long messageId);
 
