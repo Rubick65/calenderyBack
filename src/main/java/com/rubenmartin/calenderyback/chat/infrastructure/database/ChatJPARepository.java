@@ -18,5 +18,9 @@ public interface ChatJPARepository extends JpaRepository<ChatEntity, Long> {
             "OR (c.user2.idUsuario = :userId AND c.user1.idUsuario = :userToCheckId) ")
     Boolean checkIfChatExists(@Param("userId") Long userId, @Param("userToCheckId") Long userToCheckId);
 
+    @Query("SELECT c.id FROM ChaetEntity c " +
+            "WHERE ((c.user1.idUsuario = :user1Id AND c.user2.idUsuario = :user2Id) " +
+            "OR (c.user1.idUsuario = :user2Id AND c.user2.idUsuario =: user1Id)) ")
+    Long getChatId(Long user1Id, Long user2Id);
 
 }

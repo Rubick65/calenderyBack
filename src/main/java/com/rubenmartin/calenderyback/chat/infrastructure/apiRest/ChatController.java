@@ -3,13 +3,16 @@ package com.rubenmartin.calenderyback.chat.infrastructure.apiRest;
 import com.rubenmartin.calenderyback.chat.application.command.save.SaveChatRequest;
 import com.rubenmartin.calenderyback.chat.application.query.getChat.GetChatByIdRequest;
 import com.rubenmartin.calenderyback.chat.application.query.getChat.GetChatByIdResponse;
+import com.rubenmartin.calenderyback.chat.application.query.getChatId.GetChatIdRequest;
 import com.rubenmartin.calenderyback.chat.application.query.getUserChats.GetUserChatByUserIdRequest;
 import com.rubenmartin.calenderyback.chat.application.query.getUserChats.GetUserChatByUserResponse;
 import com.rubenmartin.calenderyback.chat.infrastructure.apiRest.entity.ChatDto;
+import com.rubenmartin.calenderyback.chat.infrastructure.apiRest.entity.ChatId;
 import com.rubenmartin.calenderyback.chat.infrastructure.apiRest.mapper.ChatDtoMapper;
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,10 +26,11 @@ public class ChatController implements ChatRestApi {
 
     @Override
     @PostMapping("/saveChat")
-    public ResponseEntity<Void> saveChat(@RequestBody ChatDto chat) {
+    public ResponseEntity<ChatId> saveChat(@RequestBody ChatDto chat) {
         SaveChatRequest saveChatRequest = new SaveChatRequest(chatDtoMapper.mapToChat(chat));
-        mediator.dispatch(saveChatRequest);
-        return ResponseEntity.ok().build();
+        Long chatId = mediator.dispatch(saveChatRequest).getSavedChat().getId();
+        
+        return ResponseEntity.ok(new ChatId(chatId));
     }
 
     @Override
@@ -51,5 +55,14 @@ public class ChatController implements ChatRestApi {
                 .toList();
 
         return ResponseEntity.ok(userChats);
+    }
+
+    @Override
+    @GetMapping("/getUserChat")
+    public ResponseEntity<ChatId> getChatId(@RequestParam("idUsuario") Long user2Id, Authentication auth) {
+        GetChatIdRequest getChatIdRequest = new GetChatIdRequest(auth.getName(), user2Id);
+        Long chatId = mediator.dispatch(getChatIdRequest).getChatId();
+
+        return ResponseEntity.ok(new ChatId(chatId));
     }
 }

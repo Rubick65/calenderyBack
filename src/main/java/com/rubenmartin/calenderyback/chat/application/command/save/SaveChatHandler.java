@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class SaveChatHandler implements RequestHandler<SaveChatRequest, Void> {
+public class SaveChatHandler implements RequestHandler<SaveChatRequest, SaveChatResponse> {
 
     private final ChatRepositoryPort chatRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
 
     @Override
-    public Void handle(SaveChatRequest request) {
+    public SaveChatResponse handle(SaveChatRequest request) {
         Chat chat = request.getChat();
 
         Long user1Id = chat.getUser1().getIdUsuario();
@@ -24,9 +24,10 @@ public class SaveChatHandler implements RequestHandler<SaveChatRequest, Void> {
 
         chat.setUser1(userRepositoryPort.findUserById(user1Id).orElseThrow(() -> new UserNotFoundException(user1Id)));
         chat.setUser2(userRepositoryPort.findUserById(user2Id).orElseThrow(() -> new UserNotFoundException(user2Id)));
+
+        Chat savedChat = chatRepositoryPort.saveChat(chat);
         
-        chatRepositoryPort.saveChat(chat);
-        return null;
+        return new SaveChatResponse(savedChat);
     }
 
     @Override

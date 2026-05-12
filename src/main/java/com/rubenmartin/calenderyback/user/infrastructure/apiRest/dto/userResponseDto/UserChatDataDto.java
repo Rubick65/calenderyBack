@@ -8,5 +8,4 @@ public class UserChatDataDto {
     private String nombre;
     private String fotoPerfil;
     private String ultimoMensaje;
-
 }

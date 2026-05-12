@@ -17,9 +17,11 @@ public class ChatRepositoryImpl implements ChatRepositoryPort {
     private final ChatEntityMapper chatEntityMapper;
 
     @Override
-    public void saveChat(Chat chat) {
+    public Chat saveChat(Chat chat) {
         ChatEntity chatEntity = chatEntityMapper.mapToChatEntity(chat);
-        chatJPARepository.save(chatEntity);
+        ChatEntity savedChat = chatJPARepository.save(chatEntity);
+
+        return chatEntityMapper.mapToChat(savedChat);
     }
 
     @Override
@@ -37,5 +39,10 @@ public class ChatRepositoryImpl implements ChatRepositoryPort {
     @Override
     public Boolean checkIfChatExists(Long userId, Long userToCheckId) {
         return chatJPARepository.checkIfChatExists(userId, userToCheckId);
+    }
+
+    @Override
+    public Long getChatId(Long user1Id, Long user2Id) {
+        return chatJPARepository.getChatId(user1Id, user2Id);
     }
 }

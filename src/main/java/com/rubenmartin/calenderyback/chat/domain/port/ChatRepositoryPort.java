@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatRepositoryPort {
-    void saveChat(Chat chat);
+    Chat saveChat(Chat chat);
 
     Optional<Chat> getChatById(Long id);
 
     Optional<List<Chat>> getUserChats(Long userId);
 
     Boolean checkIfChatExists(Long userId, Long userToCheckId);
+
+    Long getChatId(Long user1Id, Long user2Id);
 
 }
