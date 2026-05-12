@@ -35,10 +35,10 @@ public class MessageEntity {
     @Column(nullable = false, name = "fecha_mensaje")
     private LocalDateTime timeStamp;
 
-    @Column(name = "mensaje_propio")
+    @Column(name = "mensaje_propio", columnDefinition = "TEXT")
     private String selfMessage;
 
-    @Column(nullable = false, name = "contenido")
+    @Column(nullable = false, name = "contenido", columnDefinition = "TEXT")
     private String content;
 
     @Enumerated(EnumType.STRING)

@@ -1,6 +1,9 @@
 package com.rubenmartin.calenderyback.follower.infrastructure.database;
 
 import com.rubenmartin.calenderyback.follower.infrastructure.database.entity.FollowerEntity;
+import com.rubenmartin.calenderyback.user.infrastructure.database.entity.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +24,11 @@ public interface FollowerJPARepository extends JpaRepository<FollowerEntity, Lon
     @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END " +
             "FROM FollowerEntity f " +
             "WHERE f.userFollow.idUsuario = :idUsuario AND f.userFollowed.idUsuario = :possibleFollower")
-    boolean isFollowing(@Param("idUsuario") Long idUsuario, @Param("possibleFollower")Long possibleFollower);
+    boolean isFollowing(@Param("idUsuario") Long idUsuario, @Param("possibleFollower") Long possibleFollower);
+
+    @Query("SELECT f.userFollow FROM  FollowerEntity f WHERE f.userFollowed.idUsuario = :userId")
+    Page<UserEntity> getUserFollowers(@Param("userId") Long userId, Pageable pageable);
+
+    @Query("SELECT f.userFollowed FROM  FollowerEntity f WHERE f.userFollowed.idUsuario = :userId")
+    Page<UserEntity> getUserFollowing(@Param("userId") Long userId, Pageable pageable);
 }
