@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -31,12 +30,10 @@ public class GetByUserAndMonthAndYearHandler implements RequestHandler<GetByUser
 
         Page<Publication> publicationPage = publicationRepositoryPort.findUserPublications(idUsuario, request.getMonth(), request.getYear(), request.getPageable());
         List<Publication> publicationsList = publicationPage.getContent().stream().toList();
-        List<String> fileNameList = publicationsList.stream().map(Publication::getPublicationFileName).toList();
 
-        Map<String, String> fileSignedUrls = getSignedUrl.createStorageSignedUrls(BUCKET_NAME, fileNameList);
 
         publicationsList.forEach(publication -> {
-            String signedUrl = fileSignedUrls.get(publication.getPublicationFileName());
+            String signedUrl = getSignedUrl.createPublicUrl(BUCKET_NAME, publication.getPublicationFileName());
 
             boolean userLikePublication = publicationLikeRepositoryPort.userLiked(loggedUserId, publication.getId());
             publication.setLike(userLikePublication);

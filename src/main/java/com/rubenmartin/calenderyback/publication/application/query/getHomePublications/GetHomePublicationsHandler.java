@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -26,24 +25,29 @@ public class GetHomePublicationsHandler implements RequestHandler<GetHomePublica
     private final PublicationLikeRepositoryPort publicationLikeRepositoryPort;
     private final GetSignedUrl getSignedUrl;
     private final String BUCKET_NAME = "fotos_publicaciones";
-    
+
     @Override
     public GetHomePublicationsResponse handle(GetHomePublicationsRequest request) {
+        //StopWatch sw = new StopWatch("GetHomePublications Performance");
+
+        //sw.start("Fetch User & Pageable");
         String loggedUserEmail = request.getUserEmail();
         Long loggedUserId = userRepositoryPort.getUserIdByEmail(loggedUserEmail).orElseThrow(() -> new UserNotFoundException(loggedUserEmail));
         Pageable pageable = request.getPageable();
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "publicationDate.uploadDate"));
+        //sw.stop();
 
+        //sw.start("Database Query (Publications)");
         int mont = LocalDate.now().getMonthValue();
 
         Page<Publication> publicationPage = publicationRepositoryPort.getMonthHomePublications(mont, loggedUserId, pageable);
-        List<Publication> publicationsList = publicationPage.getContent().stream().toList();
-        List<String> fileNameList = publicationsList.stream().map(Publication::getPublicationFileName).toList();
+        //sw.stop();
 
-        Map<String, String> fileSignedUrls = getSignedUrl.createStorageSignedUrls(BUCKET_NAME, fileNameList);
+        //sw.start("Signed URLs & Likes Logic");
+        List<Publication> publicationsList = publicationPage.getContent().stream().toList();
 
         publicationsList.forEach(publication -> {
-            String signedUrl = fileSignedUrls.get(publication.getPublicationFileName());
+            String signedUrl = getSignedUrl.createPublicUrl(BUCKET_NAME, publication.getPublicationFileName());
 
             boolean userLikePublication = publicationLikeRepositoryPort.userLiked(loggedUserId, publication.getId());
             publication.setLike(userLikePublication);
@@ -51,6 +55,9 @@ public class GetHomePublicationsHandler implements RequestHandler<GetHomePublica
             if (signedUrl != null)
                 publication.setPublicationFileName(signedUrl);
         });
+        //sw.stop();
+
+        // System.out.println(sw.prettyPrint());
         return new GetHomePublicationsResponse(publicationPage);
     }
 
