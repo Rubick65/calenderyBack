@@ -25,6 +25,7 @@ public interface MessageDtoMapper {
     @Mapping(target = "estadoMensaje", source = "messageState")
     @Mapping(target = "contenido",
             expression = "java(isFromMe(message, currentUserId) ? message.getSelfMessage() : message.getContent())")
+    @Mapping(target = "idUsuario", source = "fromUser.idUsuario")
     MessageResponseDto mapToMessageResponse(Message message, @Context Long currentUserId);
 
     default boolean isFromMe(Message message, Long currentUserId) {
