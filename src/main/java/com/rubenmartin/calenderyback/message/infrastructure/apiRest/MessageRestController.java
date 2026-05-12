@@ -10,7 +10,6 @@ import com.rubenmartin.calenderyback.message.infrastructure.apiRest.mapper.Messa
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class MessageRestController implements MessageRestApi {
     @Override
     //@PreAuthorize("#currentUserId == authentication.principal.idUsuario")
     @GetMapping("/app/getChatMessages")
-    public ResponseEntity<Page<MessageResponseDto>> getMessages(@RequestParam("idChat") Long idChat, @Param("usuarioActual") Long currentUserId, Pageable pageable) {
+    public ResponseEntity<Page<MessageResponseDto>> getMessages(@RequestParam("idChat") Long idChat, @RequestParam("usuarioActual") Long currentUserId, Pageable pageable) {
         GetChatMessagesByIdRequest getChatMessages = new GetChatMessagesByIdRequest(idChat, pageable);
         Page<MessageResponseDto> messagePage = mediator.dispatch(getChatMessages).getMessagePage().map(message -> messageDtoMapper.mapToMessageResponse(message, currentUserId));
 
