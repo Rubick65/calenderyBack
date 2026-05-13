@@ -21,12 +21,21 @@ public interface MessageDtoMapper {
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "idMensaje", source = "id")
+    @Mapping(target = "idChat", source = "chatId.id")
     @Mapping(target = "timeStamp", source = "timeStamp")
     @Mapping(target = "estadoMensaje", source = "messageState")
     @Mapping(target = "contenido",
             expression = "java(isFromMe(message, currentUserId) ? message.getSelfMessage() : message.getContent())")
     @Mapping(target = "idUsuario", source = "fromUser.idUsuario")
     MessageResponseDto mapToMessageResponse(Message message, @Context Long currentUserId);
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "idMensaje", source = "message.id")
+    @Mapping(target = "idChat", source = "chatId")
+    @Mapping(target = "timeStamp", source = "message.timeStamp")
+    @Mapping(target = "estadoMensaje", source = "message.messageState")
+    @Mapping(target = "contenido", source = "message.content")
+    MessageResponseDto mapToMessageResponseChat(Message message, Long chatId);
 
     default boolean isFromMe(Message message, Long currentUserId) {
         return message.getFromUser().getIdUsuario().equals(currentUserId);

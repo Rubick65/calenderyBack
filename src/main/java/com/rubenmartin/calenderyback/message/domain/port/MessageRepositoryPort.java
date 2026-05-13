@@ -3,6 +3,7 @@ package com.rubenmartin.calenderyback.message.domain.port;
 
 import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.message.domain.entity.Message;
+import com.rubenmartin.calenderyback.message.domain.model.LastMessageDataModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,7 +15,7 @@ public interface MessageRepositoryPort {
 
     Optional<Message> getMessageById(Long userId);
 
-    String getLastChatMessage(Long idUsuario, Long id_receptor);
+    LastMessageDataModel getLastChatMessage(Long idUsuario, Long id_receptor);
 
     Page<Message> getMessages(Long chatId, Pageable pageable);
 

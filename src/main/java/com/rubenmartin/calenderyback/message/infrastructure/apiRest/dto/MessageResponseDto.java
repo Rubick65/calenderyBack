@@ -10,10 +10,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MessageResponseDto {
     private Long idMensaje;
+    private Long idChat;
     private Long idUsuario;
     private String contenido;
     private LocalDateTime timeStamp;
     private EstadoMensaje estadoMensaje;
-
-
 }

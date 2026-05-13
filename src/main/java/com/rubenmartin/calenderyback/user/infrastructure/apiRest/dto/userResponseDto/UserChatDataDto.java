@@ -7,5 +7,6 @@ public class UserChatDataDto {
     private Long idUsuario;
     private String nombre;
     private String fotoPerfil;
+    private Long idChat;
     private String ultimoMensaje;
 }

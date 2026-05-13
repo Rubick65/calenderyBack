@@ -3,6 +3,7 @@ package com.rubenmartin.calenderyback.user.infrastructure.apiRest;
 import com.rubenmartin.calenderyback.chat.application.query.checkIfChatExists.CheckIfChatExistsRequest;
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import com.rubenmartin.calenderyback.follower.application.query.isFollowing.isFollowingRequest;
+import com.rubenmartin.calenderyback.message.domain.model.LastMessageDataModel;
 import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledRequest;
 import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledResponse;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
@@ -303,7 +304,7 @@ public class UserController implements UserRestApi {
         GetUserContactsResponse getUserContactsResponse = mediator.dispatch(getUserContactsRequest);
 
         Page<User> usersPage = getUserContactsResponse.getContactPage();
-        Map<String, String> lastChatsMessage = getUserContactsResponse.getLastChatsMessage();
+        Map<String, LastMessageDataModel> lastChatsMessage = getUserContactsResponse.getLastChatsMessage();
 
         Page<UserChatDataDto> userChatPage = usersPage.map(user -> userMapper.mapToUserChatDto(user, lastChatsMessage.get(user.getNombre())));
 

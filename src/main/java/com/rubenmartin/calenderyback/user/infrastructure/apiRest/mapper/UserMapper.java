@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper;
 
+import com.rubenmartin.calenderyback.message.domain.model.LastMessageDataModel;
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.update.UpdateUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.updateUserSettings.UpdateUserSettingsRequest;
@@ -39,11 +40,12 @@ public interface UserMapper {
     UserSettingsResponseDto mapToUserSettingsResponseDto(GetUserSettingsByIdResponse response, String fotoPerfil);
 
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "ultimoMensaje", source = "lastMessage")
+    @Mapping(target = "ultimoMensaje", source = "lastMessage.contenido")
+    @Mapping(target = "idChat", source = "lastMessage.idChat")
     @Mapping(target = "nombre", source = "user.nombre")
     @Mapping(target = "idUsuario", source = "user.idUsuario")
     @Mapping(target = "fotoPerfil", source = "user.fotoPerfil")
-    UserChatDataDto mapToUserChatDto(User user, String lastMessage);
+    UserChatDataDto mapToUserChatDto(User user, LastMessageDataModel lastMessage);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "idUsuario", source = "idUsuario")

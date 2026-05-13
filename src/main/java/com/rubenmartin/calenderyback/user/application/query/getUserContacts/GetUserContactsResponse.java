@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.user.application.query.getUserContacts;
 
+import com.rubenmartin.calenderyback.message.domain.model.LastMessageDataModel;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class GetUserContactsResponse {
     private Page<User> contactPage;
-    private Map<String, String> lastChatsMessage;
+    private Map<String, LastMessageDataModel> lastChatsMessage;
 
 }

@@ -2,6 +2,7 @@ package com.rubenmartin.calenderyback.message.infrastructure.database;
 
 import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.message.infrastructure.database.entity.MessageEntity;
+import com.rubenmartin.calenderyback.message.infrastructure.projection.LastMessageDataProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,18 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface MessageJPARepository extends JpaRepository<MessageEntity, Long> {
 
-
     @Query(value = "SELECT " +
-            "CASE " +
-            "  WHEN m.id_usuario = :idUsuario THEN m.mensaje_propio " +
-            "  ELSE m.contenido " +
-            "END " +
-            "FROM mensaje_chat m " +
-            "WHERE (m.id_usuario = :idUsuario AND m.id_receptor = :id_receptor) " +
-            "   OR (m.id_usuario = :id_receptor AND m.id_receptor = :idUsuario) " +
+            "  c.id_chat AS chatId, " +
+            "  CASE " +
+            "    WHEN m.id_usuario = :idUsuario THEN m.mensaje_propio " +
+            "    ELSE m.contenido " +
+            "  END AS contenido " +
+            "FROM chat c " +
+            "LEFT JOIN mensaje_chat m ON c.id_chat = m.id_chat " +
+            "WHERE (c.id_usuario1 = :idUsuario AND c.id_usuario2 = :id_receptor) " +
+            "   OR (c.id_usuario1 = :id_receptor AND c.id_usuario2 = :idUsuario) " +
             "ORDER BY m.fecha_mensaje DESC " +
             "LIMIT 1", nativeQuery = true)
-    String getLastChatMessage(@Param("idUsuario") Long idUsuario, @Param("id_receptor") Long id_receptor);
+    LastMessageDataProjection getLastChatMessage(@Param("idUsuario") Long idUsuario, @Param("id_receptor") Long id_receptor);
 
     @Query("SELECT m FROM MessageEntity m " +
             "WHERE m.chatId.id = :chatId")

@@ -49,7 +49,7 @@ public class MessageController implements MessageApi {
         simpMessagingTemplate.convertAndSendToUser(
                 message.getToUser().getEmail(),
                 "/queue/mensajes",
-                messageDtoMapper.mapToMessageDto(message)
+                messageDtoMapper.mapToMessageResponseChat(message, messageDto.getChatId())
         );
     }
 

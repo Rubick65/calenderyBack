@@ -2,9 +2,11 @@ package com.rubenmartin.calenderyback.message.infrastructure.database;
 
 import com.rubenmartin.calenderyback.message.domain.entity.EstadoMensaje;
 import com.rubenmartin.calenderyback.message.domain.entity.Message;
+import com.rubenmartin.calenderyback.message.domain.model.LastMessageDataModel;
 import com.rubenmartin.calenderyback.message.domain.port.MessageRepositoryPort;
 import com.rubenmartin.calenderyback.message.infrastructure.database.entity.MessageEntity;
 import com.rubenmartin.calenderyback.message.infrastructure.database.mapper.MessageEntityMapper;
+import com.rubenmartin.calenderyback.message.infrastructure.projection.LastMessageDataProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +41,9 @@ public class MessageRepositoryImpl implements MessageRepositoryPort {
     }
 
     @Override
-    public String getLastChatMessage(Long idUsuario, Long id_receptor) {
-        return messageJPARepository.getLastChatMessage(idUsuario, id_receptor);
+    public LastMessageDataModel getLastChatMessage(Long idUsuario, Long id_receptor) {
+        LastMessageDataProjection lastMessage = messageJPARepository.getLastChatMessage(idUsuario, id_receptor);
+        return messageEntityMapper.mapToLastMessageModel(lastMessage);
     }
 
     @Override
