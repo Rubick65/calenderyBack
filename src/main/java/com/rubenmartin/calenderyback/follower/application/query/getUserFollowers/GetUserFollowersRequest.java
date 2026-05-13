@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 @Data
 @AllArgsConstructor
 public class GetUserFollowersRequest implements Request<GetUserFollowersResponse> {
-    private String userEmail;
+    private Long userId;
     private Pageable pageable;
 }

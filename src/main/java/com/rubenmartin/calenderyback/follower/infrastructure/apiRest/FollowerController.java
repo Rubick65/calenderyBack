@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,8 +43,8 @@ public class FollowerController implements FollowerRestApi {
 
     @Override
     @GetMapping("/app/getUserFollowers")
-    public ResponseEntity<Page<UserReducedData>> getUserFollowers(Authentication auth, Pageable pageable) {
-        GetUserFollowersRequest getUserFollowersRequest = new GetUserFollowersRequest(auth.getName(), pageable);
+    public ResponseEntity<Page<UserReducedData>> getUserFollowers(@RequestParam("idUsuario") Long userId, Pageable pageable) {
+        GetUserFollowersRequest getUserFollowersRequest = new GetUserFollowersRequest(userId, pageable);
         Page<UserReducedData> followersPage = mediator.dispatch(getUserFollowersRequest)
                 .getUserFollowers()
                 .map(userMapper::mapToReduceData);
@@ -55,12 +54,12 @@ public class FollowerController implements FollowerRestApi {
 
     @Override
     @GetMapping("/app/getUserFollowing")
-    public ResponseEntity<Page<UserReducedData>> getUserFollowing(Authentication auth, Pageable pageable) {
-        GetUserFollowingRequest getUserFollowingRequest = new GetUserFollowingRequest(auth.getName(), pageable);
+    public ResponseEntity<Page<UserReducedData>> getUserFollowing(@RequestParam("idUsuario") Long userId, Pageable pageable) {
+        GetUserFollowingRequest getUserFollowingRequest = new GetUserFollowingRequest(userId, pageable);
         Page<UserReducedData> followersPage = mediator.dispatch(getUserFollowingRequest)
                 .getUserFollowing()
                 .map(userMapper::mapToReduceData);
-        
+
         return ResponseEntity.ok(followersPage);
     }
 }

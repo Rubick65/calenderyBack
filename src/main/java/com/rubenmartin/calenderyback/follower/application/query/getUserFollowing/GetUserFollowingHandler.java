@@ -3,8 +3,6 @@ package com.rubenmartin.calenderyback.follower.application.query.getUserFollowin
 import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
 import com.rubenmartin.calenderyback.follower.domain.port.FollowerRepositoryPort;
 import com.rubenmartin.calenderyback.user.domain.entity.User;
-import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
-import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,20 +13,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class GetUserFollowingHandler implements RequestHandler<GetUserFollowingRequest, GetUserFollowingResponse> {
-    private final UserRepositoryPort userRepositoryPort;
-
     private final FollowerRepositoryPort followerRepositoryPort;
 
     @Override
     public GetUserFollowingResponse handle(GetUserFollowingRequest request) {
-        String userEmail = request.getUserEmail();
+        Long userId = request.getUserId();
         Pageable pageable = request.getPageable();
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "nombre"));
-
-        Long userId = userRepositoryPort
-                .getUserIdByEmail(userEmail).
-                orElseThrow(() -> new UserNotFoundException(userEmail));
-
+        
         Page<User> followingUsers = followerRepositoryPort.getUserFollowing(userId, pageable);
 
         return new GetUserFollowingResponse(followingUsers);
