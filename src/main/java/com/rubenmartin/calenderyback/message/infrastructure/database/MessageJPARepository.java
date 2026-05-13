@@ -12,14 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface MessageJPARepository extends JpaRepository<MessageEntity, Long> {
 
-    @Query(value = "SELECT m.contenido FROM mensaje_chat m " +
-            "WHERE (m.id_usuario = :idUsuario" +
-            " AND m.id_receptor = :id_receptor)" +
-            " OR (m.id_usuario = :id_receptor" +
-            " AND m.id_receptor = :idUsuario)" +
-            " ORDER BY m.fecha_mensaje DESC" +
-            " LIMIT 1", nativeQuery = true)
-    String getLastChatMessage(Long idUsuario, Long id_receptor);
+
+    @Query(value = "SELECT " +
+            "CASE " +
+            "  WHEN m.id_usuario = :idUsuario THEN m.mensaje_propio " +
+            "  ELSE m.contenido " +
+            "END " +
+            "FROM mensaje_chat m " +
+            "WHERE (m.id_usuario = :idUsuario AND m.id_receptor = :id_receptor) " +
+            "   OR (m.id_usuario = :id_receptor AND m.id_receptor = :idUsuario) " +
+            "ORDER BY m.fecha_mensaje DESC " +
+            "LIMIT 1", nativeQuery = true)
+    String getLastChatMessage(@Param("idUsuario") Long idUsuario, @Param("id_receptor") Long id_receptor);
 
     @Query("SELECT m FROM MessageEntity m " +
             "WHERE m.chatId.id = :chatId")
