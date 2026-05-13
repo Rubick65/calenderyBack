@@ -4,6 +4,7 @@ import com.rubenmartin.calenderyback.common.mediator.Mediator;
 import com.rubenmartin.calenderyback.follower.application.command.follow.FollowUserRequest;
 import com.rubenmartin.calenderyback.follower.application.command.unfollow.UnFollowRequest;
 import com.rubenmartin.calenderyback.follower.application.query.getUserFollowers.GetUserFollowersRequest;
+import com.rubenmartin.calenderyback.follower.application.query.getUserFollowing.GetUserFollowingRequest;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.dto.userResponseDto.UserReducedData;
 import com.rubenmartin.calenderyback.user.infrastructure.apiRest.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,11 @@ public class FollowerController implements FollowerRestApi {
     @Override
     @GetMapping("/app/getUserFollowing")
     public ResponseEntity<Page<UserReducedData>> getUserFollowing(Authentication auth, Pageable pageable) {
-        return null;
+        GetUserFollowingRequest getUserFollowingRequest = new GetUserFollowingRequest(auth.getName(), pageable);
+        Page<UserReducedData> followersPage = mediator.dispatch(getUserFollowingRequest)
+                .getUserFollowing()
+                .map(userMapper::mapToReduceData);
+        
+        return ResponseEntity.ok(followersPage);
     }
 }

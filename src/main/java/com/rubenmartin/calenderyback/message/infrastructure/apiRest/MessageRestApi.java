@@ -14,5 +14,8 @@ public interface MessageRestApi {
 
     ResponseEntity<Void> changeMessageToReadedState(Long messageId);
 
+    ResponseEntity<Void> changeAllChatMessageToReadedState(Long userId, Long chatId);
+
     ResponseEntity<Boolean> checkForPendingMessages(Authentication auth);
+
 }

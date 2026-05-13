@@ -21,5 +21,7 @@ public interface MessageRepositoryPort {
 
     int changeMessageState(Long messageId, EstadoMensaje messageState);
 
+    int changeAllChatMessagesState(Long userId, Long chatId, EstadoMensaje messageState);
+
     Boolean checkForPendingMessages(Long userId);
 }

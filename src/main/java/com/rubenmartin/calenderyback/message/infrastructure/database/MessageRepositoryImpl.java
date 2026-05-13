@@ -59,6 +59,11 @@ public class MessageRepositoryImpl implements MessageRepositoryPort {
     }
 
     @Override
+    public int changeAllChatMessagesState(Long userId, Long chatId, EstadoMensaje messageState) {
+        return messageJPARepository.changeAllChatMessagesState(chatId, userId, messageState);
+    }
+
+    @Override
     public Boolean checkForPendingMessages(Long userId) {
         return messageJPARepository.checkIfForPendingMessages(userId, EstadoMensaje.ENTREGADO);
     }

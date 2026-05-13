@@ -1,4 +1,4 @@
-package com.rubenmartin.calenderyback.follower.application.query.getUserFollowers;
+package com.rubenmartin.calenderyback.follower.application.query.getUserFollowing;
 
 import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
 import com.rubenmartin.calenderyback.follower.domain.port.FollowerRepositoryPort;
@@ -14,12 +14,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class GetUserFollowersHandler implements RequestHandler<GetUserFollowersRequest, GetUserFollowersResponse> {
+public class GetUserFollowingHandler implements RequestHandler<GetUserFollowingRequest, GetUserFollowingResponse> {
     private final UserRepositoryPort userRepositoryPort;
+
     private final FollowerRepositoryPort followerRepositoryPort;
 
     @Override
-    public GetUserFollowersResponse handle(GetUserFollowersRequest request) {
+    public GetUserFollowingResponse handle(GetUserFollowingRequest request) {
         String userEmail = request.getUserEmail();
         Pageable pageable = request.getPageable();
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "nombre"));
@@ -28,12 +29,13 @@ public class GetUserFollowersHandler implements RequestHandler<GetUserFollowersR
                 .getUserIdByEmail(userEmail).
                 orElseThrow(() -> new UserNotFoundException(userEmail));
 
-        Page<User> userFollowers = followerRepositoryPort.getUserFollowers(userId, pageable);
-        return new GetUserFollowersResponse(userFollowers);
+        Page<User> followingUsers = followerRepositoryPort.getUserFollowing(userId, pageable);
+
+        return new GetUserFollowingResponse(followingUsers);
     }
 
     @Override
-    public Class<GetUserFollowersRequest> getRequestType() {
-        return GetUserFollowersRequest.class;
+    public Class<GetUserFollowingRequest> getRequestType() {
+        return GetUserFollowingRequest.class;
     }
 }

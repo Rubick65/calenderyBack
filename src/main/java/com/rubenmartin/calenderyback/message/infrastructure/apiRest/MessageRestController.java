@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.message.infrastructure.apiRest;
 
 import com.rubenmartin.calenderyback.common.mediator.Mediator;
+import com.rubenmartin.calenderyback.message.application.command.changeAllChatMessageState.ChangeAllChatMessageStateRequest;
 import com.rubenmartin.calenderyback.message.application.command.changeState.ChangeMessageStateRequest;
 import com.rubenmartin.calenderyback.message.application.command.checkForPendingMessages.CheckForPendingMessagesRequest;
 import com.rubenmartin.calenderyback.message.application.query.getChatMessages.GetChatMessagesByIdRequest;
@@ -10,6 +11,7 @@ import com.rubenmartin.calenderyback.message.infrastructure.apiRest.mapper.Messa
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +49,15 @@ public class MessageRestController implements MessageRestApi {
         ChangeMessageStateRequest changeMessageStateRequest = new ChangeMessageStateRequest(messageId, readState);
         mediator.dispatch(changeMessageStateRequest);
 
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    @PutMapping("/app/cahngeAllChatMessgesToReadedState")
+    public ResponseEntity<Void> changeAllChatMessageToReadedState(@Param("idUsuario") Long userId, @Param("idChat") Long chatId) {
+        ChangeAllChatMessageStateRequest changeAllChatMessageStateRequest = new ChangeAllChatMessageStateRequest(chatId, userId, EstadoMensaje.LEIDO);
+        mediator.dispatch(changeAllChatMessageStateRequest);
+        
         return ResponseEntity.ok().build();
     }
 
