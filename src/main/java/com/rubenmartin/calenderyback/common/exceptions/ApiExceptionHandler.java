@@ -9,10 +9,7 @@ import com.rubenmartin.calenderyback.publication.domain.exception.PublicationDel
 import com.rubenmartin.calenderyback.publication.domain.exception.PublicationNotFoundException;
 import com.rubenmartin.calenderyback.publicationLike.domain.exception.PublicationLikeNotFoundedException;
 import com.rubenmartin.calenderyback.rol.domain.exception.RolNotFoundException;
-import com.rubenmartin.calenderyback.user.domain.exception.PublicKeyNotFoundException;
-import com.rubenmartin.calenderyback.user.domain.exception.UserAlreadyExistException;
-import com.rubenmartin.calenderyback.user.domain.exception.UserDisableAccountException;
-import com.rubenmartin.calenderyback.user.domain.exception.UserNotFoundException;
+import com.rubenmartin.calenderyback.user.domain.exception.*;
 import com.rubenmartin.calenderyback.vertificationToken.domain.exception.ExpiredVerificationTokenException;
 import com.rubenmartin.calenderyback.vertificationToken.domain.exception.TokenNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -214,9 +211,9 @@ public class ApiExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    @ExceptionHandler(PublicationDeleteException.class)
+    @ExceptionHandler(PublicKeyNotCoincidentException.class)
     @ResponseBody
-    public ErrorMessage invalidDeletePublication(HttpServletRequest request, Exception exception) {
+    public ErrorMessage publicKeyNotCoincident(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),

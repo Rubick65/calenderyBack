@@ -6,6 +6,7 @@ import com.rubenmartin.calenderyback.follower.application.query.isFollowing.isFo
 import com.rubenmartin.calenderyback.message.domain.model.LastMessageDataModel;
 import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledRequest;
 import com.rubenmartin.calenderyback.user.application.command.accountEnabled.IsUserEnabledResponse;
+import com.rubenmartin.calenderyback.user.application.command.checkPublicKey.CheckUserPublicKeyRequest;
 import com.rubenmartin.calenderyback.user.application.command.delete.DeleteUserRequest;
 import com.rubenmartin.calenderyback.user.application.command.deleteAll.DeleteAllUsersRequest;
 import com.rubenmartin.calenderyback.user.application.command.register.RegisterUserRequest;
@@ -264,7 +265,6 @@ public class UserController implements UserRestApi {
         return ResponseEntity.ok(userProfile);
     }
 
-
     @Override
     @PutMapping("/app/updateUserSetting")
     @PreAuthorize("#id == authentication.principal.idUsuario")
@@ -329,6 +329,16 @@ public class UserController implements UserRestApi {
         String publicKey = mediator.dispatch(getPublicKeyRequest).getPublicKey();
 
         return ResponseEntity.ok(new PublicUserKeyDto(publicKey));
+    }
+
+    @Override
+    @GetMapping("/app/checkPublicKey")
+    @PreAuthorize("#userId == authentication.principal.idUsuario")
+    public ResponseEntity<Void> checkPublicKey(@RequestParam("idUsuario")Long userId, @RequestParam("clavePublica")String publicKey) {
+        CheckUserPublicKeyRequest checkUserPublicKeyRequest = new CheckUserPublicKeyRequest(userId, publicKey);
+        mediator.dispatch(checkUserPublicKeyRequest);
+
+        return ResponseEntity.ok().build();
     }
 
 }

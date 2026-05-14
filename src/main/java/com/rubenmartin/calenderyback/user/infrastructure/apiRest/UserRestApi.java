@@ -59,4 +59,6 @@ public interface UserRestApi {
     ResponseEntity<Page<UserReducedData>> getSearchUsers(String userName, Pageable pageable, Authentication auth);
 
     ResponseEntity<PublicUserKeyDto> getPublicKey(Long userId);
+
+    ResponseEntity<Void> checkPublicKey(Long idUsuario ,String publicKey);
 }
