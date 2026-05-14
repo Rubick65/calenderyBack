@@ -53,7 +53,7 @@ public class MessageRestController implements MessageRestApi {
     }
 
     @Override
-    @PutMapping("/app/cahngeAllChatMessgesToReadedState")
+    @PutMapping("/app/changeAllChatMesssgesToReadedState")
     public ResponseEntity<Void> changeAllChatMessageToReadedState(@Param("idUsuario") Long userId, @Param("idChat") Long chatId) {
         ChangeAllChatMessageStateRequest changeAllChatMessageStateRequest = new ChangeAllChatMessageStateRequest(chatId, userId, EstadoMensaje.LEIDO);
         mediator.dispatch(changeAllChatMessageStateRequest);
