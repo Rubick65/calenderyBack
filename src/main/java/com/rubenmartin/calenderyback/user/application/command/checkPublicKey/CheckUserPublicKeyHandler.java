@@ -4,10 +4,10 @@ import com.rubenmartin.calenderyback.common.mediator.RequestHandler;
 import com.rubenmartin.calenderyback.publicationLike.domain.exception.PublicationLikeNotFoundedException;
 import com.rubenmartin.calenderyback.user.domain.exception.PublicKeyNotCoincidentException;
 import com.rubenmartin.calenderyback.user.domain.port.UserRepositoryPort;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Data
+@Component
 @RequiredArgsConstructor
 public class CheckUserPublicKeyHandler implements RequestHandler<CheckUserPublicKeyRequest, Void> {
     private final UserRepositoryPort userRepositoryPort;
