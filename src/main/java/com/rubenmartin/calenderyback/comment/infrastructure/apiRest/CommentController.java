@@ -1,5 +1,6 @@
 package com.rubenmartin.calenderyback.comment.infrastructure.apiRest;
 
+import com.rubenmartin.calenderyback.comment.application.command.delete.DeleteCommentRequest;
 import com.rubenmartin.calenderyback.comment.application.command.save.SaveCommentRequest;
 import com.rubenmartin.calenderyback.comment.application.query.getAllPublicationComments.GetCommentsPublicationByPublicationIDRequest;
 import com.rubenmartin.calenderyback.comment.application.query.getAllPublicationComments.GetCommentsPublicationByPublicationIDResponse;
@@ -39,5 +40,14 @@ public class CommentController implements CommentRestApi {
         Page<CommentDto> commentDtoList = getCommentsResponse.getCommentsPage().map(commentMapper::mapToCommentDto);
 
         return ResponseEntity.ok(commentDtoList);
+    }
+
+    @Override
+    @DeleteMapping("/app/deleteComment")
+    public ResponseEntity<Void> deleteComment(@RequestParam("idComentario") Long commentId, Authentication auth) {
+        DeleteCommentRequest deleteCommentRequest = new DeleteCommentRequest(commentId, auth.getName());
+        mediator.dispatch(deleteCommentRequest);
+
+        return ResponseEntity.ok().build();
     }
 }

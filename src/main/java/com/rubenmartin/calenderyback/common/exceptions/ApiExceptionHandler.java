@@ -1,6 +1,7 @@
 package com.rubenmartin.calenderyback.common.exceptions;
 
 import com.rubenmartin.calenderyback.chat.domain.exception.ChatNotFoundException;
+import com.rubenmartin.calenderyback.comment.domain.exception.CommentNotDeletedException;
 import com.rubenmartin.calenderyback.follower.domain.exception.FollowerNotFoundException;
 import com.rubenmartin.calenderyback.follower.domain.exception.UserNotFollowingException;
 import com.rubenmartin.calenderyback.message.domain.exception.MessageNotFoundException;
@@ -214,6 +215,17 @@ public class ApiExceptionHandler {
     @ExceptionHandler(PublicKeyNotCoincidentException.class)
     @ResponseBody
     public ErrorMessage publicKeyNotCoincident(HttpServletRequest request, Exception exception) {
+        return new ErrorMessage(
+                exception.getMessage(),
+                exception.getClass().getSimpleName(),
+                request.getRequestURI()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(CommentNotDeletedException.class)
+    @ResponseBody
+    public ErrorMessage commentNotDeleted(HttpServletRequest request, Exception exception) {
         return new ErrorMessage(
                 exception.getMessage(),
                 exception.getClass().getSimpleName(),

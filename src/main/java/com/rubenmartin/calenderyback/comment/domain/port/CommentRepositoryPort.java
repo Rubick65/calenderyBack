@@ -9,4 +9,6 @@ public interface CommentRepositoryPort {
     Comment saveComment(Comment comment);
 
     Page<Comment> getComments(Long publicationId, Pageable pageable);
+
+    int deleteComment(Long commentId, Long userId);
 }

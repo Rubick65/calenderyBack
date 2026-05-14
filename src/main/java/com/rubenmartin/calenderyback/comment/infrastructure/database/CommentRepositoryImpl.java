@@ -29,4 +29,9 @@ public class CommentRepositoryImpl implements CommentRepositoryPort {
         return commentPage.map(commentEntityMapper::mapToComment);
 
     }
+
+    @Override
+    public int deleteComment(Long commentId, Long userId) {
+        return commentJPARepository.deleteComment(commentId, userId);
+    }
 }
