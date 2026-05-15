@@ -9,4 +9,5 @@ public class UserChatDataDto {
     private String fotoPerfil;
     private Long idChat;
     private String ultimoMensaje;
+    private Boolean mensajeNuevo;
 }

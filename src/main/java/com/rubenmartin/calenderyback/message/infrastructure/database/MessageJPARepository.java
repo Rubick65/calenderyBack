@@ -18,7 +18,8 @@ public interface MessageJPARepository extends JpaRepository<MessageEntity, Long>
             "  CASE " +
             "    WHEN m.id_usuario = :idUsuario THEN m.mensaje_propio " +
             "    ELSE m.contenido " +
-            "  END AS contenido " +
+            "  END AS contenido," +
+            "  CASE WHEN m.estado <> 'LEIDO' THEN true ELSE false END AS noRead " +
             "FROM chat c " +
             "LEFT JOIN mensaje_chat m ON c.id_chat = m.id_chat " +
             "WHERE (c.id_usuario1 = :idUsuario AND c.id_usuario2 = :id_receptor) " +
@@ -40,7 +41,7 @@ public interface MessageJPARepository extends JpaRepository<MessageEntity, Long>
     @Transactional
     @Query("UPDATE MessageEntity m " +
             "SET m.messageState = :state " +
-            "WHERE (m.chatId.id = :idChat AND m.fromUser.idUsuario = :idUsuario)")
+            "WHERE (m.chatId.id = :idChat AND m.toUser.idUsuario = :idUsuario)")
     int changeAllChatMessagesState(@Param("idChat") Long idChat, @Param("idUsuario") Long idUsuario, @Param("state") EstadoMensaje messageState);
 
     @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true else false END " +

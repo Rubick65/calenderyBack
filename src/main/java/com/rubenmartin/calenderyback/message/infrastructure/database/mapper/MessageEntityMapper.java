@@ -17,6 +17,7 @@ public interface MessageEntityMapper {
 
     Message mapToMessage(MessageEntity messageEntity);
 
+    @Mapping(target = "noRead", source = "noRead")
     @Mapping(target = "contenido", source = "contenido")
     @Mapping(target = "idChat", source = "chatId")
     LastMessageDataModel mapToLastMessageModel(LastMessageDataProjection lastMessage);

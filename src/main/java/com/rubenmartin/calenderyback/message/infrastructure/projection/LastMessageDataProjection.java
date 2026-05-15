@@ -5,4 +5,6 @@ public interface LastMessageDataProjection {
 
     Long getChatId();
 
+    Boolean getNoRead();
+
 }

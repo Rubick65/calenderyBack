@@ -40,6 +40,7 @@ public interface UserMapper {
     UserSettingsResponseDto mapToUserSettingsResponseDto(GetUserSettingsByIdResponse response, String fotoPerfil);
 
     @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "mensajeNuevo", source = "lastMessage.noRead")
     @Mapping(target = "ultimoMensaje", source = "lastMessage.contenido")
     @Mapping(target = "idChat", source = "lastMessage.idChat")
     @Mapping(target = "nombre", source = "user.nombre")
