@@ -11,7 +11,6 @@ import com.rubenmartin.calenderyback.message.infrastructure.apiRest.mapper.Messa
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +53,7 @@ public class MessageRestController implements MessageRestApi {
 
     @Override
     @PutMapping("/app/changeAllChatMessagesToReadedState")
-    public ResponseEntity<Void> changeAllChatMessageToReadedState(@Param("idUsuario") Long userId, @Param("idChat") Long chatId) {
+    public ResponseEntity<Void> changeAllChatMessageToReadedState(@RequestParam("idUsuario") Long userId, @RequestParam("idChat") Long chatId) {
         ChangeAllChatMessageStateRequest changeAllChatMessageStateRequest = new ChangeAllChatMessageStateRequest(chatId, userId, EstadoMensaje.LEIDO);
         mediator.dispatch(changeAllChatMessageStateRequest);
 
