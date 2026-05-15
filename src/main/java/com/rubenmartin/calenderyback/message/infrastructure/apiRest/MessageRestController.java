@@ -33,7 +33,7 @@ public class MessageRestController implements MessageRestApi {
     }
 
     @Override
-    @PutMapping("/app/changeMessageToDeliveredSate")
+    @PutMapping("/app/changeMessageToDeliveredState")
     public ResponseEntity<Void> changeMessageToSendState(@RequestParam("idMensaje") Long messageId) {
         EstadoMensaje deliveredState = EstadoMensaje.ENTREGADO;
         ChangeMessageStateRequest changeMessageStateRequest = new ChangeMessageStateRequest(messageId, deliveredState);
